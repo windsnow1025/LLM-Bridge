@@ -1,0 +1,26 @@
+# FastAPI and related libraries
+fastapi # fastapi
+
+# HTTP client
+httpx # httpx
+
+# SDK
+openai # openai
+google-genai # google.genai
+anthropic # anthropic
+
+# Tokenization for OpenAI
+tiktoken # tiktoken
+
+# File processing
+pillow # PIL
+PyMuPDF # fitz
+python-docx # docx
+openpyxl # openpyxl
+python-pptx # pptx
+
+# Testing
+pytest # pytest
+pytest-asyncio
+python-dotenv #dotenv
+protobuf
