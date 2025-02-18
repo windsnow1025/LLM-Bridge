@@ -16,14 +16,15 @@ api_keys = {
     "GITHUB_API_KEY": os.environ.get("GITHUB_API_KEY"),
     "GOOGLE_AI_STUDIO_API_KEY": os.environ.get("GOOGLE_AI_STUDIO_API_KEY"),
     "ANTHROPIC_API_KEY": os.environ.get("ANTHROPIC_API_KEY"),
+    "XAI_API_KEY": os.environ.get("XAI_API_KEY"),
 }
 
 messages = [
     Message(role=Role.System, text="You are a helpful assistant.", file_urls=[]),
     Message(role=Role.User, text="What's today's news?", file_urls=[])
 ]
-model = "gemini-2.0-flash-exp"
-api_type = "Gemini"
+model = "grok-2-latest"
+api_type = "Grok"
 temperature = 0
 stream = True
 

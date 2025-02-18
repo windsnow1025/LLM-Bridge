@@ -43,6 +43,15 @@ async def create_chat_client(
             stream=stream,
             api_keys={"GITHUB_API_KEY": api_keys["GITHUB_API_KEY"]}
         )
+    elif api_type == 'Grok':
+        return await create_gpt_client(
+            messages=messages,
+            model=model,
+            api_type=api_type,
+            temperature=temperature,
+            stream=stream,
+            api_keys={"XAI_API_KEY": api_keys["XAI_API_KEY"]}
+        )
     elif api_type == 'Gemini':
         return await create_gemini_client(
             messages=messages,

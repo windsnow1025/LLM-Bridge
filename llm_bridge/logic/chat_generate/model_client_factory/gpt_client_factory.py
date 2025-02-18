@@ -30,6 +30,11 @@ async def create_gpt_client(
             base_url="https://models.inference.ai.azure.com",
             api_key=api_keys["GITHUB_API_KEY"],
         )
+    elif api_type == "Grok":
+        client = openai.AsyncOpenAI(
+            base_url="https://api.x.ai/v1",
+            api_key=api_keys["XAI_API_KEY"],
+        )
 
     gpt_messages = await convert_messages_to_gpt(messages)
 
