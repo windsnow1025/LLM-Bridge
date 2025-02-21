@@ -23,8 +23,14 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
         if file_type == "image":
             img_bytes, media_type = await media_processor.get_gemini_image_content_from_url(file_url)
             parts.append(types.Part.from_bytes(data=img_bytes, mime_type=media_type))
-        if file_type == "audio":
+        elif file_type == "audio":
             audio_bytes, media_type = await media_processor.get_gemini_audio_content_from_url(file_url)
             parts.append(types.Part.from_bytes(data=audio_bytes, mime_type=media_type))
+        else:
+            text_content = types.Part.from_text(
+                text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
+            )
+            parts.append(text_content)
+
 
     return GeminiMessage(parts=parts, role=role)

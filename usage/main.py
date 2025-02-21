@@ -21,7 +21,7 @@ api_keys = {
 
 messages = [
     Message(role=Role.System, text="You are a helpful assistant.", file_urls=[]),
-    Message(role=Role.User, text="What's this?", file_urls=[])
+    Message(role=Role.User, text="What's this?", file_urls=["https://www.windsnow1025.com/minio/windsnow/uploads/1/1740151777999-sample.mp3"])
 ]
 model = "gpt-4o-audio-preview"
 api_type = "OpenAI" # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
