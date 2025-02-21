@@ -4,7 +4,6 @@ from io import BytesIO
 import httpx
 from fastapi import HTTPException
 
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
 from llm_bridge.type.model_message import claude_message
 
 
