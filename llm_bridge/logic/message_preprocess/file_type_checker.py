@@ -25,6 +25,8 @@ def get_file_type(file_name: str) -> tuple[str, str]:
         return 'audio', 'mp3'
     if file_name.endswith('.wav'):
         return 'audio', 'wav'
+    if file_name.endswith('.webm'): # currently unable to tell audio / video
+        return 'audio', 'webm'
 
     mime_type, _ = mimetypes.guess_type(file_name)
     if mime_type:

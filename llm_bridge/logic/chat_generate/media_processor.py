@@ -36,6 +36,8 @@ async def get_gpt_audio_content_from_url(req_audio_url: str) -> str:
 async def get_gemini_audio_content_from_url(req_audio_url: str) -> tuple[bytes, str]:
     audio_data, media_type = await fetch_media_data(req_audio_url)
     audio_bytes = audio_data.getvalue()
+    if media_type == 'video/webm':
+        media_type = 'audio/webm'
     return audio_bytes, media_type
 
 
