@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.logic.chat_generate.model_client_factory.claude_client_factory import create_claude_client
 from llm_bridge.logic.chat_generate.model_client_factory.gemini_client_factory import create_gemini_client
@@ -22,7 +24,7 @@ async def create_chat_client(
             stream=stream,
             api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]}
         )
-    elif api_type == 'Azure':
+    elif api_type == 'OpenAI-Azure':
         return await create_gpt_client(
             messages=messages,
             model=model,
@@ -34,7 +36,7 @@ async def create_chat_client(
                 "AZURE_API_BASE": api_keys["AZURE_API_BASE"]
             }
         )
-    elif api_type == 'GitHub':
+    elif api_type == 'OpenAI-GitHub':
         return await create_gpt_client(
             messages=messages,
             model=model,
@@ -69,4 +71,4 @@ async def create_chat_client(
             api_key=api_keys["ANTHROPIC_API_KEY"]
         )
     else:
-        return ChatClient()
+        raise HTTPException(status_code=400, detail="Invalid API type")

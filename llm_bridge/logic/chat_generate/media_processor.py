@@ -7,11 +7,10 @@ from fastapi import HTTPException
 from llm_bridge.type.model_message import gpt_message, claude_message
 
 
-async def get_gpt_image_content_from_url(req_img_url: str) -> gpt_message.ImageContent:
+async def get_gpt_image_content_from_url(req_img_url: str) -> str:
     img_data, media_type = await fetch_media_data(req_img_url)
     base64_image = base64.b64encode(img_data.getvalue()).decode('utf-8')
-    res_img_url = gpt_message.ImageURL(url=f"data:{media_type};base64,{base64_image}")
-    return gpt_message.ImageContent(type="image_url", image_url=res_img_url)
+    return f"data:{media_type};base64,{base64_image}"
 
 
 async def get_gemini_image_content_from_url(req_img_url: str) -> tuple[bytes, str]:

@@ -21,10 +21,10 @@ api_keys = {
 
 messages = [
     Message(role=Role.System, text="You are a helpful assistant.", file_urls=[]),
-    Message(role=Role.User, text="What's today's news?", file_urls=[])
+    Message(role=Role.User, text="What's this?", file_urls=[])
 ]
-model = "grok-2-latest"
-api_type = "Grok"
+model = "gpt-4o-audio-preview"
+api_type = "OpenAI" # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
 temperature = 0
 stream = True
 

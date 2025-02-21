@@ -1,6 +1,6 @@
 # LLM Bridge
 
-A Bridge for LLMs.
+A Bridge for LLMs. Support OpenAI, OpenAI-Azure, OpenAI-GitHub, Gemini, Claude, Grok.
  
 ## Process
 
