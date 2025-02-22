@@ -13,7 +13,7 @@ from llm_bridge.type.message import Message
 async def convert_message_to_gpt(message: Message) -> GptMessage:
     role = message.role
     text = message.text
-    file_urls = message.file_urls
+    file_urls = message.files
 
     content = []
 

@@ -8,7 +8,7 @@ from llm_bridge.type.message import Message, Role
 async def convert_message_to_claude(message: Message) -> ClaudeMessage:
     role = message.role
     text = message.text
-    file_urls = message.file_urls
+    file_urls = message.files
 
     if role == Role.System:
         role = Role.User

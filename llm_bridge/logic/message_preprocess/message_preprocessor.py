@@ -10,17 +10,17 @@ async def preprocess_messages(messages: list[Message]) -> None:
 
 async def extract_text_files_to_message(message: Message) -> None:
     indices_to_delete = []
-    for i, file_url in enumerate(message.file_urls[::-1]):
+    for i, file_url in enumerate(message.files[::-1]):
         file_type, sub_type = get_file_type(file_url)
         if file_type != "text":
             continue
         filename = file_url.rsplit('/', 1)[-1].split('-', 1)[1]
         file_text = await document_processor.extract_text_from_file(file_url)
         message.text = f"{filename}: \n{file_text}\n{message.text}"
-        indices_to_delete.append(len(message.file_urls) - 1 - i)
+        indices_to_delete.append(len(message.files) - 1 - i)
 
     for index in sorted(indices_to_delete, reverse=True):
-        del message.file_urls[index]
+        del message.files[index]
 
 
 def extract_system_messages(messages: list[Message]) -> str:

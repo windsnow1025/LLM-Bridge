@@ -13,4 +13,4 @@ class Role(Enum):
 class Message:
     role: Role
     text: str
-    file_urls: list[str]
+    files: list[str]

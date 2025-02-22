@@ -10,14 +10,14 @@ from llm_bridge.type.message import Message, Role
 @pytest.fixture
 def sample_messages():
     return [
-        Message(role=Role.System, text="You are a helpful assistant.", file_urls=[]),
-        Message(role=Role.User, text="Hello", file_urls=[])
+        Message(role=Role.System, text="You are a helpful assistant.", files=[]),
+        Message(role=Role.User, text="Hello", files=[])
     ]
 
 
 @pytest.mark.asyncio
 async def test_create_gpt_client_openai():
-    messages = [Message(role=Role.User, text="Hello", file_urls=[])]
+    messages = [Message(role=Role.User, text="Hello", files=[])]
     model = "gpt-4o"
     api_type = "OpenAI"
     temperature = 0

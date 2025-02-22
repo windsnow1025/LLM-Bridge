@@ -26,12 +26,12 @@ messages = [
     Message(
         role=Role.System,
         text="You are a helpful assistant.",
-        file_urls=[]
+        files=[]
     ),
     Message(
         role=Role.User,
         text="What's this?",
-        file_urls=["https://www.windsnow1025.com/minio/windsnow/uploads/1/1740156158357-1740155993826-recording-1740155993821.webm"]
+        files=["https://www.windsnow1025.com/minio/windsnow/uploads/1/1740156158357-1740155993826-recording-1740155993821.webm"]
     )
 ]
 model = "gemini-2.0-pro-exp-02-05"
