@@ -12,7 +12,7 @@ async def extract_text_files_to_message(message: Message) -> None:
     indices_to_delete = []
     for i, file_url in enumerate(message.files[::-1]):
         file_type, sub_type = await get_file_type(file_url)
-        if file_type != "text":
+        if file_type != "text" and file_type != "application":
             continue
         filename = file_url.rsplit('/', 1)[-1].split('-', 1)[1]
         file_text = await document_processor.extract_text_from_file(file_url)
