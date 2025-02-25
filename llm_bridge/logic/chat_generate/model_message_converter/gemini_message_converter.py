@@ -19,7 +19,7 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
     parts = [types.Part.from_text(text=text)]
 
     for file_url in file_urls:
-        file_type, sub_type = get_file_type(file_url)
+        file_type, sub_type = await get_file_type(file_url)
         if file_type == "image":
             img_bytes, media_type = await media_processor.get_gemini_image_content_from_url(file_url)
             parts.append(types.Part.from_bytes(data=img_bytes, mime_type=media_type))

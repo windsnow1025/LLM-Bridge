@@ -29,7 +29,7 @@ async def extract_text_from_file(file_url: str) -> str:
 
         if file_type_checker.is_file_type_supported(file_url) is False:
             raise HTTPException(status_code=415, detail="legacy filetypes ('.doc', '.xls', '.ppt') are not supported")
-        file_type, sub_type = file_type_checker.get_file_type(file_url)
+        file_type, sub_type = await file_type_checker.get_file_type(file_url)
         if sub_type == "code":
             return extract_text_from_code(file_content)
         if sub_type == "pdf":

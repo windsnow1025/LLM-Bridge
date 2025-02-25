@@ -5,9 +5,8 @@ from openai.types.chat.chat_completion_content_part_input_audio_param import Inp
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
-from llm_bridge.type.model_message import gpt_message
-from llm_bridge.type.model_message.gpt_message import GptMessage
 from llm_bridge.type.message import Message
+from llm_bridge.type.model_message.gpt_message import GptMessage
 
 
 async def convert_message_to_gpt(message: Message) -> GptMessage:
@@ -22,7 +21,7 @@ async def convert_message_to_gpt(message: Message) -> GptMessage:
         content.append(text_content)
 
     for file_url in file_urls:
-        file_type, sub_type = get_file_type(file_url)
+        file_type, sub_type = await get_file_type(file_url)
         if file_type == "image":
             image_url = await media_processor.get_gpt_image_content_from_url(file_url)
             image_content = ChatCompletionContentPartImageParam(

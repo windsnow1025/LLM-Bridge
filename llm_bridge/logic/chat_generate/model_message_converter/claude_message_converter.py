@@ -20,7 +20,7 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
         content.append(text_content)
 
     for file_url in file_urls:
-        file_type, sub_type = get_file_type(file_url)
+        file_type, sub_type = await get_file_type(file_url)
         if file_type == "image":
             image_contents = await media_processor.get_claude_image_content_from_url(file_url)
             content.append(image_contents)
