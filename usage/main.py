@@ -6,7 +6,7 @@ from pprint import pprint
 from dotenv import load_dotenv
 
 from llm_bridge import *
-from usage.function import function
+from usage.workflow import workflow
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -40,7 +40,7 @@ temperature = 0
 stream = True
 
 async def main():
-    response = await function(api_keys, messages, model, api_type, temperature, stream)
+    response = await workflow(api_keys, messages, model, api_type, temperature, stream)
     if stream:
         async for chunk in response:
             pprint(chunk)

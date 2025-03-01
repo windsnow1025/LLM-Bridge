@@ -1,7 +1,7 @@
 from llm_bridge import *
 
 
-async def function(
+async def workflow(
         api_keys: dict[str, str],
         messages: list[Message],
         model: str,
