@@ -6,7 +6,6 @@ class Role(Enum):
     User = "user"
     Assistant = "assistant"
     System = "system"
-    Model = "model"
 
 
 @dataclass

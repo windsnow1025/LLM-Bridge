@@ -1,6 +1,11 @@
+from enum import Enum
 from typing import TypeAlias
 
 from google.genai import types
+
+class GeminiRole(Enum):
+    User = "user"
+    Model = "model"
 
 GeminiMessage: TypeAlias = types.Content
 

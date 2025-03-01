@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 
-from openai.types.chat import ChatCompletionContentPartTextParam, ChatCompletionContentPartImageParam, \
+from openai.types.chat import (
+    ChatCompletionContentPartTextParam,
+    ChatCompletionContentPartImageParam, \
     ChatCompletionContentPartInputAudioParam
+)
 
 from llm_bridge.type.message import Role
 
@@ -10,5 +13,7 @@ from llm_bridge.type.message import Role
 class GptMessage:
     role: Role
     content: list[
-        ChatCompletionContentPartTextParam | ChatCompletionContentPartImageParam | ChatCompletionContentPartInputAudioParam
+        ChatCompletionContentPartTextParam |
+        ChatCompletionContentPartImageParam |
+        ChatCompletionContentPartInputAudioParam
     ]
