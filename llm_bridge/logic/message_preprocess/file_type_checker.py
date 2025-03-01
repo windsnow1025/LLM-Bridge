@@ -15,22 +15,21 @@ def is_file_type_supported(file_name: str) -> bool:
 async def get_file_type(file_url: str) -> tuple[str, str]:
     file_name = re.split(r'-(.+)', file_url.split('/')[-1])[1]
     file_extension = '.' + file_name.split('.')[-1].lower()
-
     if file_extension in code_file_extensions:
         return 'text', 'code'
-    if file_extension == '.pdf':
+    if file_extension in '.pdf':
         return 'text', 'pdf'
-    if file_extension == ('.docx', '.doc'):
+    if file_extension in ('.docx', '.doc'):
         return 'text', 'word'
-    if file_extension == ('.xlsx', '.xls'):
+    if file_extension in ('.xlsx', '.xls'):
         return 'text', 'excel'
-    if file_extension == ('.pptx', '.ppt'):
+    if file_extension in ('.pptx', '.ppt'):
         return 'text', 'ppt'
-    if file_extension == '.mp3':
+    if file_extension in '.mp3':
         return 'audio', 'mp3'
-    if file_extension == '.wav':
+    if file_extension in '.wav':
         return 'audio', 'wav'
-    if file_extension == '.webm': # currently unable to tell audio / video
+    if file_extension in '.webm': # currently unable to tell audio / video
         return 'audio', 'webm'
 
     mime_type, _ = mimetypes.guess_type(file_name)
