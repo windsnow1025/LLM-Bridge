@@ -27,7 +27,7 @@ class StreamClaudeClient(ClaudeClient):
                         yield ChatResponse(text=response_delta)
             except Exception as e:
                 logging.exception(e)
-                yield ChatResponse(error=str(e))
+                yield ChatResponse(error=repr(e))
 
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code

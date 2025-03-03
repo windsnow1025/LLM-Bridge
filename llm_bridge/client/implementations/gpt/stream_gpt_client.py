@@ -34,7 +34,7 @@ async def generate_chunk(
             yield ChatResponse(text=content_delta)
     except Exception as e:
         logging.exception(e)
-        yield ChatResponse(error=str(e))
+        yield ChatResponse(error=repr(e))
 
 
 class StreamGPTClient(GPTClient):
