@@ -9,43 +9,33 @@ from docx.oxml import CT_P, CT_Tbl
 from fastapi import HTTPException
 from pptx import Presentation
 
+from llm_bridge.logic.file_fetch import fetch_file_data
 from llm_bridge.logic.message_preprocess import file_type_checker
 
 
 async def extract_text_from_file(file_url: str) -> str:
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.get(file_url)
-        except Exception as e:
-            logging.exception(e)
-            raise HTTPException(status_code=500, detail=str(e))
+    content_bytes, content_type = await fetch_file_data(file_url)
+    file_content = content_bytes.getvalue()
 
-        if response.status_code != 200:
-            status_code = response.status_code
-            text = response.text
-            raise HTTPException(status_code=status_code, detail=text)
+    if file_type_checker.is_file_type_supported(file_url) is False:
+        raise HTTPException(status_code=415, detail="legacy filetypes ('.doc', '.xls', '.ppt') are not supported")
+    file_type, sub_type = await file_type_checker.get_file_type(file_url)
+    if sub_type == "code":
+        return extract_text_from_code(file_content)
+    if sub_type == "pdf":
+        return extract_text_from_pdf(file_content)
+    if sub_type == "word":
+        return extract_text_from_word(file_content)
+    if sub_type == "excel":
+        return extract_text_from_excel(file_content)
+    if sub_type == "ppt":
+        return extract_text_from_ppt(file_content)
 
-        file_content = response.content
-
-        if file_type_checker.is_file_type_supported(file_url) is False:
-            raise HTTPException(status_code=415, detail="legacy filetypes ('.doc', '.xls', '.ppt') are not supported")
-        file_type, sub_type = await file_type_checker.get_file_type(file_url)
-        if sub_type == "code":
-            return extract_text_from_code(file_content)
-        if sub_type == "pdf":
-            return extract_text_from_pdf(file_content)
-        if sub_type == "word":
-            return extract_text_from_word(file_content)
-        if sub_type == "excel":
-            return extract_text_from_excel(file_content)
-        if sub_type == "ppt":
-            return extract_text_from_ppt(file_content)
-
-        try:
-            return file_content.decode('utf-8')
-        except UnicodeDecodeError as e:
-            logging.exception(e)
-            raise HTTPException(status_code=415, detail=str(e))
+    try:
+        return file_content.decode('utf-8')
+    except UnicodeDecodeError as e:
+        logging.exception(e)
+        raise HTTPException(status_code=415, detail=str(e))
 
 
 def extract_text_from_code(file_content: bytes) -> str:
