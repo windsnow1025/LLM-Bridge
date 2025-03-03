@@ -10,7 +10,7 @@ from llm_bridge.type.chat_response import ChatResponse
 
 
 class NonStreamGeminiClient(GeminiClient):
-    async def generate_response(self) -> ChatResponse:
+    async def generate_non_stream_response(self) -> ChatResponse:
         try:
             logging.info(f"messages: {self.messages}")
 

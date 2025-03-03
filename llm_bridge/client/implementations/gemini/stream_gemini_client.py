@@ -29,7 +29,7 @@ async def generate_chunk(
 
 
 class StreamGeminiClient(GeminiClient):
-    async def generate_response(self) -> AsyncGenerator[ChatResponse, None]:
+    async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
             logging.info(f"messages: {self.messages}")
 

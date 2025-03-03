@@ -11,7 +11,7 @@ from llm_bridge.type.serializer import serialize
 
 
 class StreamClaudeClient(ClaudeClient):
-    async def generate_response(self) -> AsyncGenerator[ChatResponse, None]:
+    async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
             logging.info(f"messages: {self.messages}")
 

@@ -31,13 +31,16 @@ messages = [
     Message(
         role=Role.User,
         text="What's this?",
-        files=["https://www.windsnow1025.com/minio/windsnow/uploads/1/1740156158357-1740155993826-recording-1740155993821.webm"]
+        files=[
+            "https://www.windsnow1025.com/minio/windsnow/uploads/1/1740156158357-1740155993826-recording-1740155993821.webm",
+        ]
     )
 ]
-model = "gemini-2.0-pro-exp-02-05"
-api_type = "Gemini" # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
+model = "gemini-2.0-flash-001"
+api_type = "Gemini"  # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
 temperature = 0
 stream = True
+
 
 async def main():
     response = await workflow(api_keys, messages, model, api_type, temperature, stream)
@@ -46,6 +49,7 @@ async def main():
             pprint(chunk)
     else:
         pprint(response)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

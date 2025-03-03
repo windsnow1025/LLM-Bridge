@@ -10,7 +10,7 @@ from llm_bridge.type.serializer import serialize
 
 
 class NonStreamClaudeClient(ClaudeClient):
-    async def generate_response(self) -> ChatResponse:
+    async def generate_non_stream_response(self) -> ChatResponse:
         try:
             logging.info(f"messages: {self.messages}")
             message = await self.client.messages.create(

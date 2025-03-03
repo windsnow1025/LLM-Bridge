@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='LLM-Bridge',
-    version='0.4.1',
+    version='1.0.0',
     packages=find_packages(),
     install_requires=[
         'fastapi',
@@ -19,10 +19,10 @@ setup(
         'python-pptx',
     ],
     tests_require=[
-        'pytest==8.3.4',
-        'pytest-asyncio==0.25.3'
-        'python-dotenv==1.0.1',
-        'protobuf==5.29.3'
+        'pytest',
+        'pytest-asyncio'
+        'python-dotenv',
+        'protobuf'
     ],
     author='windsnow1025',
     author_email='windsnow125@gmail.com',
