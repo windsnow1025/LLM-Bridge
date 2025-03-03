@@ -3,6 +3,8 @@ fastapi # fastapi
 
 # HTTP client
 httpx # httpx
+httpcore # httpcore
+tenacity # tenacity
 
 # SDK
 openai # openai
