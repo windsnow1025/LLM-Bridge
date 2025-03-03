@@ -38,9 +38,6 @@ class StreamGeminiClient(GeminiClient):
                 contents=self.messages,
                 config=self.config,
             )
-
-            return generate_chunk(response)
-
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code
             text = e.response.text
@@ -54,3 +51,6 @@ class StreamGeminiClient(GeminiClient):
                 error_code = 500
 
             raise HTTPException(status_code=error_code, detail=str(e))
+
+        async for chunk in generate_chunk(response):
+            yield chunk

@@ -15,22 +15,19 @@ class StreamClaudeClient(ClaudeClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            async def chunk_generator() -> AsyncGenerator[ChatResponse, None]:
-                try:
-                    async with self.client.messages.stream(
-                        model=self.model,
-                        max_tokens=4096,
-                        temperature=self.temperature,
-                        system=self.system,
-                        messages=serialize(self.messages)
-                    ) as stream:
-                        async for response_delta in stream.text_stream:
-                            yield ChatResponse(text=response_delta)
-                except Exception as e:
-                    logging.exception(e)
-                    yield ChatResponse(error=str(e))
-
-            return chunk_generator()
+            try:
+                async with self.client.messages.stream(
+                    model=self.model,
+                    max_tokens=4096,
+                    temperature=self.temperature,
+                    system=self.system,
+                    messages=serialize(self.messages)
+                ) as stream:
+                    async for response_delta in stream.text_stream:
+                        yield ChatResponse(text=response_delta)
+            except Exception as e:
+                logging.exception(e)
+                yield ChatResponse(error=str(e))
 
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code

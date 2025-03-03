@@ -20,6 +20,6 @@ async def workflow(
         api_keys=api_keys,
     )
 
-    return await chat_client.generate_response()
+    return chat_client.generate_response()
 
 

@@ -47,9 +47,6 @@ class StreamGPTClient(GPTClient):
                 temperature=self.temperature,
                 stream=True
             )
-
-            return generate_chunk(completion)
-
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code
             text = e.response.text
@@ -71,3 +68,6 @@ class StreamGPTClient(GPTClient):
                 error_code = 500
 
             raise HTTPException(status_code=error_code, detail=str(e))
+
+        async for chunk in generate_chunk(completion):
+            yield chunk
