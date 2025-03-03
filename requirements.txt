@@ -6,7 +6,7 @@ httpx # httpx
 
 # SDK
 openai # openai
-google-genai==1.3.0 # google.genai
+google-genai==1.2.0 # google.genai
 anthropic # anthropic
 
 # File processing
@@ -15,8 +15,11 @@ python-docx # docx
 openpyxl # openpyxl
 python-pptx # pptx
 
-# Testing
+# Test
 pytest # pytest
 pytest-asyncio
 python-dotenv #dotenv
 protobuf
+
+# Build
+setuptools # setuptools
