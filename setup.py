@@ -5,18 +5,18 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='LLM-Bridge',
-    version='0.4.0',
+    version='0.4.1',
     packages=find_packages(),
     install_requires=[
-        'fastapi==0.115.9',
-        'httpx==0.28.1',
-        'openai==1.63.2',
-        'google-genai==1.2.0',
-        'anthropic==0.47.1',
-        'PyMuPDF==1.25.3',
-        'python-docx==1.1.2',
-        'openpyxl==3.1.5',
-        'python-pptx==1.0.2',
+        'fastapi',
+        'httpx',
+        'openai',
+        'google-genai',
+        'anthropic',
+        'PyMuPDF',
+        'python-docx',
+        'openpyxl',
+        'python-pptx',
     ],
     tests_require=[
         'pytest==8.3.4',
