@@ -34,7 +34,7 @@ async def get_file_type(file_url: str) -> tuple[str, str]:
 
     mime_type, _ = mimetypes.guess_type(file_name)
     if not mime_type:
-        _, mime_type = await fetch_file_data(file_name)
+        _, mime_type = await fetch_file_data(file_url)
 
     if mime_type:
         return mime_type.split('/')[0], mime_type.split('/')[1]

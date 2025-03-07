@@ -32,7 +32,7 @@ messages = [
         role=Role.User,
         text="What's this?",
         files=[
-            "https://www.windsnow1025.com/minio/windsnow/uploads/1/1740156158357-1740155993826-recording-1740155993821.webm",
+            "https://test-www.windsnow1025.com/minio/windsnow/uploads/1/1741339415090-New%20Text%20Document",
         ]
     )
 ]
