@@ -8,8 +8,18 @@ class Role(Enum):
     System = "system"
 
 
+class ContentType(Enum):
+    Text = "text"
+    File = "file"
+
+
+@dataclass
+class Content:
+    type: ContentType
+    data: str # text or file path
+
+
 @dataclass
 class Message:
     role: Role
-    text: str
-    files: list[str]
+    contents: list[Content]
