@@ -32,8 +32,11 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.Text, data="What's this?"),
-            Content(type=ContentType.File, data="https://test-www.windsnow1025.com/minio/windsnow/uploads/1/1741339415090-New%20Text%20Document")
+            Content(type=ContentType.Text, data="What's this document about?"),
+            Content(type=ContentType.File, data="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"),
+            Content(type=ContentType.Text, data="And what about this image?  Can you describe it?"),
+            Content(type=ContentType.File, data="https://upload.wikimedia.org/wikipedia/commons/3/3f/JPEG_example_flower.jpg"),
+            Content(type=ContentType.Text, data="Thanks for the info!"),
         ]
     )
 ]

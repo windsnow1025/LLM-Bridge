@@ -1,5 +1,5 @@
 from llm_bridge.logic.message_preprocess import document_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_name
 from llm_bridge.type.message import Message, Role, Content, ContentType
 
 
@@ -21,7 +21,7 @@ async def extract_text_files_to_message(message: Message) -> None:
         if file_type != "text" and file_type != "application":
             continue
             
-        filename = file_url.rsplit('/', 1)[-1].split('-', 1)[1]
+        filename = get_file_name(file_url)
         file_text = await document_processor.extract_text_from_file(file_url)
         
         message.contents[i] = Content(

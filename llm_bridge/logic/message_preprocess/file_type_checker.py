@@ -1,4 +1,5 @@
 import mimetypes
+import os
 import re
 
 from llm_bridge.logic.file_fetch import fetch_file_data
@@ -13,8 +14,8 @@ def is_file_type_supported(file_name: str) -> bool:
 
 
 async def get_file_type(file_url: str) -> tuple[str, str]:
-    file_name = re.split(r'-(.+)', file_url.split('/')[-1])[1]
-    file_extension = '.' + file_name.split('.')[-1].lower()
+    file_name = get_file_name(file_url)
+    file_extension = '.' + file_name.split('.')[-1].lower() # Treat filenames without an extension as their own extension
     if file_extension in code_file_extensions:
         return 'text', 'code'
     if file_extension in '.pdf':
@@ -40,3 +41,12 @@ async def get_file_type(file_url: str) -> tuple[str, str]:
         return mime_type.split('/')[0], mime_type.split('/')[1]
 
     return 'unknown', 'unknown'
+
+
+def get_file_name(file_url) -> str:
+    base_name = os.path.basename(file_url)
+    match = re.search(r'-(.+)', base_name)
+    if match:
+        return match.group(1)
+    else:
+        return base_name
