@@ -1,20 +1,26 @@
 import pytest
 
 from llm_bridge.logic.chat_generate.chat_client_factory import create_chat_client
-from llm_bridge.type.message import Message, Role
+from llm_bridge.type.message import Message, Role, Content, ContentType
 
 
 @pytest.fixture
 def sample_messages():
     return [
-        Message(role=Role.System, text="You are a helpful assistant.", files=[]),
-        Message(role=Role.User, text="Hello", files=[])
+        Message(role=Role.System, contents=[
+            Content(type=ContentType.Text, data="You are a helpful assistant.")
+        ]),
+        Message(role=Role.User, contents=[
+            Content(type=ContentType.Text, data="Hello")
+        ])
     ]
 
 
 @pytest.mark.asyncio
 async def test_create_gpt_client_openai():
-    messages = [Message(role=Role.User, text="Hello", files=[])]
+    messages = [Message(role=Role.User, contents=[
+        Content(type=ContentType.Text, data="Hello")
+    ])]
     model = "gpt-4o"
     api_type = "OpenAI"
     temperature = 0

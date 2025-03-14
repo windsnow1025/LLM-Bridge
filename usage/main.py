@@ -25,14 +25,15 @@ api_keys = {
 messages = [
     Message(
         role=Role.System,
-        text="You are a helpful assistant.",
-        files=[]
+        contents=[
+            Content(type=ContentType.Text, data="You are a helpful assistant.")
+        ]
     ),
     Message(
         role=Role.User,
-        text="What's this?",
-        files=[
-            "https://test-www.windsnow1025.com/minio/windsnow/uploads/1/1741339415090-New%20Text%20Document",
+        contents=[
+            Content(type=ContentType.Text, data="What's this?"),
+            Content(type=ContentType.File, data="https://test-www.windsnow1025.com/minio/windsnow/uploads/1/1741339415090-New%20Text%20Document")
         ]
     )
 ]
