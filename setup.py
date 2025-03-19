@@ -12,7 +12,7 @@ setup(
         'httpx',
         'tenacity',
         'openai',
-        'google-genai==1.2.0',
+        'google-genai',
         'anthropic',
         'PyMuPDF',
         'python-docx',
