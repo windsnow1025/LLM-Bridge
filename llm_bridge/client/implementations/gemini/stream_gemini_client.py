@@ -17,23 +17,12 @@ def process_delta(completion_delta: types.GenerateContentResponse) -> ChatRespon
     return gemini_response_handler.process_gemini_response(completion_delta)
 
 
-async def generate_chunk(
-        response: AsyncIterator[types.GenerateContentResponse]
-) -> AsyncGenerator[ChatResponse, None]:
-    try:
-        async for response_delta in response:
-            yield process_delta(response_delta)
-    except Exception as e:
-        logging.exception(e)
-        yield ChatResponse(error=repr(e))
-
-
 class StreamGeminiClient(GeminiClient):
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
             logging.info(f"messages: {self.messages}")
 
-            response = await self.client.aio.models.generate_content_stream(
+            response = self.client.models.generate_content_stream(
                 model=self.model,
                 contents=self.messages,
                 config=self.config,
@@ -52,5 +41,9 @@ class StreamGeminiClient(GeminiClient):
 
             raise HTTPException(status_code=error_code, detail=str(e))
 
-        async for chunk in generate_chunk(response):
-            yield chunk
+        try:
+            for response_delta in response:
+                yield process_delta(response_delta)
+        except Exception as e:
+            logging.exception(e)
+            yield ChatResponse(error=repr(e))
