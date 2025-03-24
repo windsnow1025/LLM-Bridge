@@ -32,15 +32,11 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.Text, data="What's this document about?"),
-            Content(type=ContentType.File, data="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"),
-            Content(type=ContentType.Text, data="And what about this image?  Can you describe it?"),
-            Content(type=ContentType.File, data="https://upload.wikimedia.org/wikipedia/commons/3/3f/JPEG_example_flower.jpg"),
-            Content(type=ContentType.Text, data="Thanks for the info!"),
+            Content(type=ContentType.Text, data="Generate an image of a cat"),
         ]
     )
 ]
-model = "gemini-2.0-flash-001"
+model = "gemini-2.0-flash-exp-image-generation"
 api_type = "Gemini"  # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
 temperature = 0
 stream = True

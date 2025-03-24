@@ -1,6 +1,8 @@
 import base64
 from io import BytesIO
 from enum import Enum
+from pprint import pprint
+
 from google.genai import types
 from llm_bridge.type.chat_response import Citation, ChatResponse
 
@@ -23,17 +25,18 @@ class GeminiResponseHandler:
         image_base64 = None
         citations = extract_citations(response)
 
-        for part in response.candidates[0].content.parts:
-            if part.text:
-                if part.thought and self.printing_status == PrintingStatus.Start:
-                    text += "# Model Thought:\n\n"
-                    self.printing_status = PrintingStatus.Thought
-                elif not part.thought and self.printing_status == PrintingStatus.Thought:
-                    text += f"\n\n# Model Response:\n\n"
-                    self.printing_status = PrintingStatus.Response
-                text += part.text
-            elif part.inline_data:
-                image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
+        if response.candidates[0].content.parts:
+            for part in response.candidates[0].content.parts:
+                if part.text:
+                    if part.thought and self.printing_status == PrintingStatus.Start:
+                        text += "# Model Thought:\n\n"
+                        self.printing_status = PrintingStatus.Thought
+                    elif not part.thought and self.printing_status == PrintingStatus.Thought:
+                        text += f"\n\n# Model Response:\n\n"
+                        self.printing_status = PrintingStatus.Response
+                    text += part.text
+                elif part.inline_data:
+                    image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
 
         if grounding_metadata := response.candidates[0].grounding_metadata:
             if search_entry_point := grounding_metadata.search_entry_point:
