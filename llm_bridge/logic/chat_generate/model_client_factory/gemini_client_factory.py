@@ -21,10 +21,11 @@ async def create_gemini_client(
         http_options=HttpOptions(api_version='v1alpha') # Thinking
     )
 
-    system_instruction = extract_system_messages(messages) or " "
-
-    thinking_config = None
+    system_instruction = None
     tools = []
+    thinking_config = None
+    response_modalities = ['Text']
+
     if "thinking" in model:
         thinking_config = types.ThinkingConfig(include_thoughts=True)
     if "thinking" not in model and "gemini-2.0-flash-lite-preview-02-05" not in model:
@@ -33,6 +34,10 @@ async def create_gemini_client(
                 google_search=types.GoogleSearch()
             )
         )
+    if "image" in model:
+        response_modalities = ['Text', 'Image']
+    else:
+        system_instruction = extract_system_messages(messages) or " "
 
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
@@ -61,7 +66,7 @@ async def create_gemini_client(
         ],
         tools=tools,
         thinking_config=thinking_config,
-        response_modalities=['Text', 'Image']
+        response_modalities=response_modalities,
     )
 
     gemini_messages = await convert_messages_to_gemini(messages)
