@@ -11,6 +11,7 @@ class Citation:
 @dataclass
 class ChatResponse:
     text: Optional[str] = None
+    image: Optional[str] = None
     display: Optional[str] = None
     citations: Optional[list[Citation]] = None
     error: Optional[str] = None

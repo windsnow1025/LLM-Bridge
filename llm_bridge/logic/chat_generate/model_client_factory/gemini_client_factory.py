@@ -61,6 +61,7 @@ async def create_gemini_client(
         ],
         tools=tools,
         thinking_config=thinking_config,
+        response_modalities=['Text', 'Image']
     )
 
     gemini_messages = await convert_messages_to_gemini(messages)

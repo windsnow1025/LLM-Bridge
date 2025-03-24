@@ -1,7 +1,7 @@
+import base64
+from io import BytesIO
 from enum import Enum
-
 from google.genai import types
-
 from llm_bridge.type.chat_response import Citation, ChatResponse
 
 
@@ -20,16 +20,21 @@ class GeminiResponseHandler:
     ) -> ChatResponse:
         text = ""
         display = None
+        image_base64 = None
         citations = extract_citations(response)
 
         for part in response.candidates[0].content.parts:
-            if part.thought and self.printing_status == PrintingStatus.Start:
-                text += "# Model Thought:\n\n"
-                self.printing_status = PrintingStatus.Thought
-            elif not part.thought and self.printing_status == PrintingStatus.Thought:
-                text += f"\n\n# Model Response:\n\n"
-                self.printing_status = PrintingStatus.Response
-            text += part.text
+            if part.text:
+                if part.thought and self.printing_status == PrintingStatus.Start:
+                    text += "# Model Thought:\n\n"
+                    self.printing_status = PrintingStatus.Thought
+                elif not part.thought and self.printing_status == PrintingStatus.Thought:
+                    text += f"\n\n# Model Response:\n\n"
+                    self.printing_status = PrintingStatus.Response
+                text += part.text
+            elif part.inline_data:
+                image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
+
         if grounding_metadata := response.candidates[0].grounding_metadata:
             if search_entry_point := grounding_metadata.search_entry_point:
                 display = search_entry_point.rendered_content
@@ -39,7 +44,7 @@ class GeminiResponseHandler:
                     if chunk.web:
                         text += f"{i}. [{chunk.web.title}]({chunk.web.uri})\n"
 
-        return ChatResponse(text=text, display=display, citations=citations)
+        return ChatResponse(text=text, image=image_base64, display=display, citations=citations)
 
 
 def extract_citations(response: types.GenerateContentResponse) -> list[Citation]:
