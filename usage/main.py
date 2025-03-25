@@ -32,11 +32,11 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.Text, data="Generate an image of a cat"),
+            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
         ]
     )
 ]
-model = "gemini-2.0-flash-exp-image-generation"
+model = "gemini-2.5-pro-exp-03-25"
 api_type = "Gemini"  # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
 temperature = 0
 stream = True

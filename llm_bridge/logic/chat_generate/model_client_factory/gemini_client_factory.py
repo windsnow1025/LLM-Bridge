@@ -26,18 +26,18 @@ async def create_gemini_client(
     thinking_config = None
     response_modalities = ['Text']
 
-    if "thinking" in model:
-        thinking_config = types.ThinkingConfig(include_thoughts=True)
-    if "thinking" not in model and "gemini-2.0-flash-lite-preview-02-05" not in model and "image" not in model:
+    if "image" not in model:
+        system_instruction = extract_system_messages(messages) or " "
+    if "image" not in model:
         tools.append(
             types.Tool(
                 google_search=types.GoogleSearch()
             )
         )
+    if "image" not in model:
+        thinking_config = types.ThinkingConfig(include_thoughts=True)
     if "image" in model:
         response_modalities = ['Text', 'Image']
-    else:
-        system_instruction = extract_system_messages(messages) or " "
 
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
