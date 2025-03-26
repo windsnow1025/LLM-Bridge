@@ -6,6 +6,7 @@ from pprint import pprint
 from dotenv import load_dotenv
 
 from llm_bridge import *
+from llm_bridge.logic.model_prices import get_model_prices
 from usage.workflow import workflow
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -36,13 +37,16 @@ messages = [
         ]
     )
 ]
+# See /llm_bridge/resources/model_prices.json for available models
 model = "gemini-2.5-pro-exp-03-25"
-api_type = "Gemini"  # OpenAI / OpenAI-Azure / OpenAI-GitHub / Gemini / Claude / Grok
+api_type = "Gemini"
 temperature = 0
 stream = True
 
 
 async def main():
+    model_prices = get_model_prices()
+    pprint(model_prices)
     response = await workflow(api_keys, messages, model, api_type, temperature, stream)
     if stream:
         async for chunk in response:
