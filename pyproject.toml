@@ -2,4 +2,4 @@
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.setuptools.package-data]
-llm_bridge.resources = ["*.json"]
+"llm_bridge.resources" = ["*.json"]
