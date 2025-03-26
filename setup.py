@@ -5,8 +5,9 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='LLM-Bridge',
-    version='1.1.2-alpha1',
+    version='1.1.2-alpha2',
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'fastapi',
         'httpx',
