@@ -1,0 +1,1 @@
+include llm_bridge/resources/*.json
