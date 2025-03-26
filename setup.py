@@ -7,6 +7,7 @@ setup(
     name='LLM-Bridge',
     version='1.2.1-alpha',
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'fastapi',
         'httpx',
