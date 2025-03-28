@@ -22,7 +22,7 @@ class StreamGeminiClient(GeminiClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            response = self.client.models.generate_content_stream(
+            response = await self.client.aio.models.generate_content_stream(
                 model=self.model,
                 contents=self.messages,
                 config=self.config,
@@ -42,7 +42,7 @@ class StreamGeminiClient(GeminiClient):
             raise HTTPException(status_code=error_code, detail=str(e))
 
         try:
-            for response_delta in response:
+            async for response_delta in response:
                 yield process_delta(response_delta)
         except Exception as e:
             logging.exception(e)
