@@ -3,7 +3,6 @@ from io import BytesIO
 
 import docx
 import fitz
-import httpx
 import openpyxl
 from docx.oxml import CT_P, CT_Tbl
 from fastapi import HTTPException
