@@ -38,8 +38,8 @@ messages = [
     )
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gemini-2.5-pro-exp-03-25"
-api_type = "Gemini"
+model = "grok-3-fast-latest"
+api_type = "Grok"
 temperature = 0
 stream = True
 
