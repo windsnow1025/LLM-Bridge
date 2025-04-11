@@ -56,14 +56,14 @@
   {
     "apiType": "Gemini",
     "model": "gemini-2.5-pro-exp-03-25",
-    "input": 0,
-    "output": 0
+    "input": 2.5,
+    "output": 15
   },
   {
     "apiType": "Gemini",
     "model": "gemini-2.0-flash-exp-image-generation",
-    "input": 0,
-    "output": 0
+    "input": 0.7,
+    "output": 0.4
   },
   {
     "apiType": "Claude",
