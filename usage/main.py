@@ -38,7 +38,7 @@ messages = [
     )
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gemini-2.5-pro-preview-03-25"
+model = "gemini-2.0-flash-thinking-exp-01-21"
 api_type = "Gemini"
 temperature = 0
 stream = True
