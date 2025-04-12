@@ -16,7 +16,7 @@ class ContentType(Enum):
 @dataclass
 class Content:
     type: ContentType
-    data: str # text or file path
+    data: str # Markdown Text or File Url
 
 
 @dataclass
