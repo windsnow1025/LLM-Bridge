@@ -33,14 +33,14 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
         ]
     )
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gemini-2.0-flash-thinking-exp-01-21"
-api_type = "Gemini"
+model = "gpt-4.1"
+api_type = "OpenAI"
 temperature = 0
 stream = True
 
