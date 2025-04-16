@@ -25,19 +25,19 @@
   },
   {
     "apiType": "OpenAI",
-    "model": "o1",
-    "input": 15,
-    "output": 60
+    "model": "o1-pro",
+    "input": 150,
+    "output": 600
   },
   {
     "apiType": "OpenAI",
-    "model": "o1-mini",
-    "input": 3,
-    "output": 12
+    "model": "o3",
+    "input": 10,
+    "output": 40
   },
   {
     "apiType": "OpenAI",
-    "model": "o3-mini",
+    "model": "o4-mini",
     "input": 1.1,
     "output": 4.4
   },
