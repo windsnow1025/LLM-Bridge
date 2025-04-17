@@ -5,7 +5,7 @@ from openai.types.chat.chat_completion_content_part_input_audio_param import Inp
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
-from llm_bridge.type.message import Message, ContentType, Content
+from llm_bridge.type.message import Message, ContentType
 from llm_bridge.type.model_message.openai_message import OpenAIMessage
 
 

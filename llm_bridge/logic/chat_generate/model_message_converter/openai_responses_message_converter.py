@@ -1,0 +1,43 @@
+from openai.types.responses import ResponseInputTextParam, ResponseInputMessageContentListParam, ResponseInputImageParam
+
+from llm_bridge.logic.chat_generate import media_processor
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.type.message import Message, ContentType
+from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
+
+
+async def convert_message_to_openai_responses(message: Message) -> OpenAIResponsesMessage:
+    role = message.role.value
+    content: ResponseInputMessageContentListParam = []
+
+    for content_item in message.contents:
+        if content_item.type == ContentType.Text:
+            text_content = ResponseInputTextParam(type="input_text", text=content_item.data)
+            content.append(text_content)
+        elif content_item.type == ContentType.File:
+            file_url = content_item.data
+            file_type, sub_type = await get_file_type(file_url)
+            if file_type == "image":
+                image_url = await media_processor.get_openai_image_content_from_url(file_url)
+                image_content = ResponseInputImageParam(
+                    type="input_image",
+                    image_url=image_url,
+                    detail="auto"
+                )
+                content.append(image_content)
+            # TODO: Responses API is currently unsupported for audio input
+            # elif file_type == "audio":
+            #     encoded_string = await media_processor.get_gpt_audio_content_from_url(file_url)
+            #     audio_content = ChatCompletionContentPartInputAudioParam(
+            #         type="input_audio",
+            #         input_audio=InputAudio(data=encoded_string, format=sub_type)
+            #     )
+            #     content.append(audio_content)
+            else:
+                text_content = ResponseInputTextParam(
+                    type="input_text",
+                    text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
+                )
+                content.append(text_content)
+
+    return OpenAIResponsesMessage(role=role, content=content)

@@ -4,7 +4,7 @@ from google.genai._api_client import HttpOptions
 
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
-from llm_bridge.logic.chat_generate.model_message_converter.model_message_converter import convert_messages_to_gemini
+from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_gemini
 from llm_bridge.logic.message_preprocess.message_preprocessor import extract_system_messages
 from llm_bridge.type.message import Message
 

@@ -1,8 +1,11 @@
 import openai.lib.azure
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
+from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
+from llm_bridge.client.implementations.openai.steam_openai_responses_client import StreamOpenAIResponsesClient
 from llm_bridge.client.implementations.openai.stream_openai_client import StreamOpenAIClient
-from llm_bridge.logic.chat_generate.model_message_converter.model_message_converter import convert_messages_to_openai
+from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_openai_responses, \
+    convert_messages_to_openai
 from llm_bridge.type.message import Message
 
 
@@ -21,7 +24,7 @@ async def create_openai_client(
         )
     elif api_type == "Azure":
         client = openai.lib.azure.AsyncAzureOpenAI(
-            api_version="2024-02-01",
+            api_version="2025-01-01-preview",
             azure_endpoint=api_keys["AZURE_API_BASE"],
             api_key=api_keys["AZURE_API_KEY"],
         )
@@ -36,21 +39,44 @@ async def create_openai_client(
             api_key=api_keys["XAI_API_KEY"],
         )
 
-    openai_messages = await convert_messages_to_openai(messages)
 
-    if stream:
-        return StreamOpenAIClient(
-            model=model,
-            messages=openai_messages,
-            temperature=temperature,
-            api_type=api_type,
-            client=client,
-        )
+    if api_type == "OpenAI":
+        openai_messages = await convert_messages_to_openai_responses(messages)
     else:
-        return NonStreamOpenAIClient(
-            model=model,
-            messages=openai_messages,
-            temperature=temperature,
-            api_type=api_type,
-            client=client,
-        )
+        openai_messages = await convert_messages_to_openai(messages)
+
+
+    if api_type == "OpenAI":
+        if stream:
+            return StreamOpenAIResponsesClient(
+                model=model,
+                messages=openai_messages,
+                temperature=temperature,
+                api_type=api_type,
+                client=client,
+            )
+        else:
+            return NonStreamOpenAIResponsesClient(
+                model=model,
+                messages=openai_messages,
+                temperature=temperature,
+                api_type=api_type,
+                client=client,
+            )
+    else:
+        if stream:
+            return StreamOpenAIClient(
+                model=model,
+                messages=openai_messages,
+                temperature=temperature,
+                api_type=api_type,
+                client=client,
+            )
+        else:
+            return NonStreamOpenAIClient(
+                model=model,
+                messages=openai_messages,
+                temperature=temperature,
+                api_type=api_type,
+                client=client,
+            )
