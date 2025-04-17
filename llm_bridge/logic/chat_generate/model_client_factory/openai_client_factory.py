@@ -1,4 +1,5 @@
-import openai.lib.azure
+import openai
+from fastapi import HTTPException
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -17,18 +18,17 @@ async def create_openai_client(
         stream: bool,
         api_keys: dict
 ):
-    client = None
     if api_type == "OpenAI":
         client = openai.AsyncOpenAI(
             api_key=api_keys["OPENAI_API_KEY"],
         )
-    elif api_type == "Azure":
-        client = openai.lib.azure.AsyncAzureOpenAI(
+    elif api_type == "OpenAI-Azure":
+        client = openai.AsyncAzureOpenAI(
             api_version="2025-01-01-preview",
             azure_endpoint=api_keys["AZURE_API_BASE"],
             api_key=api_keys["AZURE_API_KEY"],
         )
-    elif api_type == "GitHub":
+    elif api_type == "OpenAI-GitHub":
         client = openai.AsyncOpenAI(
             base_url="https://models.inference.ai.azure.com",
             api_key=api_keys["GITHUB_API_KEY"],
@@ -38,6 +38,8 @@ async def create_openai_client(
             base_url="https://api.x.ai/v1",
             api_key=api_keys["XAI_API_KEY"],
         )
+    else:
+        raise HTTPException(status_code=500, detail="API Type not matched")
 
 
     if api_type == "OpenAI":
