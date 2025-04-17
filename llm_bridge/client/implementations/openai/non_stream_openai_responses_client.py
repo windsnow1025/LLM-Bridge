@@ -26,8 +26,10 @@ def process_openai_responses_non_stream_response(
             for content in output.content:
                 if content.type == "output_text":
                     texts.append(content.text)
-                if content.annotations:
-                    pass
+                # Citation is currently not working well in OpenAI Responses API
+                if annotations := content.annotations:
+                    for annotation in annotations:
+                        text = content.text[annotation.start_index:annotation.end_index]
 
     content = "".join(texts)
     return ChatResponse(text=content, citations=citations)
