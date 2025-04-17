@@ -4,14 +4,14 @@ import openai.lib.azure
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
-from llm_bridge.type.model_message.gpt_message import GptMessage
+from llm_bridge.type.model_message.openai_message import OpenAIMessage
 
 
-class GPTClient(ChatClient):
+class OpenAIClient(ChatClient):
     def __init__(
             self,
             model: str,
-            messages: list[GptMessage],
+            messages: list[OpenAIMessage],
             temperature: float,
             api_type: str,
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,

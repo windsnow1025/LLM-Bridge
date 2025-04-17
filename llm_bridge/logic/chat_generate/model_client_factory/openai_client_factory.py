@@ -1,12 +1,12 @@
 import openai.lib.azure
 
-from llm_bridge.client.implementations.gpt.non_stream_gpt_client import NonStreamGPTClient
-from llm_bridge.client.implementations.gpt.stream_gpt_client import StreamGPTClient
-from llm_bridge.logic.chat_generate.model_message_converter.model_message_converter import convert_messages_to_gpt
+from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
+from llm_bridge.client.implementations.openai.stream_openai_client import StreamOpenAIClient
+from llm_bridge.logic.chat_generate.model_message_converter.model_message_converter import convert_messages_to_openai
 from llm_bridge.type.message import Message
 
 
-async def create_gpt_client(
+async def create_openai_client(
         messages: list[Message],
         model: str,
         api_type: str,
@@ -36,20 +36,20 @@ async def create_gpt_client(
             api_key=api_keys["XAI_API_KEY"],
         )
 
-    gpt_messages = await convert_messages_to_gpt(messages)
+    openai_messages = await convert_messages_to_openai(messages)
 
     if stream:
-        return StreamGPTClient(
+        return StreamOpenAIClient(
             model=model,
-            messages=gpt_messages,
+            messages=openai_messages,
             temperature=temperature,
             api_type=api_type,
             client=client,
         )
     else:
-        return NonStreamGPTClient(
+        return NonStreamOpenAIClient(
             model=model,
-            messages=gpt_messages,
+            messages=openai_messages,
             temperature=temperature,
             api_type=api_type,
             client=client,

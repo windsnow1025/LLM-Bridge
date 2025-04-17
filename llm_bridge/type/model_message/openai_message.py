@@ -10,7 +10,7 @@ from llm_bridge.type.message import Role
 
 
 @dataclass
-class GptMessage:
+class OpenAIMessage:
     role: Role
     content: list[
         ChatCompletionContentPartTextParam |

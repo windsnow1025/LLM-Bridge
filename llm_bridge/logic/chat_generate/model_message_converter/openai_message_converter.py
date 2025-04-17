@@ -6,10 +6,10 @@ from openai.types.chat.chat_completion_content_part_input_audio_param import Inp
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
 from llm_bridge.type.message import Message, ContentType, Content
-from llm_bridge.type.model_message.gpt_message import GptMessage
+from llm_bridge.type.model_message.openai_message import OpenAIMessage
 
 
-async def convert_message_to_gpt(message: Message) -> GptMessage:
+async def convert_message_to_openai(message: Message) -> OpenAIMessage:
     role = message.role
     content = []
 
@@ -21,14 +21,14 @@ async def convert_message_to_gpt(message: Message) -> GptMessage:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                image_url = await media_processor.get_gpt_image_content_from_url(file_url)
+                image_url = await media_processor.get_openai_image_content_from_url(file_url)
                 image_content = ChatCompletionContentPartImageParam(
                     type="image_url",
                     image_url=ImageURL(url=image_url)
                 )
                 content.append(image_content)
             elif file_type == "audio":
-                encoded_string = await media_processor.get_gpt_audio_content_from_url(file_url)
+                encoded_string = await media_processor.get_openai_audio_content_from_url(file_url)
                 audio_content = ChatCompletionContentPartInputAudioParam(
                     type="input_audio",
                     input_audio=InputAudio(data=encoded_string, format=sub_type)
@@ -41,4 +41,4 @@ async def convert_message_to_gpt(message: Message) -> GptMessage:
                 )
                 content.append(text_content)
 
-    return GptMessage(role=role, content=content)
+    return OpenAIMessage(role=role, content=content)

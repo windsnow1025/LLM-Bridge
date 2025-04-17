@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.logic.chat_generate.model_client_factory.claude_client_factory import create_claude_client
 from llm_bridge.logic.chat_generate.model_client_factory.gemini_client_factory import create_gemini_client
-from llm_bridge.logic.chat_generate.model_client_factory.gpt_client_factory import create_gpt_client
+from llm_bridge.logic.chat_generate.model_client_factory.openai_client_factory import create_openai_client
 from llm_bridge.type.message import Message
 
 
@@ -16,7 +16,7 @@ async def create_chat_client(
         api_keys: dict
 ) -> ChatClient:
     if api_type == 'OpenAI':
-        return await create_gpt_client(
+        return await create_openai_client(
             messages=messages,
             model=model,
             api_type=api_type,
@@ -25,7 +25,7 @@ async def create_chat_client(
             api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]}
         )
     elif api_type == 'OpenAI-Azure':
-        return await create_gpt_client(
+        return await create_openai_client(
             messages=messages,
             model=model,
             api_type=api_type,
@@ -37,7 +37,7 @@ async def create_chat_client(
             }
         )
     elif api_type == 'OpenAI-GitHub':
-        return await create_gpt_client(
+        return await create_openai_client(
             messages=messages,
             model=model,
             api_type=api_type,
@@ -46,7 +46,7 @@ async def create_chat_client(
             api_keys={"GITHUB_API_KEY": api_keys["GITHUB_API_KEY"]}
         )
     elif api_type == 'Grok':
-        return await create_gpt_client(
+        return await create_openai_client(
             messages=messages,
             model=model,
             api_type=api_type,
