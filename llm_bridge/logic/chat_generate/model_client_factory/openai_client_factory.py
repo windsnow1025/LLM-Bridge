@@ -24,7 +24,7 @@ async def create_openai_client(
         )
     elif api_type == "OpenAI-Azure":
         client = openai.AsyncAzureOpenAI(
-            api_version="2025-01-01-preview",
+            api_version="2025-03-01-preview",
             azure_endpoint=api_keys["AZURE_API_BASE"],
             api_key=api_keys["AZURE_API_KEY"],
         )
@@ -41,14 +41,17 @@ async def create_openai_client(
     else:
         raise HTTPException(status_code=500, detail="API Type not matched")
 
+    if api_type == "OpenAI" or api_type == "OpenAI-Azure":
+        use_responses_api = True
+    else:
+        use_responses_api = False
 
-    if api_type == "OpenAI":
+    if use_responses_api:
         openai_messages = await convert_messages_to_openai_responses(messages)
     else:
         openai_messages = await convert_messages_to_openai(messages)
 
-
-    if api_type == "OpenAI":
+    if use_responses_api:
         if stream:
             return StreamOpenAIResponsesClient(
                 model=model,

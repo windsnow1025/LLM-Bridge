@@ -40,7 +40,7 @@ messages = [
 ]
 # See /llm_bridge/resources/model_prices.json for available models
 model = "gpt-4.1"
-api_type = "OpenAI-GitHub"
+api_type = "OpenAI-Azure"
 temperature = 0
 stream = True
 
