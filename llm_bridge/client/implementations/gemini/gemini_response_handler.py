@@ -27,6 +27,7 @@ class GeminiResponseHandler:
 
         if response.candidates[0].content.parts:
             for part in response.candidates[0].content.parts:
+                # Thought Output (Currently not supported in Gemini API)
                 if part.text:
                     if part.thought and self.printing_status == PrintingStatus.Start:
                         text += "# Model Thought:\n\n"
@@ -35,9 +36,11 @@ class GeminiResponseHandler:
                         text += f"\n\n# Model Response:\n\n"
                         self.printing_status = PrintingStatus.Response
                     text += part.text
+                # Image Output
                 elif part.inline_data:
                     image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
 
+        # Grounding Sources
         if grounding_metadata := response.candidates[0].grounding_metadata:
             if search_entry_point := grounding_metadata.search_entry_point:
                 display = search_entry_point.rendered_content
@@ -58,4 +61,4 @@ def extract_citations(response: types.GenerateContentResponse) -> list[Citation]
                 citation_indices = [index + 1 for index in grounding_support.grounding_chunk_indices]
                 citation_text = grounding_support.segment.text
                 citations.append(Citation(text=citation_text, indices=citation_indices))
-    return citations if citations else None
+    return citations

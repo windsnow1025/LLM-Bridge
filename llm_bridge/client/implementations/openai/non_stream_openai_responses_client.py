@@ -8,8 +8,29 @@ from openai import APIStatusError
 from openai.types.responses import WebSearchToolParam, Response
 
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse
+from llm_bridge.type.chat_response import ChatResponse, Citation
 from llm_bridge.type.serializer import serialize
+
+
+def process_openai_responses_non_stream_response(
+        response: Response
+) -> ChatResponse:
+
+    output_list = response.output
+
+    texts: list[str] = []
+    citations: list[Citation] = []
+
+    for output in output_list:
+        if output.type == "message":
+            for content in output.content:
+                if content.type == "output_text":
+                    texts.append(content.text)
+                if content.annotations:
+                    pass
+
+    content = "".join(texts)
+    return ChatResponse(text=content, citations=citations)
 
 
 class NonStreamOpenAIResponsesClient(OpenAIClient):
@@ -29,8 +50,7 @@ class NonStreamOpenAIResponsesClient(OpenAIClient):
                 ],
             )
 
-            content = response.output_text
-            return ChatResponse(text=content)
+            return process_openai_responses_non_stream_response(response)
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code
             text = e.response.text
