@@ -1,8 +1,9 @@
-from openai.types.responses import ResponseInputTextParam, ResponseInputMessageContentListParam, ResponseInputImageParam
+from openai.types.responses import ResponseInputTextParam, ResponseInputMessageContentListParam, \
+    ResponseInputImageParam, ResponseOutputText, ResponseOutputTextParam
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
-from llm_bridge.type.message import Message, ContentType
+from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
 
@@ -12,7 +13,10 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
-            text_content = ResponseInputTextParam(type="input_text", text=content_item.data)
+            if role == "assistant":
+                text_content = ResponseOutputTextParam(type="output_text", text=content_item.data)
+            else:
+                text_content = ResponseInputTextParam(type="input_text", text=content_item.data)
             content.append(text_content)
         elif content_item.type == ContentType.File:
             file_url = content_item.data

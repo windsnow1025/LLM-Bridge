@@ -33,6 +33,18 @@ messages = [
     Message(
         role=Role.User,
         contents=[
+            Content(type=ContentType.Text, data="Hello")
+        ]
+    ),
+    Message(
+        role=Role.Assistant,
+        contents=[
+            Content(type=ContentType.Text, data="Hello! How can I assist you today?")
+        ]
+    ),
+    Message(
+        role=Role.User,
+        contents=[
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
             Content(type=ContentType.Text, data="What's the weather in NYC today?"),
         ]
@@ -40,7 +52,7 @@ messages = [
 ]
 # See /llm_bridge/resources/model_prices.json for available models
 model = "gpt-4.1"
-api_type = "OpenAI-Azure"
+api_type = "OpenAI"
 temperature = 0
 stream = True
 
