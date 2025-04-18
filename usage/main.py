@@ -51,8 +51,8 @@ messages = [
     )
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-4.1"
-api_type = "OpenAI"
+model = "gemini-2.5-flash-preview-04-17"
+api_type = "Gemini"
 temperature = 0
 stream = True
 
