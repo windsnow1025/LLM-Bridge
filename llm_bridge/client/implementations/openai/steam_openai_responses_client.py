@@ -42,12 +42,7 @@ class StreamOpenAIResponsesClient(OpenAIClient):
                 input=serialize(self.messages),
                 temperature=self.temperature,
                 stream=True,
-                tools=[
-                    WebSearchToolParam(
-                        type="web_search_preview",
-                        search_context_size="high",
-                    )
-                ],
+                tools=self.tools,
             )
 
         except httpx.HTTPStatusError as e:

@@ -45,14 +45,16 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
         ]
     )
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gemini-2.5-flash-preview-04-17"
-api_type = "Gemini"
+# model = "gemini-2.5-flash-preview-04-17"
+model = "o1-pro"
+# api_type = "Gemini"
+api_type = "OpenAI"
 temperature = 0
 stream = True
 

@@ -44,12 +44,7 @@ class NonStreamOpenAIResponsesClient(OpenAIClient):
                 input=serialize(self.messages),
                 temperature=self.temperature,
                 stream=False,
-                tools=[
-                    WebSearchToolParam(
-                        type="web_search_preview",
-                        search_context_size="high",
-                    )
-                ],
+                tools=self.tools,
             )
 
             return process_openai_responses_non_stream_response(response)

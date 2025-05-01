@@ -1,5 +1,8 @@
+import re
+
 import openai
 from fastapi import HTTPException
+from openai.types.responses import WebSearchToolParam
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -51,6 +54,17 @@ async def create_openai_client(
     else:
         openai_messages = await convert_messages_to_openai(messages)
 
+    if re.match(r"^o\d", model):
+        tools = None
+        temperature = 1
+    else:
+        tools = [
+            WebSearchToolParam(
+                type="web_search_preview",
+                search_context_size="high",
+            )
+        ]
+
     if use_responses_api:
         if stream:
             return StreamOpenAIResponsesClient(
@@ -59,6 +73,7 @@ async def create_openai_client(
                 temperature=temperature,
                 api_type=api_type,
                 client=client,
+                tools=tools,
             )
         else:
             return NonStreamOpenAIResponsesClient(
@@ -67,6 +82,7 @@ async def create_openai_client(
                 temperature=temperature,
                 api_type=api_type,
                 client=client,
+                tools=tools,
             )
     else:
         if stream:
@@ -76,6 +92,7 @@ async def create_openai_client(
                 temperature=temperature,
                 api_type=api_type,
                 client=client,
+                tools=tools,
             )
         else:
             return NonStreamOpenAIClient(
@@ -84,4 +101,5 @@ async def create_openai_client(
                 temperature=temperature,
                 api_type=api_type,
                 client=client,
+                tools=tools,
             )
