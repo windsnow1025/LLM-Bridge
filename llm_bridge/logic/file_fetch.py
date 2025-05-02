@@ -13,7 +13,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
     retry=retry_if_exception_type((httpx.ConnectError, httpcore.ConnectError)),
     reraise=True,
 )
-async def fetch_file_data(file_url: str) -> tuple[BytesIO, str]:
+async def fetch_file_data(file_url: str) -> tuple[bytes, str]:
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(file_url)
@@ -34,4 +34,4 @@ async def fetch_file_data(file_url: str) -> tuple[BytesIO, str]:
             raise HTTPException(status_code=status_code, detail=text)
 
         content_type = response.headers.get("Content-Type", "")
-        return BytesIO(response.content), content_type
+        return response.content, content_type

@@ -13,8 +13,7 @@ from llm_bridge.logic.message_preprocess import file_type_checker
 
 
 async def extract_text_from_file(file_url: str) -> str:
-    content_bytes, content_type = await fetch_file_data(file_url)
-    file_content = content_bytes.getvalue()
+    file_content, content_type = await fetch_file_data(file_url)
 
     if file_type_checker.is_file_type_supported(file_url) is False:
         raise HTTPException(status_code=415, detail="legacy filetypes ('.doc', '.xls', '.ppt') are not supported")
