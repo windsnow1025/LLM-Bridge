@@ -26,7 +26,7 @@ async def extract_text_from_file(file_url: str) -> str:
         return extract_text_from_word(file_content)
     if sub_type == "excel":
         return extract_text_from_excel(file_content)
-    if sub_type == "ppt":
+    if sub_type == "powerpoint":
         return extract_text_from_ppt(file_content)
 
     try:

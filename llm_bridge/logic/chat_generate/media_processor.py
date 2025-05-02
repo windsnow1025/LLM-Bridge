@@ -26,10 +26,3 @@ async def get_openai_audio_content_from_url(req_audio_url: str) -> str:
     audio_data, media_type = await fetch_file_data(req_audio_url)
     encoded_string = base64.b64encode(audio_data).decode('utf-8')
     return encoded_string
-
-
-async def get_gemini_audio_content_from_url(req_audio_url: str) -> tuple[bytes, str]:
-    audio_data, media_type = await fetch_file_data(req_audio_url)
-    if media_type == 'video/webm':
-        media_type = 'audio/webm'
-    return audio_data, media_type

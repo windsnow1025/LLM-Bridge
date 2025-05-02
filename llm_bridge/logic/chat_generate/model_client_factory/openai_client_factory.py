@@ -44,7 +44,7 @@ async def create_openai_client(
     else:
         raise HTTPException(status_code=500, detail="API Type not matched")
 
-    if api_type == "OpenAI" or api_type == "OpenAI-Azure":
+    if api_type in ("OpenAI", "OpenAI-Azure"):
         use_responses_api = True
     else:
         use_responses_api = False

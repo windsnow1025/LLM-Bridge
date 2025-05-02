@@ -18,19 +18,16 @@ async def get_file_type(file_url: str) -> tuple[str, str]:
     file_extension = '.' + file_name.split('.')[-1].lower() # Treat filenames without an extension as their own extension
     if file_extension in code_file_extensions:
         return 'text', 'code'
-    if file_extension in '.pdf':
+    if file_extension == '.pdf':
         return 'text', 'pdf'
-    if file_extension in ('.docx', '.doc'):
+    if file_extension == '.docx':
         return 'text', 'word'
-    if file_extension in ('.xlsx', '.xls'):
+    if file_extension == '.xlsx':
         return 'text', 'excel'
-    if file_extension in ('.pptx', '.ppt'):
-        return 'text', 'ppt'
-    if file_extension in '.mp3':
-        return 'audio', 'mp3'
-    if file_extension in '.wav':
-        return 'audio', 'wav'
-    if file_extension in '.webm': # currently unable to tell audio / video
+    if file_extension == '.pptx':
+        return 'text', 'powerpoint'
+    # At present, unable to differentiate between audio and video files. Since web recordings are uploaded in webm format, treat webm files as audio by default.
+    if file_extension == '.webm':
         return 'audio', 'webm'
 
     mime_type, _ = mimetypes.guess_type(file_name)
