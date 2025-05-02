@@ -25,20 +25,21 @@ class GeminiResponseHandler:
         image_base64 = None
         citations = extract_citations(response)
 
-        if response.candidates[0].content.parts:
-            for part in response.candidates[0].content.parts:
-                # Thought Output (Currently not supported in Gemini API)
-                if part.text:
-                    if part.thought and self.printing_status == PrintingStatus.Start:
-                        text += "# Model Thought:\n\n"
-                        self.printing_status = PrintingStatus.Thought
-                    elif not part.thought and self.printing_status == PrintingStatus.Thought:
-                        text += f"\n\n# Model Response:\n\n"
-                        self.printing_status = PrintingStatus.Response
-                    text += part.text
-                # Image Output
-                elif part.inline_data:
-                    image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
+        if candidates := response.candidates:
+            if candidates[0].content.parts:
+                for part in response.candidates[0].content.parts:
+                    # Thought Output (Currently not supported in Gemini API)
+                    if part.text:
+                        if part.thought and self.printing_status == PrintingStatus.Start:
+                            text += "# Model Thought:\n\n"
+                            self.printing_status = PrintingStatus.Thought
+                        elif not part.thought and self.printing_status == PrintingStatus.Thought:
+                            text += f"\n\n# Model Response:\n\n"
+                            self.printing_status = PrintingStatus.Response
+                        text += part.text
+                    # Image Output
+                    elif part.inline_data:
+                        image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
 
         # Grounding Sources
         if candidates := response.candidates:
