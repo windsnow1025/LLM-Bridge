@@ -54,13 +54,21 @@ async def create_chat_client(
             stream=stream,
             api_keys={"XAI_API_KEY": api_keys["XAI_API_KEY"]}
         )
-    elif api_type == 'Gemini':
+    elif api_type == 'Gemini-Free':
         return await create_gemini_client(
             messages=messages,
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["GOOGLE_AI_STUDIO_API_KEY"]
+            api_key=api_keys["GEMINI_FREE_API_KEY"]
+        )
+    elif api_type == 'Gemini-Paid':
+        return await create_gemini_client(
+            messages=messages,
+            model=model,
+            temperature=temperature,
+            stream=stream,
+            api_key=api_keys["GEMINI_PAID_API_KEY"]
         )
     elif api_type == 'Claude':
         return await create_claude_client(

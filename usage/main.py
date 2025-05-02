@@ -18,7 +18,8 @@ api_keys = {
     "AZURE_API_KEY": os.environ.get("AZURE_API_KEY"),
     "AZURE_API_BASE": os.environ.get("AZURE_API_BASE"),
     "GITHUB_API_KEY": os.environ.get("GITHUB_API_KEY"),
-    "GOOGLE_AI_STUDIO_API_KEY": os.environ.get("GOOGLE_AI_STUDIO_API_KEY"),
+    "GEMINI_FREE_API_KEY": os.environ.get("GEMINI_FREE_API_KEY"),
+    "GEMINI_PAID_API_KEY": os.environ.get("GEMINI_PAID_API_KEY"),
     "ANTHROPIC_API_KEY": os.environ.get("ANTHROPIC_API_KEY"),
     "XAI_API_KEY": os.environ.get("XAI_API_KEY"),
 }
@@ -51,10 +52,11 @@ messages = [
     )
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-# model = "gemini-2.5-flash-preview-04-17"
-model = "o1-pro"
-# api_type = "Gemini"
-api_type = "OpenAI"
+model = "gemini-2.5-pro-preview-03-25"
+# model = "o1-pro"
+# api_type = "Gemini-Free"
+api_type = "Gemini-Paid"
+# api_type = "OpenAI"
 temperature = 0
 stream = True
 

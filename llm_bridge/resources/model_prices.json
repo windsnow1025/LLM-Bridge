@@ -54,25 +54,37 @@
     "output": 0
   },
   {
-    "apiType": "Gemini",
+    "apiType": "Gemini-Free",
+    "model": "gemini-2.5-flash-preview-04-17",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Free",
+    "model": "gemini-2.5-pro-exp-03-25",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Free",
+    "model": "gemini-2.0-flash-exp-image-generation",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Paid",
     "model": "gemini-2.5-flash-preview-04-17",
     "input": 1,
     "output": 3.5
   },
   {
-    "apiType": "Gemini",
+    "apiType": "Gemini-Paid",
     "model": "gemini-2.5-pro-preview-03-25",
     "input": 2.5,
     "output": 15
   },
   {
-    "apiType": "Gemini",
-    "model": "gemini-2.5-pro-exp-03-25",
-    "input": 2.5,
-    "output": 15
-  },
-  {
-    "apiType": "Gemini",
+    "apiType": "Gemini-Paid",
     "model": "gemini-2.0-flash-exp-image-generation",
     "input": 0.7,
     "output": 0.4
