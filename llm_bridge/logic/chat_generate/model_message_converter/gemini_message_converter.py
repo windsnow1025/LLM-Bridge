@@ -22,9 +22,9 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
         elif content_item.type == ContentType.File:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
-            if file_type == "image":
-                img_bytes, media_type = await media_processor.get_gemini_image_content_from_url(file_url)
-                parts.append(types.Part.from_bytes(data=img_bytes, mime_type=media_type))
+            if sub_type == "pdf" or file_type == "image":
+                pdf_bytes, media_type = await media_processor.get_raw_content_from_url(file_url)
+                parts.append(types.Part.from_bytes(data=pdf_bytes, mime_type=media_type))
             elif file_type == "audio":
                 audio_bytes, media_type = await media_processor.get_gemini_audio_content_from_url(file_url)
                 parts.append(types.Part.from_bytes(data=audio_bytes, mime_type=media_type))
