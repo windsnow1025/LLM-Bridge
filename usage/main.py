@@ -53,17 +53,18 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746208707489-image.png"),
+            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746208707489-image.png"),
+            Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf"),
             Content(type=ContentType.Text, data="What's this?"),
         ]
     ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-# model = "gemini-2.5-pro-preview-03-25"
-model = "gpt-4.1"
-# api_type = "Gemini-Free"
+model = "gemini-2.5-pro-exp-03-25"
+# model = "gpt-4.1"
+api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 temperature = 0
 stream = True
 

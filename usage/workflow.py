@@ -11,7 +11,7 @@ async def workflow(
         temperature: float,
         stream: bool
 ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
-    await preprocess_messages(messages)
+    await preprocess_messages(messages, api_type)
 
     chat_client = await create_chat_client(
         messages=messages,

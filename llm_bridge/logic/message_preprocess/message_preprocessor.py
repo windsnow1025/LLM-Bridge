@@ -3,12 +3,12 @@ from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type,
 from llm_bridge.type.message import Message, Role, Content, ContentType
 
 
-async def preprocess_messages(messages: list[Message]) -> None:
+async def preprocess_messages(messages: list[Message], api_type: str) -> None:
     for message in messages:
-        await extract_text_files_to_message(message)
+        await extract_text_files_to_message(message, api_type)
 
 
-async def extract_text_files_to_message(message: Message) -> None:
+async def extract_text_files_to_message(message: Message, api_type: str) -> None:
     for i in range(len(message.contents) - 1, -1, -1):
         content_item = message.contents[i]
         
@@ -19,6 +19,9 @@ async def extract_text_files_to_message(message: Message) -> None:
         file_type, sub_type = await get_file_type(file_url)
         
         if file_type != "text" and file_type != "application":
+            continue
+
+        if api_type.startswith("Gemini") and sub_type == "pdf":
             continue
             
         filename = get_file_name(file_url)
