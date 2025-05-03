@@ -1,9 +1,9 @@
 from openai.types.responses import ResponseInputTextParam, ResponseInputMessageContentListParam, \
-    ResponseInputImageParam, ResponseOutputText, ResponseOutputTextParam
+    ResponseInputImageParam, ResponseOutputTextParam
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
-from llm_bridge.type.message import Message, ContentType, Role
+from llm_bridge.type.message import Message, ContentType
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
 
