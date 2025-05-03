@@ -8,6 +8,7 @@ tenacity # tenacity
 
 # SDK
 openai # openai
+tiktoken # tiktoken
 google-genai # google.genai
 anthropic # anthropic
 

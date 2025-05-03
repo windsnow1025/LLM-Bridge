@@ -13,6 +13,7 @@ setup(
         'httpx',
         'tenacity',
         'openai',
+        'tiktoken',
         'google-genai',
         'anthropic',
         'PyMuPDF',
