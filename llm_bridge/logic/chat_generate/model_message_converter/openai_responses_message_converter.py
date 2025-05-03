@@ -1,5 +1,5 @@
-from openai.types.responses import ResponseInputTextParam, ResponseInputMessageContentListParam, \
-    ResponseInputImageParam, ResponseOutputTextParam
+from openai.types.responses import ResponseInputTextParam, ResponseInputImageParam, ResponseOutputTextParam, \
+    ResponseInputContentParam
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
@@ -9,7 +9,7 @@ from llm_bridge.type.model_message.openai_responses_message import OpenAIRespons
 
 async def convert_message_to_openai_responses(message: Message) -> OpenAIResponsesMessage:
     role = message.role.value
-    content: ResponseInputMessageContentListParam = []
+    content: list[ResponseInputContentParam | ResponseOutputTextParam] = []
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
