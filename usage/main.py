@@ -6,7 +6,6 @@ from pprint import pprint
 from dotenv import load_dotenv
 
 from llm_bridge import *
-from llm_bridge.logic.model_prices import get_model_prices
 from usage.workflow import workflow
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -71,18 +70,24 @@ api_type = "OpenAI"
 # api_type = "Gemini-Paid"
 # api_type = "Claude"
 temperature = 0
-stream = False
+stream = True
 
 
 async def main():
-    model_prices = get_model_prices()
-    pprint(model_prices)
+    input_tokens = 0
+    output_tokens = 0
     response = await workflow(api_keys, messages, model, api_type, temperature, stream)
     if stream:
         async for chunk in response:
             pprint(chunk)
+            input_tokens += chunk.input_tokens
+            output_tokens += chunk.output_tokens
     else:
         pprint(response)
+        input_tokens = response.input_tokens
+        output_tokens = response.output_tokens
+    total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
+    print(f'Total cost: {total_cost}')
 
 
 if __name__ == "__main__":
