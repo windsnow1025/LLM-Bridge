@@ -23,10 +23,10 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if sub_type == "pdf" or file_type in ("image", "video", "audio"):
-                pdf_bytes, media_type = await media_processor.get_raw_content_from_url(file_url)
+                file_data, media_type = await media_processor.get_raw_content_from_url(file_url)
                 if media_type == 'video/webm':
                     media_type = 'audio/webm'
-                parts.append(types.Part.from_bytes(data=pdf_bytes, mime_type=media_type))
+                parts.append(types.Part.from_bytes(data=file_data, mime_type=media_type))
             else:
                 text_content = types.Part.from_text(
                     text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"

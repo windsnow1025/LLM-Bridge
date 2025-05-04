@@ -1,7 +1,8 @@
 import anthropic
-from llm_bridge import serialize, ChatResponse, Role
+from anthropic.types import TextBlockParam
 
-from llm_bridge.type.model_message.claude_message import ClaudeMessage, TextContent
+from llm_bridge import serialize, ChatResponse
+from llm_bridge.type.model_message.claude_message import ClaudeMessage, ClaudeRole
 
 
 async def count_claude_input_tokens(
@@ -25,9 +26,12 @@ async def count_claude_output_tokens(
         chat_response: ChatResponse,
 ) -> int:
     messages = [
-        ClaudeMessage(role=Role.Assistant, content=[
-            TextContent(type="text", text=chat_response.text),
-        ]),
+        ClaudeMessage(
+            role=ClaudeRole.Assistant,
+            content=[
+                TextBlockParam(type="text", text=chat_response.text),
+            ]
+        ),
     ]
 
     response = await client.messages.count_tokens(

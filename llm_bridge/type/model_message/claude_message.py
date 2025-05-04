@@ -1,31 +1,36 @@
 from dataclasses import dataclass
+from enum import Enum
+
+from anthropic.types import MessageParam
+from typing_extensions import TypeAlias
 
 from llm_bridge.type.message import Role
 
 
-# type: "base64"
-@dataclass
-class ImageSource:
-    type: str
-    media_type: str
-    data: str
+class ClaudeRole(Enum):
+    User = "user"
+    Assistant = "assistant"
 
 
-# type: "text"
-@dataclass
-class TextContent:
-    type: str
-    text: str
+ClaudeMessage: TypeAlias = MessageParam
 
-
-# type: "image"
-@dataclass
-class ImageContent:
-    type: str
-    source: ImageSource
-
-
-@dataclass
-class ClaudeMessage:
-    role: Role
-    content: list[TextContent | ImageContent]
+# class MessageParam(TypedDict, total=False):
+#     content: Required[
+#         Union[
+#             str,
+#             Iterable[
+#                 Union[
+#                     TextBlockParam,
+#                     ImageBlockParam,
+#                     ToolUseBlockParam,
+#                     ToolResultBlockParam,
+#                     DocumentBlockParam,
+#                     ThinkingBlockParam,
+#                     RedactedThinkingBlockParam,
+#                     ContentBlock,
+#                 ]
+#             ],
+#         ]
+#     ]
+#
+#     role: Required[Literal["user", "assistant"]]

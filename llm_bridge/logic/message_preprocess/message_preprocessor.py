@@ -21,7 +21,7 @@ async def extract_text_files_to_message(message: Message, api_type: str) -> None
         if file_type != "text" and file_type != "application":
             continue
 
-        if api_type.startswith("Gemini") and sub_type == "pdf":
+        if sub_type == "pdf" and api_type in ("Gemini-Free", "Gemini-Paid", "Claude"):
             continue
             
         filename = get_file_name(file_url)
