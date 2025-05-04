@@ -28,4 +28,4 @@ class ImageContent:
 @dataclass
 class ClaudeMessage:
     role: Role
-    content: str | list[TextContent | ImageContent]
+    content: list[TextContent | ImageContent]

@@ -1,8 +1,8 @@
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.type.message import Message, Role, ContentType
 from llm_bridge.type.model_message import claude_message
-from llm_bridge.type.model_message.claude_message import ClaudeMessage
-from llm_bridge.type.message import Message, Role, ContentType, Content
+from llm_bridge.type.model_message.claude_message import ClaudeMessage, TextContent, ImageContent
 
 
 async def convert_message_to_claude(message: Message) -> ClaudeMessage:
@@ -11,7 +11,7 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
     if role == Role.System:
         role = Role.User
 
-    claude_content = []
+    claude_content: list[TextContent | ImageContent] = []
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
@@ -21,8 +21,12 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                image_contents = await media_processor.get_claude_image_content_from_url(file_url)
-                claude_content.append(image_contents)
+                base64_image, media_type = await media_processor.get_claude_image_content_from_url(file_url)
+                image_content = claude_message.ImageContent(
+                    type="image",
+                    source=claude_message.ImageSource(type="base64", media_type=media_type, data=base64_image)
+                )
+                claude_content.append(image_content)
                 continue
             text_content = claude_message.TextContent(
                 type="text",
