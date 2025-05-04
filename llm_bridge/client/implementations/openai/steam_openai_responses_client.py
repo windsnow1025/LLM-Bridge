@@ -6,7 +6,7 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError, AsyncStream
-from openai.types.responses import WebSearchToolParam, ResponseStreamEvent
+from openai.types.responses import ResponseStreamEvent
 
 from llm_bridge.client.model_client.openai_client import OpenAIClient
 from llm_bridge.type.chat_response import ChatResponse
