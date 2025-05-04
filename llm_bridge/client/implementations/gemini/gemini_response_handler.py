@@ -4,6 +4,8 @@ from enum import Enum
 from pprint import pprint
 
 from google.genai import types
+
+from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
 from llm_bridge.type.chat_response import Citation, ChatResponse
 
 
@@ -17,13 +19,14 @@ class GeminiResponseHandler:
     def __init__(self):
         self.printing_status = PrintingStatus.Start
 
-    def process_gemini_response(
+    async def process_gemini_response(
             self, response: types.GenerateContentResponse
     ) -> ChatResponse:
         text = ""
         display = None
         image_base64 = None
         citations = extract_citations(response)
+        input_tokens, output_tokens = await count_gemini_tokens(response)
 
         if candidates := response.candidates:
             if candidates[0].content.parts:
@@ -52,7 +55,14 @@ class GeminiResponseHandler:
                         if chunk.web:
                             text += f"{i}. [{chunk.web.title}]({chunk.web.uri})\n"
 
-        return ChatResponse(text=text, image=image_base64, display=display, citations=citations)
+        return ChatResponse(
+            text=text,
+            image=image_base64,
+            display=display,
+            citations=citations,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+        )
 
 
 def extract_citations(response: types.GenerateContentResponse) -> list[Citation]:

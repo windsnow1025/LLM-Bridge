@@ -8,6 +8,8 @@ from fastapi import HTTPException
 from openai import APIStatusError, AsyncStream
 from openai.types.responses import ResponseStreamEvent
 
+from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
+    count_openai_output_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
@@ -22,12 +24,19 @@ def process_delta(event: ResponseStreamEvent) -> str:
 
 
 async def generate_chunk(
-        stream: AsyncStream[ResponseStreamEvent]
+        stream: AsyncStream[ResponseStreamEvent],
+        input_tokens: int,
 ) -> AsyncGenerator[ChatResponse, None]:
     try:
         async for event in stream:
             content_delta = process_delta(event)
-            yield ChatResponse(text=content_delta)
+            chat_response = ChatResponse(text=content_delta)
+            output_tokens = count_openai_output_tokens(chat_response)
+            yield ChatResponse(
+                text=content_delta,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            )
     except Exception as e:
         logging.exception(e)
         yield ChatResponse(error=repr(e))
@@ -37,6 +46,11 @@ class StreamOpenAIResponsesClient(OpenAIClient):
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
             logging.info(f"messages: {self.messages}")
+
+            input_tokens = count_openai_responses_input_tokens(
+                messages=self.messages
+            )
+
             stream: AsyncStream[ResponseStreamEvent] = await self.client.responses.create(
                 model=self.model,
                 input=serialize(self.messages),
@@ -67,5 +81,5 @@ class StreamOpenAIResponsesClient(OpenAIClient):
 
             raise HTTPException(status_code=error_code, detail=str(e))
 
-        async for chunk in generate_chunk(stream):
+        async for chunk in generate_chunk(stream, input_tokens):
             yield chunk

@@ -15,3 +15,5 @@ class ChatResponse:
     display: Optional[str] = None
     citations: Optional[list[Citation]] = None
     error: Optional[str] = None
+    input_tokens: Optional[int] = 0
+    output_tokens: Optional[int] = 0

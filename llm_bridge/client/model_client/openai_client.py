@@ -6,13 +6,14 @@ from openai.types.responses import ToolParam
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.model_message.openai_message import OpenAIMessage
+from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
 
 class OpenAIClient(ChatClient):
     def __init__(
             self,
             model: str,
-            messages: list[OpenAIMessage],
+            messages: list[OpenAIMessage | OpenAIResponsesMessage],
             temperature: float,
             api_type: str,
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,

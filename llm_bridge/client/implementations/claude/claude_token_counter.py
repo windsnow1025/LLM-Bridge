@@ -1,8 +1,9 @@
 import anthropic
 from anthropic.types import TextBlockParam
 
-from llm_bridge import serialize, ChatResponse
+from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.model_message.claude_message import ClaudeMessage, ClaudeRole
+from llm_bridge.type.serializer import serialize
 
 
 async def count_claude_input_tokens(

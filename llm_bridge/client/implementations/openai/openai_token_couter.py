@@ -1,5 +1,5 @@
 import tiktoken
-from llm_bridge import ChatResponse
+from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.model_message.openai_message import OpenAIMessage
 
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
