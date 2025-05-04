@@ -9,9 +9,10 @@ PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge
 ## Features
 - **Multi-Model Support**: Seamlessly switch between different LLM providers.  
 - **Streaming & Non-Streaming**: Supports both real-time streaming and batch responses.  
-- **File Processing**: Automatically extracts text from PDFs, Word, Excel, PPT, and code files.  
-- **Image & Audio Support**: Converts images and audio files into model-compatible formats.  
-- **Easy Integration**: Simple API for quick integration into your applications.
+- **File Processing**: Extracts text content from documents (Word, Excel, PPT, code files, and non-native PDFs).  
+- **Media Support**: Converts media (Image, Audio, Video) and PDFs into model-compatible formats.  
+- **Token Counting & Pricing**: Tracks token usage and calculates costs across all supported models and providers.  
+
 
 ## Workflow
 
@@ -117,12 +118,23 @@ stream = True
 
 
 async def main():
+    model_prices = get_model_prices()
+    pprint(model_prices)
+
+    input_tokens = 0
+    output_tokens = 0
     response = await workflow(api_keys, messages, model, api_type, temperature, stream)
     if stream:
         async for chunk in response:
             pprint(chunk)
+            input_tokens = chunk.input_tokens
+            output_tokens += chunk.output_tokens
     else:
         pprint(response)
+        input_tokens = response.input_tokens
+        output_tokens = response.output_tokens
+    total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
+    print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 
 
 if __name__ == "__main__":
@@ -168,3 +180,18 @@ Represents a response from the chat model.
 
 ### 8. `Citation`
 Represents a citation in a chat response.
+
+---
+
+### 9. `ModelPrice`
+Represents pricing information for a specific model.
+
+---
+
+### 10. `get_model_prices`
+Returns a list of pricing information for all supported models.
+
+---
+
+### 11. `calculate_chat_cost`
+Calculates the cost of a chat based on input and output tokens.
