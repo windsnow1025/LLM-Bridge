@@ -74,20 +74,23 @@ stream = True
 
 
 async def main():
+    model_prices = get_model_prices()
+    pprint(model_prices)
+
     input_tokens = 0
     output_tokens = 0
     response = await workflow(api_keys, messages, model, api_type, temperature, stream)
     if stream:
         async for chunk in response:
             pprint(chunk)
-            input_tokens += chunk.input_tokens
+            input_tokens = chunk.input_tokens
             output_tokens += chunk.output_tokens
     else:
         pprint(response)
         input_tokens = response.input_tokens
         output_tokens = response.output_tokens
     total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
-    print(f'Total cost: {total_cost}')
+    print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 
 
 if __name__ == "__main__":
