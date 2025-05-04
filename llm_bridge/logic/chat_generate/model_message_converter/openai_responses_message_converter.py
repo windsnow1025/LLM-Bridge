@@ -1,5 +1,5 @@
 from openai.types.responses import ResponseInputTextParam, ResponseInputImageParam, ResponseOutputTextParam, \
-    ResponseInputContentParam
+    ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
@@ -44,4 +44,7 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                 )
                 content.append(text_content)
 
-    return OpenAIResponsesMessage(role=role, content=content)
+    if role in ("user", "system"):
+        return EasyInputMessageParam(role=role, content=content)
+    else:
+        return ResponseOutputMessageParam(role=role, content=content)
