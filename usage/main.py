@@ -61,13 +61,14 @@ messages = [
     ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-4.1"
+# model = "gpt-4.1"
 # model = "gemini-2.5-flash-preview-04-17"
 # model = "gemini-2.5-pro-exp-03-25"
+model = "gemini-2.5-pro-preview-05-06"
 # model = "claude-3-7-sonnet-latest"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "Gemini-Free"
-# api_type = "Gemini-Paid"
+api_type = "Gemini-Paid"
 # api_type = "Claude"
 temperature = 0
 stream = True
