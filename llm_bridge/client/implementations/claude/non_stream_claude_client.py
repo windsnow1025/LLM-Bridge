@@ -18,22 +18,21 @@ async def process_claude_non_stream_response(
         client: AsyncAnthropic,
         model: str,
 ) -> ChatResponse:
-    texts: list[str] = []
+    text = ""
 
     for content in message.content:
         if content.type == "thinking":
-            texts.append("# Model Thought:\n\n")
-            texts.append(content.thinking)
+            text += "# Model Thought:\n\n"
+            text += content.thinking
         if content.type == "text":
-            texts.append("\n\n# Model Response:\n\n")
-            texts.append(content.text)
-            # Search Results API currently isn't aligned with Documents
+            text += "\n\n# Model Response:\n\n"
+            text += content.text
+            # Unable to test since streaming Claude is currently not allowed
             if citations := content.citations:
                 for citation in citations:
-                    pass
+                    text += f"([{citation.title}]({citation.url})) "
 
-    content = "".join(texts)
-    chat_response = ChatResponse(text=content)
+    chat_response = ChatResponse(text=text)
     output_tokens = await count_claude_output_tokens(
         client=client,
         model=model,

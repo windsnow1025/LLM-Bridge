@@ -1,4 +1,5 @@
 from enum import Enum
+from pprint import pprint
 
 from anthropic import BetaMessageStreamEvent, AsyncAnthropic
 
@@ -35,7 +36,9 @@ class ClaudeStreamResponseHandler:
                     text += "\n\n# Model Response:\n\n"
                     self.printing_status = PrintingStatus.Response
                 text += event.delta.text
-
+        elif event.type == "citation":
+            citation = event.citation
+            text += f"([{citation.title}]({citation.url})) "
         chat_response = ChatResponse(text=text)
         output_tokens = await count_claude_output_tokens(
             client=client,

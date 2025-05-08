@@ -21,24 +21,23 @@ def process_openai_responses_non_stream_response(
 
     output_list = response.output
 
-    texts: list[str] = []
+    text = ""
     citations: list[Citation] = []
 
     for output in output_list:
         if output.type == "message":
             for content in output.content:
                 if content.type == "output_text":
-                    texts.append(content.text)
+                    text += content.text
                 # Citation is currently not working well in OpenAI Responses API
                 if annotations := content.annotations:
                     for annotation in annotations:
                         text = content.text[annotation.start_index:annotation.end_index]
 
-    content = "".join(texts)
-    chat_response = ChatResponse(text=content, citations=citations)
+    chat_response = ChatResponse(text=text, citations=citations)
     output_tokens = count_openai_output_tokens(chat_response)
     return ChatResponse(
-        text=content,
+        text=text,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )
