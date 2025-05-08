@@ -22,9 +22,15 @@ async def process_claude_non_stream_response(
 
     for content in message.content:
         if content.type == "thinking":
-            texts.append(f"# Model Thought:\n\n${content.thinking}")
+            texts.append("# Model Thought:\n\n")
+            texts.append(content.thinking)
         if content.type == "text":
-            texts.append(f"\n\n# Model Response:\n\n${content.text}")
+            texts.append("\n\n# Model Response:\n\n")
+            texts.append(content.text)
+            # Search Results API currently isn't aligned with Documents
+            if citations := content.citations:
+                for citation in citations:
+                    pass
 
     content = "".join(texts)
     chat_response = ChatResponse(text=content)
