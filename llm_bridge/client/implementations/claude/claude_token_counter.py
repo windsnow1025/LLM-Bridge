@@ -28,14 +28,15 @@ async def count_claude_output_tokens(
         model: str,
         chat_response: ChatResponse,
 ) -> int:
-    if chat_response.text == "":
+    text = chat_response.text.strip()
+    if text == "":
         return 0
 
     messages = [
         ClaudeMessage(
             role=ClaudeRole.Assistant,
             content=[
-                TextBlockParam(type="text", text=chat_response.text),
+                TextBlockParam(type="text", text=text),
             ]
         ),
     ]
