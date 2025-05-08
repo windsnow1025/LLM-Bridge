@@ -40,6 +40,10 @@ async def create_claude_client(
     )
     temperature = 1
     betas = ["output-128k-2025-02-19"]
+    tools = [{
+        "type": "web_search_20250305",
+        "name": "web_search",
+    }]
 
     if stream:
         return StreamClaudeClient(
@@ -52,6 +56,7 @@ async def create_claude_client(
             thinking=thinking,
             betas=betas,
             input_tokens=input_tokens,
+            tools=tools,
         )
     else:
         return NonStreamClaudeClient(
@@ -64,6 +69,7 @@ async def create_claude_client(
             thinking=thinking,
             betas=betas,
             input_tokens=input_tokens,
+            tools=tools,
         )
 
 

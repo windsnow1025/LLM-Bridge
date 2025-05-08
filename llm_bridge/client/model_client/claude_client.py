@@ -2,6 +2,7 @@ from typing import AsyncGenerator, Any
 
 import anthropic
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
+from anthropic.types.beta import BetaToolUnionParam
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -20,6 +21,7 @@ class ClaudeClient(ChatClient):
             thinking: ThinkingConfigEnabledParam,
             betas: list[AnthropicBetaParam],
             input_tokens: int,
+            tools: list[BetaToolUnionParam],
     ):
         self.model = model
         self.messages = messages
@@ -30,6 +32,7 @@ class ClaudeClient(ChatClient):
         self.thinking = thinking
         self.betas = betas
         self.input_tokens = input_tokens
+        self.tools = tools
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError

@@ -53,6 +53,7 @@ class NonStreamClaudeClient(ClaudeClient):
                 messages=serialize(self.messages),
                 thinking=self.thinking,
                 betas=self.betas,
+                tools=self.tools,
             )
 
             return await process_claude_non_stream_response(

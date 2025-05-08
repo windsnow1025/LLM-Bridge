@@ -32,6 +32,7 @@ class StreamClaudeClient(ClaudeClient):
                     messages=serialize(self.messages),
                     thinking=self.thinking,
                     betas=self.betas,
+                    tools=self.tools,
                 ) as stream:
                     printing_status = PrintingStatus.Start
 
