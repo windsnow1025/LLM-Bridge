@@ -2,13 +2,42 @@ import logging
 import re
 
 import httpx
+from anthropic import AsyncAnthropic
+from anthropic.types.beta import BetaMessage
 from fastapi import HTTPException
 
-from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens, \
-    count_claude_output_tokens
+from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_output_tokens
 from llm_bridge.client.model_client.claude_client import ClaudeClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
+
+
+async def process_claude_non_stream_response(
+        message: BetaMessage,
+        input_tokens: int,
+        client: AsyncAnthropic,
+        model: str,
+) -> ChatResponse:
+    texts: list[str] = []
+
+    for content in message.content:
+        if content.type == "thinking":
+            texts.append(f"# Model Thought:\n\n${content.thinking}")
+        if content.type == "text":
+            texts.append(f"\n\n# Model Response:\n\n${content.text}")
+
+    content = "".join(texts)
+    chat_response = ChatResponse(text=content)
+    output_tokens = await count_claude_output_tokens(
+        client=client,
+        model=model,
+        chat_response=chat_response,
+    )
+    return ChatResponse(
+        text=content,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+    )
 
 
 class NonStreamClaudeClient(ClaudeClient):
@@ -26,17 +55,11 @@ class NonStreamClaudeClient(ClaudeClient):
                 betas=self.betas,
             )
 
-            content = message.content[0].text
-            chat_response = ChatResponse(text=content)
-            output_tokens = await count_claude_output_tokens(
+            return await process_claude_non_stream_response(
+                message=message,
+                input_tokens=self.input_tokens,
                 client=self.client,
                 model=self.model,
-                chat_response=chat_response,
-            )
-            return ChatResponse(
-                text=content,
-                input_tokens=self.input_tokens,
-                output_tokens=output_tokens,
             )
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code

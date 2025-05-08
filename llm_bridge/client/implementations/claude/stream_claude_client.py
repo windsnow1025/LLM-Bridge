@@ -12,6 +12,12 @@ from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
 
 
+class PrintingStatus:
+    Start = "start"
+    Thought = "thought"
+    Response = "response"
+
+
 class StreamClaudeClient(ClaudeClient):
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
@@ -27,18 +33,36 @@ class StreamClaudeClient(ClaudeClient):
                     thinking=self.thinking,
                     betas=self.betas,
                 ) as stream:
-                    async for response_delta in stream.text_stream:
-                        chat_response = ChatResponse(text=response_delta)
+                    printing_status = PrintingStatus.Start
+
+                    async for event in stream:
+                        text = ""
+                        if event.type == "content_block_start":
+                            continue
+                        elif event.type == "content_block_delta":
+                            if event.delta.type == "thinking_delta":
+                                if printing_status == PrintingStatus.Start:
+                                    text += "# Model Thought:\n\n"
+                                    printing_status = PrintingStatus.Thought
+                                text += event.delta.thinking
+                            elif event.delta.type == "text_delta":
+                                if printing_status == PrintingStatus.Thought:
+                                    text += "\n\n# Model Response:\n\n"
+                                    printing_status = PrintingStatus.Response
+                                text += event.delta.text
+
+                        chat_response = ChatResponse(text=text)
                         output_tokens = await count_claude_output_tokens(
                             client=self.client,
                             model=self.model,
                             chat_response=chat_response,
                         )
                         yield ChatResponse(
-                            text=response_delta,
+                            text=text,
                             input_tokens=self.input_tokens,
                             output_tokens=output_tokens,
                         )
+
             except Exception as e:
                 logging.exception(e)
                 yield ChatResponse(error=repr(e))
