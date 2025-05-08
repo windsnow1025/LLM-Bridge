@@ -1,5 +1,7 @@
 import anthropic
+from anthropic.types import ThinkingConfigEnabledParam
 
+from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
 from llm_bridge.client.implementations.claude.stream_claude_client import StreamClaudeClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_claude
@@ -24,6 +26,21 @@ async def create_claude_client(
 
     claude_messages = await convert_messages_to_claude(messages)
 
+    input_tokens = await count_claude_input_tokens(
+        client=client,
+        model=model,
+        system=system,
+        messages=claude_messages,
+    )
+
+    max_tokens = min(128000, 200000 - input_tokens)
+    thinking = ThinkingConfigEnabledParam(
+        type="enabled",
+        budget_tokens=32000
+    )
+    temperature = 1
+    betas = ["output-128k-2025-02-19"]
+
     if stream:
         return StreamClaudeClient(
             model=model,
@@ -31,6 +48,10 @@ async def create_claude_client(
             temperature=temperature,
             system=system,
             client=client,
+            max_tokens=max_tokens,
+            thinking=thinking,
+            betas=betas,
+            input_tokens=input_tokens,
         )
     else:
         return NonStreamClaudeClient(
@@ -39,6 +60,10 @@ async def create_claude_client(
             temperature=temperature,
             system=system,
             client=client,
+            max_tokens=max_tokens,
+            thinking=thinking,
+            betas=betas,
+            input_tokens=input_tokens,
         )
 
 

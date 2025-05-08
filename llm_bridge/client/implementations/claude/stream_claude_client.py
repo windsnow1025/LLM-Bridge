@@ -17,20 +17,15 @@ class StreamClaudeClient(ClaudeClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            input_tokens = await count_claude_input_tokens(
-                client=self.client,
-                model=self.model,
-                system=self.system,
-                messages=self.messages
-            )
-
             try:
-                async with self.client.messages.stream(
+                async with self.client.beta.messages.stream(
                     model=self.model,
-                    max_tokens=4096,
+                    max_tokens=self.max_tokens,
                     temperature=self.temperature,
                     system=self.system,
-                    messages=serialize(self.messages)
+                    messages=serialize(self.messages),
+                    thinking=self.thinking,
+                    betas=self.betas,
                 ) as stream:
                     async for response_delta in stream.text_stream:
                         chat_response = ChatResponse(text=response_delta)
@@ -41,7 +36,7 @@ class StreamClaudeClient(ClaudeClient):
                         )
                         yield ChatResponse(
                             text=response_delta,
-                            input_tokens=input_tokens,
+                            input_tokens=self.input_tokens,
                             output_tokens=output_tokens,
                         )
             except Exception as e:

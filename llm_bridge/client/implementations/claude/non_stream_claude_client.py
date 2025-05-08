@@ -16,19 +16,14 @@ class NonStreamClaudeClient(ClaudeClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            input_tokens = await count_claude_input_tokens(
-                client=self.client,
+            message = await self.client.beta.messages.create(
                 model=self.model,
-                system=self.system,
-                messages=self.messages
-            )
-
-            message = await self.client.messages.create(
-                model=self.model,
-                max_tokens=4096,
+                max_tokens=self.max_tokens,
                 temperature=self.temperature,
                 system=self.system,
-                messages=serialize(self.messages)
+                messages=serialize(self.messages),
+                thinking=self.thinking,
+                betas=self.betas,
             )
 
             content = message.content[0].text
@@ -40,7 +35,7 @@ class NonStreamClaudeClient(ClaudeClient):
             )
             return ChatResponse(
                 text=content,
-                input_tokens=input_tokens,
+                input_tokens=self.input_tokens,
                 output_tokens=output_tokens,
             )
         except httpx.HTTPStatusError as e:

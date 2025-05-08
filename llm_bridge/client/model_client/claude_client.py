@@ -1,6 +1,7 @@
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Any
 
 import anthropic
+from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -15,12 +16,20 @@ class ClaudeClient(ChatClient):
             temperature: float,
             system: str,
             client: anthropic.AsyncAnthropic,
+            max_tokens: int,
+            thinking: ThinkingConfigEnabledParam,
+            betas: list[AnthropicBetaParam],
+            input_tokens: int,
     ):
         self.model = model
         self.messages = messages
         self.temperature = temperature
         self.system = system
         self.client = client
+        self.max_tokens = max_tokens
+        self.thinking = thinking
+        self.betas = betas
+        self.input_tokens = input_tokens
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
