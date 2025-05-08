@@ -3,20 +3,18 @@ import re
 from typing import AsyncGenerator
 
 import httpx
+from anthropic import AsyncAnthropic, BetaMessageStreamEvent
+from anthropic.types.beta import BetaMessage
 from fastapi import HTTPException
 
+from llm_bridge.client.implementations.claude.claude_stream_response_handler import ClaudeStreamResponseHandler
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens, \
     count_claude_output_tokens
 from llm_bridge.client.model_client.claude_client import ClaudeClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
 
-
-class PrintingStatus:
-    Start = "start"
-    Thought = "thought"
-    Response = "response"
-
+claude_stream_response_handler = ClaudeStreamResponseHandler()
 
 class StreamClaudeClient(ClaudeClient):
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
@@ -34,34 +32,12 @@ class StreamClaudeClient(ClaudeClient):
                     betas=self.betas,
                     tools=self.tools,
                 ) as stream:
-                    printing_status = PrintingStatus.Start
-
                     async for event in stream:
-                        text = ""
-                        if event.type == "content_block_start":
-                            continue
-                        elif event.type == "content_block_delta":
-                            if event.delta.type == "thinking_delta":
-                                if printing_status == PrintingStatus.Start:
-                                    text += "# Model Thought:\n\n"
-                                    printing_status = PrintingStatus.Thought
-                                text += event.delta.thinking
-                            elif event.delta.type == "text_delta":
-                                if printing_status == PrintingStatus.Thought:
-                                    text += "\n\n# Model Response:\n\n"
-                                    printing_status = PrintingStatus.Response
-                                text += event.delta.text
-
-                        chat_response = ChatResponse(text=text)
-                        output_tokens = await count_claude_output_tokens(
+                        yield await claude_stream_response_handler.process_claude_stream_response(
+                            event=event,
+                            input_tokens=self.input_tokens,
                             client=self.client,
                             model=self.model,
-                            chat_response=chat_response,
-                        )
-                        yield ChatResponse(
-                            text=text,
-                            input_tokens=self.input_tokens,
-                            output_tokens=output_tokens,
                         )
 
             except Exception as e:
