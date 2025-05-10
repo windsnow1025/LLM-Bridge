@@ -9,8 +9,8 @@ PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge
 ## Features
 - **Multi-Model Support**: Seamlessly switch between different LLM providers.  
 - **Streaming & Non-Streaming**: Supports both real-time streaming and batch responses.  
-- **File Processing**: Extracts text content from documents (Word, Excel, PPT, code files, and non-native PDFs).  
-- **Media Support**: Converts media (Image, Audio, Video) and PDFs into model-compatible formats.  
+- **File Processing**: Extracts text content from documents (Word, Excel, PPT, Code files, PDFs) which are not natively supported by the target model.  
+- **Media Support**: Converts media (Image, Audio, Video, PDF) which are natively supported by the target model into compatible formats.  
 - **Token Counting & Pricing**: Tracks token usage and calculates costs across all supported models and providers.  
 
 
