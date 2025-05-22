@@ -23,6 +23,6 @@ async def workflow(
     )
 
     if stream:
-        return await chat_client.generate_stream_response()
+        return chat_client.generate_stream_response()
     else:
         return await chat_client.generate_non_stream_response()
