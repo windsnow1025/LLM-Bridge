@@ -46,7 +46,8 @@ messages = [
         role=Role.User,
         contents=[
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            Content(type=ContentType.Text, data="Please generate an image of a cat."),
         ]
     ),
     # Message(
@@ -61,13 +62,13 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-4.1"
-# model = "gemini-2.5-flash-preview-04-17"
-# model = "gemini-2.5-pro-exp-03-25"
+# model = "gpt-4.1"
+# model = "gemini-2.5-flash-preview-native-audio-dialog"
+model = "gemini-2.5-pro-exp-03-25"
 # model = "gemini-2.5-pro-preview-05-06"
 # model = "claude-3-7-sonnet-latest"
-api_type = "OpenAI"
-# api_type = "Gemini-Free"
+# api_type = "OpenAI"
+api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
 # api_type = "Claude"
 temperature = 0
@@ -85,9 +86,12 @@ async def main():
     if stream:
         async for chunk in response:
             pprint(chunk)
-            text += chunk.text
-            input_tokens = chunk.input_tokens
-            output_tokens += chunk.output_tokens
+            if chunk.text:
+                text += chunk.text
+            if chunk.input_tokens:
+                input_tokens = chunk.input_tokens
+            if chunk.output_tokens:
+                output_tokens += chunk.output_tokens
     else:
         pprint(response)
         text = response.text

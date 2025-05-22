@@ -31,7 +31,7 @@ class GeminiResponseHandler:
         if candidates := response.candidates:
             if candidates[0].content.parts:
                 for part in response.candidates[0].content.parts:
-                    # Thought Output (Currently not supported in Gemini API)
+                    # Thought Output
                     if part.text:
                         if part.thought and self.printing_status == PrintingStatus.Start:
                             text += "# Model Thought:\n\n"

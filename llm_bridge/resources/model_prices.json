@@ -55,7 +55,7 @@
   },
   {
     "apiType": "Gemini-Free",
-    "model": "gemini-2.5-flash-preview-04-17",
+    "model": "gemini-2.5-flash-preview-05-20",
     "input": 0,
     "output": 0
   },
@@ -67,13 +67,13 @@
   },
   {
     "apiType": "Gemini-Free",
-    "model": "gemini-2.0-flash-exp-image-generation",
+    "model": "gemini-2.0-flash-preview-image-generation",
     "input": 0,
     "output": 0
   },
   {
     "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-flash-preview-04-17",
+    "model": "gemini-2.5-flash-preview-05-20",
     "input": 1,
     "output": 3.5
   },
@@ -85,7 +85,7 @@
   },
   {
     "apiType": "Gemini-Paid",
-    "model": "gemini-2.0-flash-exp-image-generation",
+    "model": "gemini-2.0-flash-preview-image-generation",
     "input": 0.7,
     "output": 0.4
   },
