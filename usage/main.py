@@ -46,8 +46,8 @@ messages = [
         role=Role.User,
         contents=[
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-            Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
         ]
     ),
     # Message(
@@ -64,13 +64,13 @@ messages = [
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-4.1"
 # model = "gemini-2.5-flash-preview-native-audio-dialog"
-model = "gemini-2.5-pro-exp-03-25"
+# model = "gemini-2.5-pro-exp-03-25"
 # model = "gemini-2.5-pro-preview-05-06"
-# model = "claude-3-7-sonnet-latest"
+model = "claude-sonnet-4-0"
 # api_type = "OpenAI"
-api_type = "Gemini-Free"
+# api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-# api_type = "Claude"
+api_type = "Claude"
 temperature = 0
 stream = True
 

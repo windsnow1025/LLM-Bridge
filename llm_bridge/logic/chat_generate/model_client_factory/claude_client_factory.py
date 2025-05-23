@@ -33,10 +33,10 @@ async def create_claude_client(
         messages=claude_messages,
     )
 
-    max_tokens = min(128000, 200000 - input_tokens)
+    max_tokens = min(32000, 200000 - input_tokens)
     thinking = ThinkingConfigEnabledParam(
         type="enabled",
-        budget_tokens=32000
+        budget_tokens=16000
     )
     temperature = 1
     betas = ["output-128k-2025-02-19"]

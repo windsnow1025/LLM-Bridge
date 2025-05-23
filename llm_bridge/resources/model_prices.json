@@ -91,15 +91,15 @@
   },
   {
     "apiType": "Claude",
-    "model": "claude-3-7-sonnet-latest",
-    "input": 3,
-    "output": 15
+    "model": "claude-opus-4-0",
+    "input": 15,
+    "output": 75
   },
   {
     "apiType": "Claude",
-    "model": "claude-3-7-haiku-latest",
-    "input": 0.8,
-    "output": 4
+    "model": "claude-sonnet-4-0",
+    "input": 3,
+    "output": 15
   },
   {
     "apiType": "Grok",
