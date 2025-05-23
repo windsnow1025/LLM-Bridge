@@ -128,9 +128,12 @@ async def main():
     if stream:
         async for chunk in response:
             pprint(chunk)
-            text += chunk.text
-            input_tokens = chunk.input_tokens
-            output_tokens += chunk.output_tokens
+            if chunk.text:
+                text += chunk.text
+            if chunk.input_tokens:
+                input_tokens = chunk.input_tokens
+            if chunk.output_tokens:
+                output_tokens += chunk.output_tokens
     else:
         pprint(response)
         text = response.text
