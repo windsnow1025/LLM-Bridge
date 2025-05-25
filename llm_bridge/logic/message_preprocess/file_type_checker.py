@@ -15,6 +15,7 @@ def is_file_type_supported(file_name: str) -> bool:
 
 async def get_file_type(file_url: str) -> tuple[str, str]:
     file_name = get_file_name(file_url)
+
     file_extension = '.' + file_name.split('.')[-1].lower() # Treat filenames without an extension as their own extension
     if file_extension in code_file_extensions:
         return 'text', 'code'
