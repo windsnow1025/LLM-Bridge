@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import AsyncGenerator, AsyncIterator
+from typing import AsyncGenerator
 
 import httpx
 from fastapi import HTTPException
@@ -9,12 +9,6 @@ from google.genai import types
 from llm_bridge.client.implementations.gemini.gemini_response_handler import GeminiResponseHandler
 from llm_bridge.client.model_client.gemini_client import GeminiClient
 from llm_bridge.type.chat_response import ChatResponse
-
-gemini_response_handler = GeminiResponseHandler()
-
-
-async def process_delta(completion_delta: types.GenerateContentResponse) -> ChatResponse:
-    return await gemini_response_handler.process_gemini_response(completion_delta)
 
 
 class StreamGeminiClient(GeminiClient):
@@ -42,8 +36,10 @@ class StreamGeminiClient(GeminiClient):
             raise HTTPException(status_code=error_code, detail=str(e))
 
         try:
+            response_handler = GeminiResponseHandler()
             async for response_delta in response:
-                yield await process_delta(response_delta)
+                yield await response_handler.process_gemini_response(response_delta)
+
         except Exception as e:
             logging.exception(e)
             yield ChatResponse(error=repr(e))

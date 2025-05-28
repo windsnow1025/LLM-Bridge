@@ -1,5 +1,4 @@
 from enum import Enum
-from pprint import pprint
 
 from anthropic import BetaMessageStreamEvent, AsyncAnthropic
 
