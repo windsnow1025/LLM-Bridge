@@ -1,2 +1,38 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LLM-Bridge"
+version = "1.6.6-beta.1"
+description = "A Bridge for LLMs"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "windsnow1025", email = "windsnow1025@gmail.com"}
+]
+dependencies = [
+    "fastapi",
+    "httpx",
+    "tenacity",
+    "openai",
+    "tiktoken",
+    "google-genai",
+    "anthropic",
+    "PyMuPDF",
+    "python-docx",
+    "openpyxl",
+    "python-pptx",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-asyncio",
+    "python-dotenv",
+    "protobuf"
+]
+
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "function"
