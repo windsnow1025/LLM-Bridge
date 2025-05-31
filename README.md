@@ -6,53 +6,48 @@ GitHub: [https://github.com/windsnow1025/LLM-Bridge](https://github.com/windsnow
 
 PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge/)
 
-## Features
-- **Multi-Model Support**: Seamlessly switch between different LLM providers.  
-- **Streaming & Non-Streaming**: Supports both real-time streaming and batch responses.  
-- **File Processing**: Extracts text content from documents (Word, Excel, PPT, Code files, PDFs) which are not natively supported by the target model.  
-- **Media Support**: Converts media (Image, Audio, Video, PDF) which are natively supported by the target model into compatible formats.  
-- **Token Counting & Pricing**: Tracks token usage and calculates costs across all supported models and providers.  
+## Workflow and Features
 
+1. **Message Preprocessor**: extracts text content from documents (Word, Excel, PPT, Code files, PDFs) which are not natively supported by the target model.
+2. **Chat Client Factory**: create a client for the specific LLM API with model parameters
+    1. **Model Message Converter**: convert general messages to model messages
+        1. **Media Processor**: converts media (Image, Audio, Video, PDF) which are natively supported by the target model into compatible formats.
+3. **Chat Client**: generate stream or non-stream responses
+    1. **Model Thoughts**: captures and formats the model's thinking process
+    2. **Search Citations**: extracts and formats citations from search results
+    3. **Token Counter**: tracks and reports input and output token usage
 
-## Workflow
+### Model Features
 
-LLM Bridge follows a structured process to handle user messages and generate responses:
+The features listed represent the maximum capabilities of each API type, not necessarily those of every individual model.
 
-1. **Message Preprocessor**: Preprocess Messages
-    1. **Message Preprocessor**: Extract Text Files to Message
-2. **Chat Client Factory**: Create Chat Client
-    1. **Model Message Converter**: Convert Message to Model
-        1. **Media Processor**: Get Model Image Content from URL
-3. **Chat Client**: Generate Response
-
-## Test
-
-### Automatic Tests
-
-```bash
-pytest ./tests/
-```
+| Model Type | Input Format                   | Capabilities         | Output Format |
+|------------|--------------------------------|----------------------|---------------|
+| OpenAI     | Text, Image                    | Thinking, Web Search | Text          |
+| Gemini     | Text, Image, Video, Audio, PDF | Thinking, Web Search | Text, Image   |
+| Claude     | Text, Image, PDF               | Thinking, Web Search | Text          |
+| Grok       | Text, Image                    |                      | Text          |
 
 ## Installation
 
-### PyPI
-
 ```bash
 pip install --upgrade llm_bridge
+```
+
+## Test
+
+```bash
+pytest
 ```
 
 ## Quick Start
 
 See `./usage/`
 
-```python
-import asyncio
-import logging
-import os
-from pprint import pprint
-from typing import AsyncGenerator
+### Workflow
 
-from dotenv import load_dotenv
+```python
+from typing import AsyncGenerator
 
 from llm_bridge import *
 
@@ -80,7 +75,20 @@ async def workflow(
         return chat_client.generate_stream_response()
     else:
         return await chat_client.generate_non_stream_response()
+```
 
+### Main
+
+```python
+import asyncio
+import logging
+import os
+from pprint import pprint
+
+from dotenv import load_dotenv
+
+from llm_bridge import *
+from usage.workflow import workflow
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -110,9 +118,41 @@ messages = [
             Content(type=ContentType.Text, data="Hello")
         ]
     ),
+    Message(
+        role=Role.Assistant,
+        contents=[
+            Content(type=ContentType.Text, data="Hello! How can I assist you today?")
+        ]
+    ),
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+        ]
+    ),
+    # Message(
+    #     role=Role.User,
+    #     contents=[
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746208707489-image.png"),
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf"),
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212253473-file_example_MP3_700KB.mp3"),
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212980820-file_example_MP4_480_1_5MG.mp4"),
+    #         Content(type=ContentType.Text, data="What's this?"),
+    #     ]
+    # ),
 ]
-model = "gemini-2.0-flash-exp-image-generation"
-api_type = "Gemini-Free"
+# See /llm_bridge/resources/model_prices.json for available models
+# model = "gpt-4.1"
+# model = "gemini-2.5-flash-preview-native-audio-dialog"
+# model = "gemini-2.5-pro-exp-03-25"
+model = "gemini-2.5-pro-preview-05-06"
+# model = "claude-sonnet-4-0"
+# api_type = "OpenAI"
+# api_type = "Gemini-Free"
+api_type = "Gemini-Paid"
+# api_type = "Claude"
 temperature = 0
 stream = True
 
@@ -147,58 +187,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-## API
-
-### 1. `preprocess_messages`
-Preprocesses a list of messages by extracting text from attached files.
-
----
-
-### 2. `create_chat_client`
-Creates a chat client for the specified LLM provider.
-
----
-
-### 3. `ChatClient.generate_non_stream_response`
-Generates a non-streaming response from the chat model.
-
----
-
-### 4. `ChatClient.generate_stream_response`
-Generates a streaming response from the chat model.
-
----
-
-### 5. `serialize`
-Serializes objects (dataclasses, enums, lists, and dictionaries) into JSON-compatible formats.
-
----
-
-### 6. `Message`
-Represents a message in the conversation.
-
----
-
-### 7. `ChatResponse`
-Represents a response from the chat model.
-
----
-
-### 8. `Citation`
-Represents a citation in a chat response.
-
----
-
-### 9. `ModelPrice`
-Represents pricing information for a specific model.
-
----
-
-### 10. `get_model_prices`
-Returns a list of pricing information for all supported models.
-
----
-
-### 11. `calculate_chat_cost`
-Calculates the cost of a chat based on input and output tokens.
