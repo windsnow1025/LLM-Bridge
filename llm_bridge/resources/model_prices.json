@@ -61,12 +61,6 @@
   },
   {
     "apiType": "Gemini-Free",
-    "model": "gemini-2.5-pro-exp-03-25",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
     "model": "gemini-2.0-flash-preview-image-generation",
     "input": 0,
     "output": 0
@@ -79,7 +73,7 @@
   },
   {
     "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-pro-preview-05-06",
+    "model": "gemini-2.5-pro-preview-06-05",
     "input": 2.5,
     "output": 15
   },
