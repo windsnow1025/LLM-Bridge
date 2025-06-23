@@ -85,15 +85,15 @@
   },
   {
     "apiType": "Claude",
-    "model": "claude-opus-4-0",
-    "input": 15,
-    "output": 75
-  },
-  {
-    "apiType": "Claude",
     "model": "claude-sonnet-4-0",
     "input": 3,
     "output": 15
+  },
+  {
+    "apiType": "Claude",
+    "model": "claude-opus-4-0",
+    "input": 15,
+    "output": 75
   },
   {
     "apiType": "Grok",
