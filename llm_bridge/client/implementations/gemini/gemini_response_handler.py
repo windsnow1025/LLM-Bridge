@@ -16,11 +16,12 @@ class PrintingStatus(Enum):
 
 
 class GeminiResponseHandler:
-    def __init__(self):
+    def __init__(self, stream: bool):
         self.printing_status = PrintingStatus.Start
 
     async def process_gemini_response(
-            self, response: types.GenerateContentResponse
+            self,
+            response: types.GenerateContentResponse,
     ) -> ChatResponse:
         text = ""
         display = None

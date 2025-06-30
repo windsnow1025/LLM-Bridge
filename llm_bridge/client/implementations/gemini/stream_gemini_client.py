@@ -36,7 +36,7 @@ class StreamGeminiClient(GeminiClient):
             raise HTTPException(status_code=error_code, detail=str(e))
 
         try:
-            response_handler = GeminiResponseHandler()
+            response_handler = GeminiResponseHandler(stream=True)
             async for response_delta in response:
                 yield await response_handler.process_gemini_response(response_delta)
 

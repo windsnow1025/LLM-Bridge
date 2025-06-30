@@ -20,7 +20,7 @@ class NonStreamGeminiClient(GeminiClient):
                 config=self.config,
             )
 
-            gemini_response_handler = GeminiResponseHandler()
+            gemini_response_handler = GeminiResponseHandler(stream=False)
             return await gemini_response_handler.process_gemini_response(response)
 
         except httpx.HTTPStatusError as e:
