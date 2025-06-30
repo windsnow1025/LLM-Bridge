@@ -64,7 +64,7 @@ messages = [
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-4.1"
 # model = "gemini-2.5-flash-preview-native-audio-dialog"
-model = "gemini-2.5-pro-preview-06-05"
+model = "gemini-2.5-pro"
 # model = "claude-sonnet-4-0"
 # api_type = "OpenAI"
 api_type = "Gemini-Free"
