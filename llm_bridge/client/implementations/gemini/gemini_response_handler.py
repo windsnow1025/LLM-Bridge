@@ -8,8 +8,10 @@ from llm_bridge.type.chat_response import Citation, ChatResponse
 
 
 class GeminiResponseHandler:
-    def __init__(self, stream: bool):
+    def __init__(self):
         self.printing_status = None
+        self.prev_output_tokens = 0
+        self.prev_printing_status = None
 
     async def process_gemini_response(
             self,
@@ -19,7 +21,7 @@ class GeminiResponseHandler:
         display = None
         image_base64 = None
         citations = extract_citations(response)
-        input_tokens, output_tokens = await count_gemini_tokens(response)
+        input_tokens, stage_output_tokens = await count_gemini_tokens(response)
 
         if candidates := response.candidates:
             if candidates[0].content.parts:
@@ -47,6 +49,14 @@ class GeminiResponseHandler:
                     for i, chunk in enumerate(grounding_metadata.grounding_chunks, start=1):
                         if chunk.web:
                             text += f"{i}. [{chunk.web.title}]({chunk.web.uri})\n"
+
+        if self.printing_status == self.prev_printing_status:
+            output_tokens = stage_output_tokens - self.prev_output_tokens
+        else:
+            output_tokens = stage_output_tokens
+
+        self.prev_output_tokens = stage_output_tokens
+        self.prev_printing_status = self.printing_status
 
         return ChatResponse(
             text=text,
