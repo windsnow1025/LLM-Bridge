@@ -1,23 +1,15 @@
 import base64
-from io import BytesIO
-from enum import Enum
-from pprint import pprint
 
 from google.genai import types
 
 from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
+from llm_bridge.client.implementations.printing_status import PrintingStatus
 from llm_bridge.type.chat_response import Citation, ChatResponse
-
-
-class PrintingStatus(Enum):
-    Start = "start"
-    Thought = "thought"
-    Response = "response"
 
 
 class GeminiResponseHandler:
     def __init__(self, stream: bool):
-        self.printing_status = PrintingStatus.Start
+        self.printing_status = None
 
     async def process_gemini_response(
             self,
@@ -34,7 +26,7 @@ class GeminiResponseHandler:
                 for part in response.candidates[0].content.parts:
                     # Thought Output
                     if part.text:
-                        if part.thought and self.printing_status == PrintingStatus.Start:
+                        if part.thought and not self.printing_status:
                             text += "# Model Thought:\n\n"
                             self.printing_status = PrintingStatus.Thought
                         elif not part.thought and self.printing_status == PrintingStatus.Thought:

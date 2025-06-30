@@ -1,20 +1,13 @@
-from enum import Enum
-
 from anthropic import BetaMessageStreamEvent, AsyncAnthropic
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_output_tokens
+from llm_bridge.client.implementations.printing_status import PrintingStatus
 from llm_bridge.type.chat_response import ChatResponse
-
-
-class PrintingStatus(Enum):
-    Start = "start"
-    Thought = "thought"
-    Response = "response"
 
 
 class ClaudeStreamResponseHandler:
     def __init__(self):
-        self.printing_status = PrintingStatus.Start
+        self.printing_status = None
 
     async def process_claude_stream_response(
             self,
@@ -26,7 +19,7 @@ class ClaudeStreamResponseHandler:
         text = ""
         if event.type == "content_block_delta":
             if event.delta.type == "thinking_delta":
-                if self.printing_status == PrintingStatus.Start:
+                if not self.printing_status:
                     text += "# Model Thought:\n\n"
                     self.printing_status = PrintingStatus.Thought
                 text += event.delta.thinking
