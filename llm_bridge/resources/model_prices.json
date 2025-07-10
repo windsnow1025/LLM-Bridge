@@ -103,6 +103,12 @@
   },
   {
     "apiType": "Grok",
+    "model": "grok-4-latest",
+    "input": 3,
+    "output": 15
+  },
+  {
+    "apiType": "Grok",
     "model": "grok-3-fast-latest",
     "input": 5,
     "output": 25

@@ -64,12 +64,14 @@ messages = [
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-4.1"
 # model = "gemini-2.5-flash-preview-native-audio-dialog"
-model = "gemini-2.5-pro"
+# model = "gemini-2.5-pro"
+model = "grok-4-latest"
 # model = "claude-sonnet-4-0"
 # api_type = "OpenAI"
-api_type = "Gemini-Free"
+# api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
 # api_type = "Claude"
+api_type = "Grok"
 temperature = 0
 stream = True
 
