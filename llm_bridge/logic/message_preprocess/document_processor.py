@@ -1,10 +1,9 @@
 import logging
 from io import BytesIO
 
-import docx
 import fitz
 import openpyxl
-from docx.oxml import CT_P, CT_Tbl
+from docxlatex import Document as DocxLatexDocument
 from fastapi import HTTPException
 from pptx import Presentation
 
@@ -16,7 +15,8 @@ async def extract_text_from_file(file_url: str) -> str:
     file_content, content_type = await fetch_file_data(file_url)
 
     if file_type_checker.is_file_type_supported(file_url) is False:
-        raise HTTPException(status_code=415, detail=f"legacy filetypes ('.doc', '.xls', '.ppt') are not supported - {file_url}")
+        raise HTTPException(status_code=415,
+                            detail=f"legacy filetypes ('.doc', '.xls', '.ppt') are not supported - {file_url}")
 
     file_type, sub_type = await file_type_checker.get_file_type(file_url)
 
@@ -33,7 +33,10 @@ async def extract_text_from_file(file_url: str) -> str:
             return extract_text_from_ppt(file_content)
     except Exception as e:
         logging.exception(e)
-        raise HTTPException(status_code=415, detail=f"Error during text extraction - {file_url} ({file_type}/{sub_type}) - {str(e)}")
+        raise HTTPException(
+            status_code=415,
+            detail=f"Error during text extraction - {file_url} ({file_type}/{sub_type}) - {str(e)}"
+        )
 
     try:
         return file_content.decode('utf-8')
@@ -56,34 +59,10 @@ def extract_text_from_pdf(file_content: bytes) -> str:
 
 
 def extract_text_from_word(file_content: bytes) -> str:
-    text = ""
-    doc = docx.Document(BytesIO(file_content))
-
-    # Extract text from headers
-    for section in doc.sections:
-        header = section.header
-        for para in header.paragraphs:
-            text += para.text + "\n"
-
-    # Extract text from the main document body
-    for element in doc.element.body:
-        if isinstance(element, CT_P):
-            para = docx.text.paragraph.Paragraph(element, doc)
-            text += para.text + "\n"
-        elif isinstance(element, CT_Tbl):
-            table = docx.table.Table(element, doc)
-            for row in table.rows:
-                for cell in row.cells:
-                    text += cell.text + "\t"
-                text += "\n"
-
-    # Extract text from footers
-    for section in doc.sections:
-        footer = section.footer
-        for para in footer.paragraphs:
-            text += para.text + "\n"
-
-    return text
+    with BytesIO(file_content) as f:
+        doc = DocxLatexDocument(f)
+        text_with_equations = doc.get_text()
+        return text_with_equations
 
 
 def extract_text_from_excel(file_content: bytes) -> str:

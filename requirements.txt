@@ -14,7 +14,7 @@ anthropic # anthropic
 
 # File processing
 PyMuPDF # fitz
-python-docx # docx
+docxlatex # docxlatex
 openpyxl # openpyxl
 python-pptx # pptx
 
