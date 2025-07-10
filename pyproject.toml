@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LLM-Bridge"
-version = "1.7.8"
+version = "1.7.9"
 authors = [
     {name = "windsnow1025", email = "windsnow1025@gmail.com"}
 ]
@@ -26,7 +26,7 @@ dependencies = [
     "google-genai",
     "anthropic",
     "PyMuPDF",
-    "python-docx",
+    "docxlatex",
     "openpyxl",
     "python-pptx",
 ]
