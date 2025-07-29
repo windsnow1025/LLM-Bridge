@@ -12,10 +12,10 @@ def apply_docxlatex_fix():
             "]": "\\right]",
             "{": "\\left{",
             "}": "\\right}",
-            "〈": "\\left\\langle",
-            "〉": "\\right\\rangle",
-            "⟨": "\\left\\langle", # new
-            "⟩": "\\right\\rangle", # new
+            "〈": "\\left\\langle",
+            "〉": "\\right\\rangle",
+            "⟨": "\\left\\langle", # patch
+            "⟩": "\\right\\rangle", # patch
             "⌊": "\\left\\lfloor",
             "⌋": "\\right\\rfloor",
             "⌈": "\\left\\lceil",
@@ -24,6 +24,7 @@ def apply_docxlatex_fix():
             "‖": "\\left\\|",
             "⟦": "[\\![",
             "⟧": "]\\!]",
+        }
         }
         text = ""
         start_bracket = "("
