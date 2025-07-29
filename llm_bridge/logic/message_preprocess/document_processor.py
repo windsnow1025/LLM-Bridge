@@ -25,7 +25,6 @@ def apply_docxlatex_fix():
             "⟦": "[\\![",
             "⟧": "]\\!]",
         }
-        }
         text = ""
         start_bracket = "("
         end_bracket = ")"
