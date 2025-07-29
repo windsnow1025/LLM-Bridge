@@ -1,3 +1,76 @@
+def apply_docxlatex_fix():
+    import docxlatex.parser.ommlparser
+    from docxlatex.parser.utils import qn
+
+    original_class = docxlatex.parser.ommlparser.OMMLParser
+
+    def safe_parse_d(self, root):
+        bracket_map = {
+            "(": "\\left(",
+            ")": "\\right)",
+            "[": "\\left[",
+            "]": "\\right]",
+            "{": "\\left{",
+            "}": "\\right}",
+            "〈": "\\left\\langle",
+            "〉": "\\right\\rangle",
+            "⟨": "\\left\\langle", # new
+            "⟩": "\\right\\rangle", # new
+            "⌊": "\\left\\lfloor",
+            "⌋": "\\right\\rfloor",
+            "⌈": "\\left\\lceil",
+            "⌉": "\\right\\rceil",
+            "|": "\\left|",
+            "‖": "\\left\\|",
+            "⟦": "[\\![",
+            "⟧": "]\\!]",
+        }
+        text = ""
+        start_bracket = "("
+        end_bracket = ")"
+        seperator = "|"
+        for child in root:
+            if child.tag == qn("m:dPr"):
+                for child2 in child:
+                    if child2.tag == qn("m:begChr"):
+                        start_bracket = child2.attrib.get(qn("m:val"))
+                    if child2.tag == qn("m:endChr"):
+                        end_bracket = child2.attrib.get(qn("m:val"))
+                    if child2.tag == qn("m:sepChr"):
+                        seperator = child2.attrib.get(qn("m:val"))
+        for child in root:
+            if child.tag == qn("m:e"):
+                if text:
+                    text += seperator
+                text += self.parse(child)
+        end_bracket_replacements = {
+            "|": "\\right|",
+            "‖": "\\right\\|",
+            "[": "\\right[",
+        }
+        start_bracket_replacements = {
+            "]": "\\left]",
+        }
+        if start_bracket:
+            if start_bracket in start_bracket_replacements:
+                text = start_bracket_replacements[start_bracket] + " " + text
+            else:
+                text = bracket_map[start_bracket] + " " + text
+        if end_bracket:
+            if end_bracket in end_bracket_replacements:
+                text += " " + end_bracket_replacements[end_bracket]
+            else:
+                text += " " + bracket_map[end_bracket]
+        return text
+
+    setattr(original_class, 'parse_d', safe_parse_d)
+
+    if hasattr(original_class, 'parsers'):
+        original_class.parsers[qn("m:d")] = safe_parse_d
+
+apply_docxlatex_fix()
+
+
 import logging
 from io import BytesIO
 
