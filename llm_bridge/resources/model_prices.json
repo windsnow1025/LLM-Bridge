@@ -1,4 +1,28 @@
 [
+    {
+    "apiType": "OpenAI",
+    "model": "gpt-5",
+    "input": 1.25,
+    "output": 10
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5-mini",
+    "input": 0.25,
+    "output": 2
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5-nano",
+    "input": 0.05,
+    "output": 0.4
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5-chat-latest",
+    "input": 1.25,
+    "output": 10
+  },
   {
     "apiType": "OpenAI",
     "model": "gpt-4.1",

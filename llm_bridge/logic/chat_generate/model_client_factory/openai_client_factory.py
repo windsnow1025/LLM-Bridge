@@ -54,16 +54,18 @@ async def create_openai_client(
     else:
         openai_messages = await convert_messages_to_openai(messages)
 
+    tools = [
+        WebSearchToolParam(
+            type="web_search_preview",
+            search_context_size="high",
+        )
+    ]
+
     if re.match(r"^o\d", model):
         tools = None
         temperature = 1
-    else:
-        tools = [
-            WebSearchToolParam(
-                type="web_search_preview",
-                search_context_size="high",
-            )
-        ]
+    elif re.match(r"gpt-5.*", model):
+        temperature = 1
 
     if use_responses_api:
         if stream:
