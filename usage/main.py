@@ -63,7 +63,7 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5"
+model = "gpt-5-mini"
 # model = "gemini-2.5-flash-preview-native-audio-dialog"
 # model = "gemini-2.5-pro"
 # model = "grok-4-latest"

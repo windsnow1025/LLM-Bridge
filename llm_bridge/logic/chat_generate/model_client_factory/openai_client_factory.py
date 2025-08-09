@@ -64,8 +64,10 @@ async def create_openai_client(
     if re.match(r"^o\d", model):
         tools = None
         temperature = 1
-    elif re.match(r"gpt-5.*", model):
+    if re.match(r"gpt-5.*", model):
         temperature = 1
+    if model == "gpt-5-chat-latest":
+        tools = None
 
     if use_responses_api:
         if stream:
