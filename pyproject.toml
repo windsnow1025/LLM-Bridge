@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LLM-Bridge"
-version = "1.7.16"
+version = "1.7.17"
 authors = [
     {name = "windsnow1025", email = "windsnow1025@gmail.com"}
 ]
@@ -21,10 +21,10 @@ dependencies = [
     "fastapi",
     "httpx",
     "tenacity",
-    "openai",
-    "tiktoken",
-    "google-genai",
-    "anthropic",
+    "openai==1.99.6",
+    "tiktoken==0.11.0",
+    "google-genai==1.28.0",
+    "anthropic==0.62.0",
     "PyMuPDF",
     "docxlatex>=1.1.1",
     "openpyxl",

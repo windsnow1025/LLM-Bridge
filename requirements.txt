@@ -7,10 +7,10 @@ httpcore # httpcore
 tenacity # tenacity
 
 # SDK
-openai # openai
-tiktoken # tiktoken
-google-genai # google.genai
-anthropic # anthropic
+openai==1.99.6 # openai
+tiktoken==0.11.0 # tiktoken
+google-genai==1.28.0 # google.genai
+anthropic==0.62.0 # anthropic
 
 # File processing
 PyMuPDF # fitz

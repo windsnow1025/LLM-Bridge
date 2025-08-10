@@ -63,13 +63,13 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5-mini"
+# model = "gpt-5-mini"
 # model = "gemini-2.5-flash-preview-native-audio-dialog"
-# model = "gemini-2.5-pro"
+model = "gemini-2.5-flash"
 # model = "grok-4-latest"
 # model = "claude-opus-4-1"
-api_type = "OpenAI"
-# api_type = "Gemini-Free"
+# api_type = "OpenAI"
+api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
 # api_type = "Claude"
 # api_type = "Grok"
