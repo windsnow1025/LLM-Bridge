@@ -41,7 +41,8 @@ async def get_file_type(file_url: str) -> tuple[str, str]:
     return 'unknown', 'unknown'
 
 
-def get_file_name(file_url) -> str:
+# Without Timestamp
+def get_file_name(file_url: str) -> str:
     base_name = os.path.basename(file_url)
     match = re.search(r'-(.+)', base_name)
     if match:

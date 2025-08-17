@@ -1,8 +1,8 @@
 from openai.types.responses import ResponseInputTextParam, ResponseInputImageParam, ResponseOutputTextParam, \
-    ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam
+    ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputFileParam
 
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_name
 from llm_bridge.type.message import Message, ContentType
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
@@ -29,6 +29,14 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                     detail="auto"
                 )
                 content.append(image_content)
+            elif sub_type == "pdf":
+                file_data, _ = await media_processor.get_encoded_content_from_url(file_url)
+                pdf_content = ResponseInputFileParam(
+                    type="input_file",
+                    filename=get_file_name(file_url),
+                    file_data=f"data:application/pdf;base64,{file_data}",
+                )
+                content.append(pdf_content)
             # TODO: Responses API is currently unsupported for audio input
             # elif file_type == "audio":
             #     encoded_string = await media_processor.get_gpt_audio_content_from_url(file_url)
