@@ -17,7 +17,7 @@
     "input": 1.25,
     "output": 10
   },
-      {
+  {
     "apiType": "OpenAI",
     "model": "gpt-5",
     "input": 1.25,
@@ -91,7 +91,7 @@
   },
   {
     "apiType": "Gemini-Free",
-    "model": "gemini-2.0-flash-preview-image-generation",
+    "model": "gemini-2.5-flash-image-preview",
     "input": 0,
     "output": 0
   },
@@ -109,7 +109,7 @@
   },
   {
     "apiType": "Gemini-Paid",
-    "model": "gemini-2.0-flash-preview-image-generation",
+    "model": "gemini-2.5-flash-image-preview",
     "input": 0.7,
     "output": 0.4
   },

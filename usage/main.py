@@ -42,39 +42,39 @@ messages = [
             Content(type=ContentType.Text, data="Hello! How can I assist you today?")
         ]
     ),
-    # Message(
-    #     role=Role.User,
-    #     contents=[
-    #         # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-    #         Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-    #         # Content(type=ContentType.Text, data="Please generate an image of a cat."),
-    #     ]
-    # ),
     Message(
         role=Role.User,
         contents=[
-            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746208707489-image.png"),
-            Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf"),
-            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212253473-file_example_MP3_700KB.mp3"),
-            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212980820-file_example_MP4_480_1_5MG.mp4"),
-            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1753804900037-Calculus.docx"),
-            Content(type=ContentType.Text, data="What's this?"),
+            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            Content(type=ContentType.Text, data="Please generate an image of a cat."),
         ]
     ),
+    # Message(
+    #     role=Role.User,
+    #     contents=[
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746208707489-image.png"),
+    #         Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf"),
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212253473-file_example_MP3_700KB.mp3"),
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212980820-file_example_MP4_480_1_5MG.mp4"),
+    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1753804900037-Calculus.docx"),
+    #         Content(type=ContentType.Text, data="What's this?"),
+    #     ]
+    # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-4.1"
-# model = "gemini-2.5-flash-preview-native-audio-dialog"
+model = "gemini-2.5-flash-image-preview"
 # model = "gemini-2.5-flash"
-model = "grok-4-latest"
+# model = "grok-4-latest"
 # model = "claude-opus-4-1"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Gemini-Free"
-# api_type = "Gemini-Paid"
+api_type = "Gemini-Paid"
 # api_type = "Claude"
-api_type = "Grok"
+# api_type = "Grok"
 temperature = 0
 stream = True
 
