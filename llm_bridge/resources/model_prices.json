@@ -110,8 +110,8 @@
   {
     "apiType": "Gemini-Paid",
     "model": "gemini-2.5-flash-image-preview",
-    "input": 0.7,
-    "output": 0.4
+    "input": 1.0,
+    "output": 2.5
   },
   {
     "apiType": "Claude",
