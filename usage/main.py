@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import sys
 from pprint import pprint
 
 from dotenv import load_dotenv
@@ -8,7 +9,14 @@ from dotenv import load_dotenv
 from llm_bridge import *
 from usage.workflow import workflow
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+output_file = open("./usage/output.log", "w", encoding="utf-8")
+sys.stdout = output_file
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    stream=output_file
+)
 
 load_dotenv(".env")
 
@@ -46,8 +54,8 @@ messages = [
         role=Role.User,
         contents=[
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-            Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
         ]
     ),
     # Message(
@@ -108,3 +116,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+    output_file.close()

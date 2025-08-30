@@ -44,12 +44,13 @@ pytest
 
 ### Setup
 
-1. Copy `./.env.example` and rename it to `./.env`, then fill in the environment variables.
+1. Copy `./usage/.env.example` and rename it to `./usage/.env`, then fill in the environment variables.
 2. Install requirements: `pip install -r requirements.txt`
+3. In PyCharm, add a new Python configuration:
+   - script: `./usage/main.py`
+   - Paths to ".env" files: `./usage/.env`
 
-### Workflow
-
-See `./usage/`
+## Workflow
 
 ```python
 from typing import AsyncGenerator
