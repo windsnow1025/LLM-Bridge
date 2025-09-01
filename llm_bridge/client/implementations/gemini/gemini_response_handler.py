@@ -1,4 +1,5 @@
 import base64
+from typing import Optional
 
 from google.genai import types
 
@@ -9,32 +10,33 @@ from llm_bridge.type.chat_response import Citation, ChatResponse
 
 class GeminiResponseHandler:
     def __init__(self):
-        self.printing_status = None
-        self.prev_output_tokens = 0
-        self.prev_printing_status = None
+        self.printing_status: Optional[PrintingStatus] = None
+        self.prev_output_tokens: int = 0
+        self.prev_printing_status: Optional[PrintingStatus] = None
 
     async def process_gemini_response(
             self,
             response: types.GenerateContentResponse,
     ) -> ChatResponse:
         text = ""
+        thought = ""
         display = None
         image_base64 = None
         citations = extract_citations(response)
         input_tokens, stage_output_tokens = await count_gemini_tokens(response)
 
+        printing_status = None
         if candidates := response.candidates:
             if candidates[0].content.parts:
                 for part in response.candidates[0].content.parts:
                     # Thought Output
                     if part.text:
-                        if part.thought and not self.printing_status:
-                            text += "# Model Thought:\n\n"
-                            self.printing_status = PrintingStatus.Thought
-                        elif not part.thought and self.printing_status == PrintingStatus.Thought:
-                            text += f"\n\n# Model Response:\n\n"
-                            self.printing_status = PrintingStatus.Response
-                        text += part.text
+                        if part.thought:
+                            printing_status = PrintingStatus.Thought
+                            thought += part.text
+                        elif not part.thought:
+                            printing_status = PrintingStatus.Response
+                            text += part.text
                     # Image Output
                     elif part.inline_data:
                         image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
@@ -50,16 +52,17 @@ class GeminiResponseHandler:
                         if chunk.web:
                             text += f"{i}. [{chunk.web.title}]({chunk.web.uri})\n"
 
-        if self.printing_status == self.prev_printing_status:
+        if printing_status == self.prev_printing_status and printing_status == PrintingStatus.Response:
             output_tokens = stage_output_tokens - self.prev_output_tokens
         else:
             output_tokens = stage_output_tokens
 
         self.prev_output_tokens = stage_output_tokens
-        self.prev_printing_status = self.printing_status
+        self.prev_printing_status = printing_status
 
         return ChatResponse(
             text=text,
+            thought=thought,
             image=image_base64,
             display=display,
             citations=citations,

@@ -3,13 +3,9 @@ import re
 from typing import AsyncGenerator
 
 import httpx
-from anthropic import AsyncAnthropic, BetaMessageStreamEvent
-from anthropic.types.beta import BetaMessage
 from fastapi import HTTPException
 
 from llm_bridge.client.implementations.claude.claude_stream_response_handler import ClaudeStreamResponseHandler
-from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens, \
-    count_claude_output_tokens
 from llm_bridge.client.model_client.claude_client import ClaudeClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize

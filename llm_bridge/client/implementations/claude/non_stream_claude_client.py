@@ -19,20 +19,22 @@ async def process_claude_non_stream_response(
         model: str,
 ) -> ChatResponse:
     text = ""
+    thought = ""
 
     for content in message.content:
         if content.type == "thinking":
-            text += "# Model Thought:\n\n"
-            text += content.thinking
+            thought += content.thinking
         if content.type == "text":
-            text += "\n\n# Model Response:\n\n"
             text += content.text
-            # Unable to test since streaming Claude is currently not allowed
+            # Unable to test: non-streaming Claude is currently not allowed
             if citations := content.citations:
                 for citation in citations:
                     text += f"([{citation.title}]({citation.url})) "
 
-    chat_response = ChatResponse(text=text)
+    chat_response = ChatResponse(
+        text=text,
+        thought=thought,
+    )
     output_tokens = await count_claude_output_tokens(
         client=client,
         model=model,
@@ -40,6 +42,7 @@ async def process_claude_non_stream_response(
     )
     return ChatResponse(
         text=text,
+        thought=thought,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )
