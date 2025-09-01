@@ -39,7 +39,7 @@ async def process_claude_non_stream_response(
         chat_response=chat_response,
     )
     return ChatResponse(
-        text=content,
+        text=text,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )
