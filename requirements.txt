@@ -10,7 +10,7 @@ tenacity # tenacity
 openai==1.106.1 # openai
 tiktoken==0.11.0 # tiktoken
 google-genai==1.28.0 # google.genai
-anthropic==0.62.0 # anthropic
+anthropic==0.66.0 # anthropic
 
 # File processing
 PyMuPDF # fitz
