@@ -20,6 +20,8 @@ class GeminiResponseHandler:
     ) -> ChatResponse:
         text = ""
         thought = ""
+        code = ""
+        code_output = ""
         display = None
         image_base64 = None
         citations = extract_citations(response)
@@ -29,16 +31,23 @@ class GeminiResponseHandler:
         if candidates := response.candidates:
             if candidates[0].content.parts:
                 for part in response.candidates[0].content.parts:
-                    # Thought Output
-                    if part.text:
+                    if part.text is not None:
+                        # Thought
                         if part.thought:
                             printing_status = PrintingStatus.Thought
                             thought += part.text
+                        # Text
                         elif not part.thought:
                             printing_status = PrintingStatus.Response
                             text += part.text
-                    # Image Output
-                    elif part.inline_data:
+                    # Code (Causing Error)
+                    # if part.executable_code is not None:
+                    #     code += part.executable_code.code
+                    # Code Output
+                    if part.code_execution_result is not None:
+                        code_output += part.code_execution_result.output
+                    # Image
+                    if part.inline_data is not None:
                         image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
 
         # Grounding Sources
@@ -63,6 +72,8 @@ class GeminiResponseHandler:
         return ChatResponse(
             text=text,
             thought=thought,
+            code=code,
+            code_output=code_output,
             image=image_base64,
             display=display,
             citations=citations,

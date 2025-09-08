@@ -38,6 +38,11 @@ async def create_gemini_client(
                 url_context=types.UrlContext()
             )
         )
+        tools.append(
+            types.Tool(
+                code_execution=types.ToolCodeExecution()
+            )
+        )
     if "image" not in model:
         thinking_config = types.ThinkingConfig(include_thoughts=True)
     if "image" in model:
