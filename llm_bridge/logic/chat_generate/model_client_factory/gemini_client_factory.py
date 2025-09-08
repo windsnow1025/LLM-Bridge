@@ -26,12 +26,16 @@ async def create_gemini_client(
     thinking_config = None
     response_modalities = ['Text']
 
-    if "image" not in model:
-        system_instruction = extract_system_messages(messages) or " "
+    system_instruction = extract_system_messages(messages) or " "
     if "image" not in model:
         tools.append(
             types.Tool(
                 google_search=types.GoogleSearch()
+            )
+        )
+        tools.append(
+            types.Tool(
+                url_context=types.UrlContext()
             )
         )
     if "image" not in model:

@@ -54,8 +54,9 @@ messages = [
         role=Role.User,
         contents=[
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
             # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
         ]
     ),
     # Message(
