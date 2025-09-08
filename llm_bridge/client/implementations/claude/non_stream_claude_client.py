@@ -26,10 +26,6 @@ async def process_claude_non_stream_response(
             thought += content.thinking
         if content.type == "text":
             text += content.text
-            # Unable to test: non-streaming Claude is currently not allowed
-            if citations := content.citations:
-                for citation in citations:
-                    text += f"([{citation.title}]({citation.url})) "
 
     chat_response = ChatResponse(
         text=text,

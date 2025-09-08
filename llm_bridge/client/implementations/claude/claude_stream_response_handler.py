@@ -20,9 +20,6 @@ class ClaudeStreamResponseHandler:
                 thought += event.delta.thinking
             elif event.delta.type == "text_delta":
                 text += event.delta.text
-        elif event.type == "citation":
-            citation = event.citation
-            text += f"([{citation.title}]({citation.url})) "
 
         chat_response = ChatResponse(
             text=text,
