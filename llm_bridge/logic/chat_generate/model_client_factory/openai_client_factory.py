@@ -4,7 +4,8 @@ import openai
 from fastapi import HTTPException
 from openai.types import Reasoning
 from openai.types.responses import WebSearchToolParam
-from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto
+from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
+    ImageGeneration
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -76,6 +77,11 @@ async def create_openai_client(
         temperature = 1
     if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
         reasoning = Reasoning(effort="high")
+        tools.append(
+            ImageGeneration(
+                type="image_generation",
+            )
+        )
 
     if use_responses_api:
         if stream:

@@ -23,6 +23,7 @@ def process_openai_responses_non_stream_response(
     output_list = response.output
 
     text = ""
+    image = None
     citations: list[Citation] = []
 
     for output in output_list:
@@ -31,19 +32,24 @@ def process_openai_responses_non_stream_response(
                 if content.type == "output_text":
                     text += content.text
                 # Citation is unavailable in OpenAI Responses API
-                if annotations := content.annotations:
-                    for annotation in annotations:
-                        citations.append(
-                            Citation(
-                                text=content.text[annotation.start_index:annotation.end_index],
-                                indices=[0]
-                            )
-                        )
+                # if annotations := content.annotations:
+                #     for annotation in annotations:
+                #         citations.append(
+                #             Citation(
+                #                 text=content.text[annotation.start_index:annotation.end_index],
+                #                 url=annotation.url
+                #             )
+                #         )
+        # Unable to test due to organization verification requirement
+        # if output.type == "image_generation_call":
+        #     image = output.result
 
-    chat_response = ChatResponse(text=text)
+    chat_response = ChatResponse(text=text, image=image)
     output_tokens = count_openai_output_tokens(chat_response)
     return ChatResponse(
         text=text,
+        image=image,
+        citations=citations,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )
