@@ -61,6 +61,7 @@ class StreamOpenAIResponsesClient(OpenAIClient):
 
             stream: AsyncStream[ResponseStreamEvent] = await self.client.responses.create(
                 model=self.model,
+                reasoning=self.reasoning,
                 input=serialize(self.messages),
                 temperature=self.temperature,
                 stream=True,

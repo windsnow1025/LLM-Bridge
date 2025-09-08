@@ -1,6 +1,7 @@
 from typing import AsyncGenerator, Iterable
 
 import openai.lib.azure
+from openai.types import Reasoning
 from openai.types.responses import ToolParam
 
 from llm_bridge.client.chat_client import ChatClient
@@ -18,6 +19,7 @@ class OpenAIClient(ChatClient):
             api_type: str,
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
             tools: Iterable[ToolParam],
+            reasoning: Reasoning,
     ):
         self.model = model
         self.messages = messages
@@ -25,6 +27,7 @@ class OpenAIClient(ChatClient):
         self.api_type = api_type
         self.client = client
         self.tools = tools
+        self.reasoning = reasoning
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError

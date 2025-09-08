@@ -2,7 +2,9 @@ import re
 
 import openai
 from fastapi import HTTPException
+from openai.types import Reasoning
 from openai.types.responses import WebSearchToolParam
+from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -54,20 +56,26 @@ async def create_openai_client(
     else:
         openai_messages = await convert_messages_to_openai(messages)
 
-    tools = [
-        WebSearchToolParam(
-            type="web_search",
-            search_context_size="high",
-        )
-    ]
+    tools = []
+    reasoning = None
 
-    if re.match(r"^o\d", model):
-        tools = None
+    if model != "gpt-5-chat-latest":
+        tools.append(
+            WebSearchToolParam(
+                type="web_search",
+                search_context_size="high",
+            )
+        )
+        tools.append(
+            CodeInterpreter(
+                type="code_interpreter",
+                container=CodeInterpreterContainerCodeInterpreterToolAuto(type="auto")
+            )
+        )
+    if re.match(r"^o\d", model) or (re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest"):
         temperature = 1
-    if re.match(r"gpt-5.*", model):
-        temperature = 1
-    if model == "gpt-5-chat-latest":
-        tools = None
+    if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
+        reasoning = Reasoning(effort="high")
 
     if use_responses_api:
         if stream:
@@ -78,6 +86,7 @@ async def create_openai_client(
                 api_type=api_type,
                 client=client,
                 tools=tools,
+                reasoning=reasoning,
             )
         else:
             return NonStreamOpenAIResponsesClient(
@@ -87,6 +96,7 @@ async def create_openai_client(
                 api_type=api_type,
                 client=client,
                 tools=tools,
+                reasoning=reasoning,
             )
     else:
         if stream:
@@ -97,6 +107,7 @@ async def create_openai_client(
                 api_type=api_type,
                 client=client,
                 tools=tools,
+                reasoning=reasoning,
             )
         else:
             return NonStreamOpenAIClient(
@@ -106,4 +117,5 @@ async def create_openai_client(
                 api_type=api_type,
                 client=client,
                 tools=tools,
+                reasoning=reasoning,
             )
