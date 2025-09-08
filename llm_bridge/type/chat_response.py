@@ -8,6 +8,14 @@ class Citation:
     indices: list[int]
 
 
+# TODO: adapt to different Citation formats
+# @dataclass
+# class Citation:
+#     text: str
+#     indices: Optional[list[int]] = None
+#     url: Optional[str] = None
+
+
 @dataclass
 class ChatResponse:
     text: Optional[str] = None

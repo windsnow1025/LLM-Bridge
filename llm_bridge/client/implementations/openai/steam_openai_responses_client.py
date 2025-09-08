@@ -1,5 +1,6 @@
 import logging
 import re
+from pprint import pprint
 from typing import AsyncGenerator
 
 import httpx
@@ -11,16 +12,24 @@ from openai.types.responses import ResponseStreamEvent
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse
+from llm_bridge.type.chat_response import ChatResponse, Citation
 from llm_bridge.type.serializer import serialize
 
 
-def process_delta(event: ResponseStreamEvent) -> str:
-    if event.type != "response.output_text.delta":
-        return ""
+def process_delta(event: ResponseStreamEvent) -> ChatResponse:
+    text = ""
+    citations: list[Citation] = []
 
-    content_delta = event.delta
-    return content_delta
+    if event.type == "response.output_text.delta":
+        text = event.delta
+    # Citation is unavailable in OpenAI Responses API
+    if event.type == "response.output_text.annotation.added":
+        pass
+
+    chat_response = ChatResponse(
+        text=text,
+    )
+    return chat_response
 
 
 async def generate_chunk(
@@ -29,11 +38,10 @@ async def generate_chunk(
 ) -> AsyncGenerator[ChatResponse, None]:
     try:
         async for event in stream:
-            content_delta = process_delta(event)
-            chat_response = ChatResponse(text=content_delta)
+            chat_response = process_delta(event)
             output_tokens = count_openai_output_tokens(chat_response)
             yield ChatResponse(
-                text=content_delta,
+                text=chat_response.text,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
             )

@@ -1,5 +1,6 @@
 import logging
 import re
+from pprint import pprint
 
 import httpx
 import openai
@@ -29,12 +30,17 @@ def process_openai_responses_non_stream_response(
             for content in output.content:
                 if content.type == "output_text":
                     text += content.text
-                # Citation is currently not working well in OpenAI Responses API
+                # Citation is unavailable in OpenAI Responses API
                 if annotations := content.annotations:
                     for annotation in annotations:
-                        text = content.text[annotation.start_index:annotation.end_index]
+                        citations.append(
+                            Citation(
+                                text=content.text[annotation.start_index:annotation.end_index],
+                                indices=[0]
+                            )
+                        )
 
-    chat_response = ChatResponse(text=text, citations=citations)
+    chat_response = ChatResponse(text=text)
     output_tokens = count_openai_output_tokens(chat_response)
     return ChatResponse(
         text=text,
