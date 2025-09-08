@@ -1,6 +1,7 @@
 import logging
 import re
 from pprint import pprint
+from typing import Optional
 
 import httpx
 import openai
@@ -22,8 +23,8 @@ def process_openai_responses_non_stream_response(
 
     output_list = response.output
 
-    text = ""
-    image = None
+    text: str = ""
+    image: Optional[str] = None
     citations: list[Citation] = []
 
     for output in output_list:
@@ -40,7 +41,7 @@ def process_openai_responses_non_stream_response(
                 #                 url=annotation.url
                 #             )
                 #         )
-        # Unable to test due to organization verification requirement
+        # Image Generation untestable due to organization verification requirement
         # if output.type == "image_generation_call":
         #     image = output.result
 

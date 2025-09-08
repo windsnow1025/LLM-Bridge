@@ -18,13 +18,13 @@ class GeminiResponseHandler:
             self,
             response: types.GenerateContentResponse,
     ) -> ChatResponse:
-        text = ""
-        thought = ""
-        code = ""
-        code_output = ""
-        display = None
-        image_base64 = None
-        citations = extract_citations(response)
+        text: str = ""
+        thought: str = ""
+        code: str = ""
+        code_output: str = ""
+        image: Optional[str] = None
+        display: Optional[str] = None
+        citations: list[Citation] = extract_citations(response)
         input_tokens, stage_output_tokens = await count_gemini_tokens(response)
 
         printing_status = None
@@ -48,7 +48,7 @@ class GeminiResponseHandler:
                         code_output += part.code_execution_result.output
                     # Image
                     if part.inline_data is not None:
-                        image_base64 = base64.b64encode(part.inline_data.data).decode('utf-8')
+                        image = base64.b64encode(part.inline_data.data).decode('utf-8')
 
         # Grounding Sources
         if candidates := response.candidates:
@@ -74,7 +74,7 @@ class GeminiResponseHandler:
             thought=thought,
             code=code,
             code_output=code_output,
-            image=image_base64,
+            image=image,
             display=display,
             citations=citations,
             input_tokens=input_tokens,

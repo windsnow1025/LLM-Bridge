@@ -28,6 +28,12 @@ The features listed represent the maximum capabilities of each API type supporte
 | Claude   | Text, Image, PDF               | Thinking, Web Search                                       | Text          |
 | Grok     | Text, Image                    |                                                            | Text          |
 
+#### Planned Features
+
+- OpenAI: Web Search: Citations, Image Output
+- Gemini: Code Execution: Code, Code Output
+- Claude: Code Execution, File Output
+
 ## Installation
 
 ```bash

@@ -1,7 +1,7 @@
 import logging
 import re
 from pprint import pprint
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Optional
 
 import httpx
 import openai
@@ -17,7 +17,8 @@ from llm_bridge.type.serializer import serialize
 
 
 def process_delta(event: ResponseStreamEvent) -> ChatResponse:
-    text = ""
+    text: str = ""
+    image: Optional[str] = None
     citations: list[Citation] = []
 
     if event.type == "response.output_text.delta":
@@ -25,9 +26,14 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     # Citation is unavailable in OpenAI Responses API
     if event.type == "response.output_text.annotation.added":
         pass
+    # Image Generation untestable due to organization verification requirement
+    # if event.type == "response.image_generation_call.partial_image":
+    #     image = event.partial_image_b64
 
     chat_response = ChatResponse(
         text=text,
+        image=image,
+        citations=citations,
     )
     return chat_response
 
@@ -42,6 +48,8 @@ async def generate_chunk(
             output_tokens = count_openai_output_tokens(chat_response)
             yield ChatResponse(
                 text=chat_response.text,
+                image=chat_response.image,
+                citations=chat_response.citations,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
             )
