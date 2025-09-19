@@ -12,13 +12,13 @@ from openai.types.responses import ResponseStreamEvent
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse, Citation
+from llm_bridge.type.chat_response import ChatResponse, Citation, File
 from llm_bridge.type.serializer import serialize
 
 
 def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     text: str = ""
-    files: list[str] = []
+    files: list[File] = []
     citations: list[Citation] = []
 
     if event.type == "response.output_text.delta":
@@ -28,7 +28,12 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
         pass
     # Image Generation untestable due to organization verification requirement
     # if event.type == "response.image_generation_call.partial_image":
-    #     files.append(event.partial_image_b64)
+    #     file = File(
+    #         name="generated_image",
+    #         data=event.partial_image_b64,
+    #         type="image/png",
+    #     )
+    #     files.append(file)
 
     chat_response = ChatResponse(
         text=text,

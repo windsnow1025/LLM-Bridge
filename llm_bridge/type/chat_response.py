@@ -3,6 +3,13 @@ from typing import Optional
 
 
 @dataclass
+class File:
+    name: str
+    data: str
+    type: str
+
+
+@dataclass
 class Citation:
     text: str
     indices: list[int]
@@ -22,7 +29,7 @@ class ChatResponse:
     thought: Optional[str] = None
     code: Optional[str] = None
     code_output: Optional[str] = None
-    files: Optional[list[str]] = None
+    files: Optional[list[File]] = None
     display: Optional[str] = None
     citations: Optional[list[Citation]] = None
     error: Optional[str] = None

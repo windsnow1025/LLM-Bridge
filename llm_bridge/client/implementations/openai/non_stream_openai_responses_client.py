@@ -12,7 +12,7 @@ from openai.types.responses import WebSearchToolParam, Response
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse, Citation
+from llm_bridge.type.chat_response import ChatResponse, Citation, File
 from llm_bridge.type.serializer import serialize
 
 
@@ -24,7 +24,7 @@ def process_openai_responses_non_stream_response(
     output_list = response.output
 
     text: str = ""
-    files: list[str] = []
+    files: list[File] = []
     citations: list[Citation] = []
 
     for output in output_list:
@@ -43,7 +43,12 @@ def process_openai_responses_non_stream_response(
                 #         )
         # Image Generation untestable due to organization verification requirement
         # if output.type == "image_generation_call":
-        #     files.append(output.result)
+        #     file = File(
+        #         name="generated_image",
+        #         data=output.result,
+        #         type="image/png",
+        #     )
+        #     files.append(file)
 
     chat_response = ChatResponse(text=text, files=files)
     output_tokens = count_openai_output_tokens(chat_response)

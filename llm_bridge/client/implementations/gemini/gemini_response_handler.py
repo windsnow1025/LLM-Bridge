@@ -5,7 +5,7 @@ from google.genai import types
 
 from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
 from llm_bridge.client.implementations.printing_status import PrintingStatus
-from llm_bridge.type.chat_response import Citation, ChatResponse
+from llm_bridge.type.chat_response import Citation, ChatResponse, File
 
 
 class GeminiResponseHandler:
@@ -22,7 +22,7 @@ class GeminiResponseHandler:
         thought: str = ""
         code: str = ""
         code_output: str = ""
-        files: list[str] = []
+        files: list[File] = []
         display: Optional[str] = None
         citations: list[Citation] = extract_citations(response)
         input_tokens, stage_output_tokens = await count_gemini_tokens(response)
@@ -48,7 +48,11 @@ class GeminiResponseHandler:
                         code_output += part.code_execution_result.output
                     # File
                     if part.inline_data is not None:
-                        file = base64.b64encode(part.inline_data.data).decode('utf-8')
+                        file = File(
+                            name="generated_file",
+                            data=base64.b64encode(part.inline_data.data).decode('utf-8'),
+                            type=part.inline_data.mime_type,
+                        )
                         files.append(file)
 
         # Grounding Sources
