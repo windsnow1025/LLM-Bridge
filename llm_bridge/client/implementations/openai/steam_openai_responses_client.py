@@ -32,7 +32,7 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
 
     chat_response = ChatResponse(
         text=text,
-        image=image,
+        file=image,
         citations=citations,
     )
     return chat_response
@@ -48,7 +48,7 @@ async def generate_chunk(
             output_tokens = count_openai_output_tokens(chat_response)
             yield ChatResponse(
                 text=chat_response.text,
-                image=chat_response.image,
+                file=chat_response.file,
                 citations=chat_response.citations,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,

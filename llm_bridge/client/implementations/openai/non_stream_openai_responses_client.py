@@ -45,11 +45,11 @@ def process_openai_responses_non_stream_response(
         # if output.type == "image_generation_call":
         #     image = output.result
 
-    chat_response = ChatResponse(text=text, image=image)
+    chat_response = ChatResponse(text=text, file=image)
     output_tokens = count_openai_output_tokens(chat_response)
     return ChatResponse(
         text=text,
-        image=image,
+        file=image,
         citations=citations,
         input_tokens=input_tokens,
         output_tokens=output_tokens,

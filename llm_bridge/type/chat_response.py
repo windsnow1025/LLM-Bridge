@@ -22,7 +22,7 @@ class ChatResponse:
     thought: Optional[str] = None
     code: Optional[str] = None
     code_output: Optional[str] = None
-    image: Optional[str] = None
+    file: Optional[str] = None
     display: Optional[str] = None
     citations: Optional[list[Citation]] = None
     error: Optional[str] = None
