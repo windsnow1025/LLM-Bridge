@@ -29,7 +29,7 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     # Image Generation untestable due to organization verification requirement
     # if event.type == "response.image_generation_call.partial_image":
     #     file = File(
-    #         name="generated_image",
+    #         name="generated_image.png",
     #         data=event.partial_image_b64,
     #         type="image/png",
     #     )

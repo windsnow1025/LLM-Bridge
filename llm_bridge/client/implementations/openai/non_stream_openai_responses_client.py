@@ -44,7 +44,7 @@ def process_openai_responses_non_stream_response(
         # Image Generation untestable due to organization verification requirement
         # if output.type == "image_generation_call":
         #     file = File(
-        #         name="generated_image",
+        #         name="generated_image.png",
         #         data=output.result,
         #         type="image/png",
         #     )

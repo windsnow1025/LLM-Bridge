@@ -1,4 +1,5 @@
 import base64
+import mimetypes
 from typing import Optional
 
 from google.genai import types
@@ -48,10 +49,12 @@ class GeminiResponseHandler:
                         code_output += part.code_execution_result.output
                     # File
                     if part.inline_data is not None:
+                        mime_type = part.inline_data.mime_type
+                        extension = mimetypes.guess_extension(mime_type) or ""
                         file = File(
-                            name="generated_file",
+                            name=f"generated_file{extension}",
                             data=base64.b64encode(part.inline_data.data).decode('utf-8'),
-                            type=part.inline_data.mime_type,
+                            type=mime_type,
                         )
                         files.append(file)
 
