@@ -41,9 +41,9 @@ class GeminiResponseHandler:
                         elif not part.thought:
                             printing_status = PrintingStatus.Response
                             text += part.text
-                    # Code (Causing Error)
-                    # if part.executable_code is not None:
-                    #     code += part.executable_code.code
+                    # Code
+                    if part.executable_code is not None:
+                        code += part.executable_code.code
                     # Code Output
                     if part.code_execution_result is not None:
                         code_output += part.code_execution_result.output
