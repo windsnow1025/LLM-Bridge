@@ -24,7 +24,7 @@ def process_openai_responses_non_stream_response(
     output_list = response.output
 
     text: str = ""
-    image: Optional[str] = None
+    files: list[str] = []
     citations: list[Citation] = []
 
     for output in output_list:
@@ -43,13 +43,13 @@ def process_openai_responses_non_stream_response(
                 #         )
         # Image Generation untestable due to organization verification requirement
         # if output.type == "image_generation_call":
-        #     image = output.result
+        #     files.append(output.result)
 
-    chat_response = ChatResponse(text=text, file=image)
+    chat_response = ChatResponse(text=text, files=files)
     output_tokens = count_openai_output_tokens(chat_response)
     return ChatResponse(
         text=text,
-        file=image,
+        files=files,
         citations=citations,
         input_tokens=input_tokens,
         output_tokens=output_tokens,

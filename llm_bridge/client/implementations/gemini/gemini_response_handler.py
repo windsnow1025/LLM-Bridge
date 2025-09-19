@@ -22,7 +22,7 @@ class GeminiResponseHandler:
         thought: str = ""
         code: str = ""
         code_output: str = ""
-        file: Optional[str] = None
+        files: list[str] = []
         display: Optional[str] = None
         citations: list[Citation] = extract_citations(response)
         input_tokens, stage_output_tokens = await count_gemini_tokens(response)
@@ -49,6 +49,7 @@ class GeminiResponseHandler:
                     # File
                     if part.inline_data is not None:
                         file = base64.b64encode(part.inline_data.data).decode('utf-8')
+                        files.append(file)
 
         # Grounding Sources
         if candidates := response.candidates:
@@ -74,7 +75,7 @@ class GeminiResponseHandler:
             thought=thought,
             code=code,
             code_output=code_output,
-            file=file,
+            files=files,
             display=display,
             citations=citations,
             input_tokens=input_tokens,

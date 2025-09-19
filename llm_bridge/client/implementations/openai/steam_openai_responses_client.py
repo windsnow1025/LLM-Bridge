@@ -18,7 +18,7 @@ from llm_bridge.type.serializer import serialize
 
 def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     text: str = ""
-    image: Optional[str] = None
+    files: list[str] = []
     citations: list[Citation] = []
 
     if event.type == "response.output_text.delta":
@@ -28,11 +28,11 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
         pass
     # Image Generation untestable due to organization verification requirement
     # if event.type == "response.image_generation_call.partial_image":
-    #     image = event.partial_image_b64
+    #     files.append(event.partial_image_b64)
 
     chat_response = ChatResponse(
         text=text,
-        file=image,
+        files=files,
         citations=citations,
     )
     return chat_response
@@ -48,7 +48,7 @@ async def generate_chunk(
             output_tokens = count_openai_output_tokens(chat_response)
             yield ChatResponse(
                 text=chat_response.text,
-                file=chat_response.file,
+                files=chat_response.files,
                 citations=chat_response.citations,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
