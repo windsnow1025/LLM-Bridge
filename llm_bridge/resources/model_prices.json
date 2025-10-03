@@ -79,6 +79,12 @@
   },
   {
     "apiType": "Gemini-Free",
+    "model": "gemini-flash-latest",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Free",
     "model": "gemini-2.5-flash",
     "input": 0,
     "output": 0
@@ -94,6 +100,12 @@
     "model": "gemini-2.5-flash-image-preview",
     "input": 0,
     "output": 0
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-flash-latest",
+    "input": 1,
+    "output": 2.5
   },
   {
     "apiType": "Gemini-Paid",
