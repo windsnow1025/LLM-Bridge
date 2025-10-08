@@ -60,17 +60,18 @@ async def create_openai_client(
     tools = []
     reasoning = None
 
-    if model != "gpt-5-chat-latest":
-        tools.append(
-            WebSearchToolParam(
-                type="web_search",
-                search_context_size="high",
-            )
-        )
+    if model not in ["gpt-5-chat-latest", "gpt-5-pro"]:
         tools.append(
             CodeInterpreter(
                 type="code_interpreter",
                 container=CodeInterpreterContainerCodeInterpreterToolAuto(type="auto")
+            )
+        )
+    if model not in ["gpt-5-chat-latest"]:
+        tools.append(
+            WebSearchToolParam(
+                type="web_search",
+                search_context_size="high",
             )
         )
     if re.match(r"^o\d", model) or (re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest"):

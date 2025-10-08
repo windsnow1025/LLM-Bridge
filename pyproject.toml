@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LLM-Bridge"
-version = "1.10.2"
+version = "1.10.3"
 authors = [
     {name = "windsnow1025", email = "windsnow1025@gmail.com"}
 ]
