@@ -27,6 +27,7 @@ api_keys = {
     "GITHUB_API_KEY": os.environ.get("GITHUB_API_KEY"),
     "GEMINI_FREE_API_KEY": os.environ.get("GEMINI_FREE_API_KEY"),
     "GEMINI_PAID_API_KEY": os.environ.get("GEMINI_PAID_API_KEY"),
+    "GEMINI_VERTEX_API_KEY": os.environ.get("GEMINI_VERTEX_API_KEY"),
     "ANTHROPIC_API_KEY": os.environ.get("ANTHROPIC_API_KEY"),
     "XAI_API_KEY": os.environ.get("XAI_API_KEY"),
 }
@@ -53,9 +54,9 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-            Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
             # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
 
@@ -79,16 +80,17 @@ messages = [
 # model = "gpt-5-chat-latest"
 # model = "gpt-5-pro"
 # model = "gpt-4.1"
-model = "gemini-2.5-flash-image-preview"
+# model = "gemini-2.5-flash-image-preview"
 # model = "gemini-flash-latest"
-# model = "gemini-2.5-pro"
+model = "gemini-2.5-pro"
 # model = "grok-4-latest"
 # model = "claude-opus-4-1"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Gemini-Free"
-api_type = "Gemini-Paid"
+# api_type = "Gemini-Paid"
+api_type = "Gemini-Vertex"
 # api_type = "Claude"
 # api_type = "Grok"
 temperature = 0

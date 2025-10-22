@@ -132,6 +132,30 @@
     "output": 2.5
   },
   {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-flash-latest",
+    "input": 1,
+    "output": 2.5
+  },
+  {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-2.5-flash",
+    "input": 1,
+    "output": 2.5
+  },
+  {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-2.5-pro",
+    "input": 2.5,
+    "output": 15
+  },
+  {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-2.5-flash-image-preview",
+    "input": 1.0,
+    "output": 2.5
+  },
+  {
     "apiType": "Claude",
     "model": "claude-sonnet-4-0",
     "input": 3,

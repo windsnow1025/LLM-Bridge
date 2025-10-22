@@ -60,7 +60,8 @@ async def create_chat_client(
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["GEMINI_FREE_API_KEY"]
+            api_key=api_keys["GEMINI_FREE_API_KEY"],
+            vertexai=False,
         )
     elif api_type == 'Gemini-Paid':
         return await create_gemini_client(
@@ -68,7 +69,17 @@ async def create_chat_client(
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["GEMINI_PAID_API_KEY"]
+            api_key=api_keys["GEMINI_PAID_API_KEY"],
+            vertexai=False,
+        )
+    elif api_type == 'Gemini-Vertex':
+        return await create_gemini_client(
+            messages=messages,
+            model=model,
+            temperature=temperature,
+            stream=stream,
+            api_key=api_keys["GEMINI_VERTEX_API_KEY"],
+            vertexai=True,
         )
     elif api_type == 'Claude':
         return await create_claude_client(
