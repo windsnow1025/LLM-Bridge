@@ -1,6 +1,7 @@
 from google import genai
 from google.genai import types
 from google.genai._api_client import HttpOptions
+from google.genai.types import Modality
 
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
@@ -24,7 +25,7 @@ async def create_gemini_client(
     system_instruction = None
     tools = []
     thinking_config = None
-    response_modalities = ['Text']
+    response_modalities = [Modality.TEXT]
 
     system_instruction = extract_system_messages(messages) or " "
     if "image" not in model:
@@ -46,7 +47,7 @@ async def create_gemini_client(
     if "image" not in model:
         thinking_config = types.ThinkingConfig(include_thoughts=True)
     if "image" in model:
-        response_modalities = ['Text', 'Image']
+        response_modalities = [Modality.TEXT, Modality.IMAGE]
 
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,

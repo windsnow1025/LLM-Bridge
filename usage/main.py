@@ -55,11 +55,12 @@ messages = [
         contents=[
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            Content(type=ContentType.Text, data="Please generate an image of a cat."),
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
             # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
-            Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1758384216123-script.py"),
-            Content(type=ContentType.Text, data="Please implement Neural Network in `script.py`"),
+
+            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1758384216123-script.py"),
+            # Content(type=ContentType.Text, data="Please implement Neural Network in `script.py`"),
         ]
     ),
     # Message(
@@ -76,18 +77,18 @@ messages = [
 ]
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-5-chat-latest"
-model = "gpt-5-pro"
+# model = "gpt-5-pro"
 # model = "gpt-4.1"
-# model = "gemini-2.5-flash-image-preview"
+model = "gemini-2.5-flash-image-preview"
 # model = "gemini-flash-latest"
 # model = "gemini-2.5-pro"
 # model = "grok-4-latest"
 # model = "claude-opus-4-1"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Gemini-Free"
-# api_type = "Gemini-Paid"
+api_type = "Gemini-Paid"
 # api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
