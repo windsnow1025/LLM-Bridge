@@ -1,5 +1,71 @@
 [
   {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-2.5-flash",
+    "input": 1,
+    "output": 2.5
+  },
+  {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-2.5-pro",
+    "input": 2.5,
+    "output": 15
+  },
+  {
+    "apiType": "Gemini-Vertex",
+    "model": "gemini-2.5-flash-image",
+    "input": 1.0,
+    "output": 2.5
+  },
+  {
+    "apiType": "Gemini-Free",
+    "model": "gemini-flash-latest",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Free",
+    "model": "gemini-2.5-flash",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Free",
+    "model": "gemini-2.5-pro",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Free",
+    "model": "gemini-2.5-flash-image-preview",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-flash-latest",
+    "input": 1,
+    "output": 2.5
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-2.5-flash",
+    "input": 1,
+    "output": 2.5
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-2.5-pro",
+    "input": 2.5,
+    "output": 15
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-2.5-flash-image",
+    "input": 1.0,
+    "output": 2.5
+  },
+  {
     "apiType": "OpenAI",
     "model": "gpt-5-chat-latest",
     "input": 1.25,
@@ -82,72 +148,6 @@
     "model": "gpt-4.1",
     "input": 0,
     "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-flash-latest",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-2.5-flash",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-2.5-pro",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-2.5-flash-image-preview",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-flash-latest",
-    "input": 1,
-    "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-flash",
-    "input": 1,
-    "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-pro",
-    "input": 2.5,
-    "output": 15
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-flash-image",
-    "input": 1.0,
-    "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Vertex",
-    "model": "gemini-2.5-flash",
-    "input": 1,
-    "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Vertex",
-    "model": "gemini-2.5-pro",
-    "input": 2.5,
-    "output": 15
-  },
-  {
-    "apiType": "Gemini-Vertex",
-    "model": "gemini-2.5-flash-image",
-    "input": 1.0,
-    "output": 2.5
   },
   {
     "apiType": "Claude",
