@@ -151,9 +151,15 @@
   },
   {
     "apiType": "Claude",
-    "model": "claude-sonnet-4-0",
+    "model": "claude-sonnet-4-5",
     "input": 3,
     "output": 15
+  },
+  {
+    "apiType": "Claude",
+    "model": "claude-haiku-4-5",
+    "input": 1,
+    "output": 5
   },
   {
     "apiType": "Claude",
