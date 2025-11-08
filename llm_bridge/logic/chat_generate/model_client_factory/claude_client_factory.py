@@ -34,14 +34,21 @@ async def create_claude_client(
         messages=claude_messages,
     )
 
-    max_tokens = min(32000, 200000 - input_tokens)
+    max_tokens = min(
+        32_000,  # Max output: Claude 4.5 64K; Claude 4.1 32K
+        200_000 - input_tokens  # Context window: Claude Sonnet 4.5 beta: 1M; otherwise 200K
+    )
     thinking = ThinkingConfigEnabledParam(
         type="enabled",
-        budget_tokens=16000
+        budget_tokens=min(32_000, max_tokens) // 2
     )
     temperature = 1
-    betas: list[AnthropicBetaParam] = ["output-128k-2025-02-19", "code-execution-2025-08-25"]
-    tools = [
+    betas: list[AnthropicBetaParam] = [
+        "context-1m-2025-08-07",
+        "output-128k-2025-02-19",
+        "code-execution-2025-08-25",
+    ]
+    tools: list[BetaToolUnionParam] = [
         BetaWebSearchTool20250305Param(
             type="web_search_20250305",
             name="web_search",
@@ -79,5 +86,3 @@ async def create_claude_client(
             input_tokens=input_tokens,
             tools=tools,
         )
-
-
