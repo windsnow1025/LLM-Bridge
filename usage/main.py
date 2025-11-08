@@ -54,11 +54,11 @@ messages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
             # Content(type=ContentType.Text, data="Please generate an image of a cat."),
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
-            # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
+            Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
 
             # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1758384216123-script.py"),
             # Content(type=ContentType.Text, data="Please implement Neural Network in `script.py`"),
@@ -82,16 +82,17 @@ messages = [
 # model = "gpt-4.1"
 # model = "gemini-2.5-flash-image-preview"
 # model = "gemini-flash-latest"
-model = "gemini-2.5-pro"
+# model = "gemini-2.5-pro"
 # model = "grok-4-latest"
-# model = "claude-opus-4-1"
+# model = "claude-sonnet-4-5"
+model = "claude-opus-4-1"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-api_type = "Gemini-Vertex"
-# api_type = "Claude"
+# api_type = "Gemini-Vertex"
+api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True
@@ -106,22 +107,38 @@ async def main():
     output_tokens = 0
     response = await workflow(api_keys, messages, model, api_type, temperature, stream)
     text = ""
+    thought = ""
+    code = ""
+    code_output = ""
+
     if stream:
         async for chunk in response:
             pprint(chunk)
             if chunk.text:
                 text += chunk.text
+            if chunk.thought:
+                thought += chunk.thought
             if chunk.input_tokens:
                 input_tokens = chunk.input_tokens
             if chunk.output_tokens:
                 output_tokens += chunk.output_tokens
+            if chunk.code:
+                code += chunk.code
+            if chunk.code_output:
+                code_output += chunk.code_output
     else:
         pprint(response)
         text = response.text
+        thought = response.thought
+        code = response.code
+        code_output = response.code_output
         input_tokens = response.input_tokens
         output_tokens = response.output_tokens
     total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
-    print(text)
+    print(f"Thought:\n{thought}\n")
+    print(f"Code:\n{code}\n")
+    print(f"Code Output:\n{code_output}\n")
+    print(f"Text:\n{text}")
     print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 
 

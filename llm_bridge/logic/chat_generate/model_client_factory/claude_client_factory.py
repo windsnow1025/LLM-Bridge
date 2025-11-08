@@ -1,6 +1,6 @@
 import anthropic
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
-from anthropic.types.beta import BetaCodeExecutionTool20250825Param, BetaWebSearchTool20250305Param
+from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
@@ -53,11 +53,10 @@ async def create_claude_client(
             type="web_search_20250305",
             name="web_search",
         ),
-        # Code Execution is unavailable in Claude
-        # BetaCodeExecutionTool20250825Param(
-        #     type="code_execution_20250825",
-        #     name="code_execution",
-        # )
+        BetaCodeExecutionTool20250825Param(
+            type="code_execution_20250825",
+            name="code_execution",
+        )
     ]
 
     if stream:

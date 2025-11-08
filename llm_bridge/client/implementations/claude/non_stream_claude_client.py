@@ -3,7 +3,8 @@ import re
 
 import httpx
 from anthropic import AsyncAnthropic
-from anthropic.types.beta import BetaMessage
+from anthropic.types.beta import BetaMessage, BetaBashCodeExecutionToolResultBlock, BetaTextBlock, BetaThinkingBlock, \
+    BetaServerToolUseBlock
 from fastapi import HTTPException
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_output_tokens
@@ -20,16 +21,37 @@ async def process_claude_non_stream_response(
 ) -> ChatResponse:
     text = ""
     thought = ""
+    code = ""
+    code_output = ""
 
-    for content in message.content:
-        if content.type == "thinking":
-            thought += content.thinking
-        if content.type == "text":
-            text += content.text
+    for content_block in message.content:
+        if content_block.type == "text":
+            text_block: BetaTextBlock = content_block
+            text += text_block.text
+
+        elif content_block.type == "thinking":
+            thinking_block: BetaThinkingBlock = content_block
+            thought += thinking_block.thinking
+
+        elif content_block.type == "server_tool_use":
+            server_tool_use_block: BetaServerToolUseBlock = content_block
+            code += server_tool_use_block.input
+
+        elif content_block.type == "bash_code_execution_tool_result":
+            bash_code_execution_tool_result_block: BetaBashCodeExecutionToolResultBlock = content_block
+            if bash_code_execution_tool_result_block.content.type == "bash_code_execution_result":
+                code_output += bash_code_execution_tool_result_block.content.stdout
+
+        elif content_block.type == "text_editor_code_execution_tool_result":
+            text_editor_code_execution_tool_result: BetaBashCodeExecutionToolResultBlock = content_block
+            if text_editor_code_execution_tool_result.content.type == "text_editor_code_execution_view_result":
+                code_output += content_block.content.content
 
     chat_response = ChatResponse(
         text=text,
         thought=thought,
+        code=code,
+        code_output=code_output,
     )
     output_tokens = await count_claude_output_tokens(
         client=client,
@@ -39,6 +61,8 @@ async def process_claude_non_stream_response(
     return ChatResponse(
         text=text,
         thought=thought,
+        code=code,
+        code_output=code_output,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )

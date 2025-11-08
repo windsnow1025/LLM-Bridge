@@ -152,8 +152,8 @@
   {
     "apiType": "Claude",
     "model": "claude-sonnet-4-5",
-    "input": 3,
-    "output": 15
+    "input": 6,
+    "output": 22.5
   },
   {
     "apiType": "Claude",

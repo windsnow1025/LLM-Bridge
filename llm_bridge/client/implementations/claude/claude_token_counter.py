@@ -28,7 +28,11 @@ async def count_claude_output_tokens(
         model: str,
         chat_response: ChatResponse,
 ) -> int:
-    text = chat_response.text.strip()
+    text = ""
+    text += chat_response.text.strip()
+    text += chat_response.thought.strip()
+    text += chat_response.code.strip()
+    text += chat_response.code_output.strip()
     if text == "":
         return 0
 
