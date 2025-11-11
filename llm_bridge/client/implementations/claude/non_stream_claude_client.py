@@ -7,6 +7,7 @@ from anthropic.types.beta import BetaMessage, BetaBashCodeExecutionToolResultBlo
     BetaServerToolUseBlock
 from fastapi import HTTPException
 
+from llm_bridge.client.implementations.claude.claude_response_handler import process_content_block
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_output_tokens
 from llm_bridge.client.model_client.claude_client import ClaudeClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -25,27 +26,11 @@ async def process_claude_non_stream_response(
     code_output = ""
 
     for content_block in message.content:
-        if content_block.type == "text":
-            text_block: BetaTextBlock = content_block
-            text += text_block.text
-
-        elif content_block.type == "thinking":
-            thinking_block: BetaThinkingBlock = content_block
-            thought += thinking_block.thinking
-
-        elif content_block.type == "server_tool_use":
-            server_tool_use_block: BetaServerToolUseBlock = content_block
-            code += server_tool_use_block.input
-
-        elif content_block.type == "bash_code_execution_tool_result":
-            bash_code_execution_tool_result_block: BetaBashCodeExecutionToolResultBlock = content_block
-            if bash_code_execution_tool_result_block.content.type == "bash_code_execution_result":
-                code_output += bash_code_execution_tool_result_block.content.stdout
-
-        elif content_block.type == "text_editor_code_execution_tool_result":
-            text_editor_code_execution_tool_result: BetaBashCodeExecutionToolResultBlock = content_block
-            if text_editor_code_execution_tool_result.content.type == "text_editor_code_execution_view_result":
-                code_output += content_block.content.content
+        content_block_chat_response = process_content_block(content_block)
+        text += content_block_chat_response.text
+        thought += content_block_chat_response.thought
+        code += content_block_chat_response.code
+        code_output += content_block_chat_response.code_output
 
     chat_response = ChatResponse(
         text=text,
