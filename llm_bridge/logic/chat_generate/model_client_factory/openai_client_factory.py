@@ -74,7 +74,7 @@ async def create_openai_client(
                 search_context_size="high",
             )
         )
-    if re.match(r"^o\d", model) or (re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest"):
+    if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
         temperature = 1
     if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
         reasoning = Reasoning(
