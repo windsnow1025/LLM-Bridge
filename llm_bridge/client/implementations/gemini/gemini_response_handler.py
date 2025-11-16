@@ -3,6 +3,7 @@ import mimetypes
 from typing import Optional
 
 from google.genai import types
+from google.genai.types import Part
 
 from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
 from llm_bridge.client.implementations.printing_status import PrintingStatus
@@ -28,35 +29,39 @@ class GeminiResponseHandler:
         citations: list[Citation] = extract_citations(response)
         input_tokens, stage_output_tokens = await count_gemini_tokens(response)
 
-        printing_status = None
+        parts: list[Part] = []
         if candidates := response.candidates:
-            if candidates[0].content.parts:
-                for part in response.candidates[0].content.parts:
-                    if part.text is not None:
-                        # Thought
-                        if part.thought:
-                            printing_status = PrintingStatus.Thought
-                            thought += part.text
-                        # Text
-                        elif not part.thought:
-                            printing_status = PrintingStatus.Response
-                            text += part.text
-                    # Code
-                    if part.executable_code is not None:
-                        code += part.executable_code.code
-                    # Code Output
-                    if part.code_execution_result is not None:
-                        code_output += part.code_execution_result.output
-                    # File
-                    if part.inline_data is not None:
-                        mime_type = part.inline_data.mime_type
-                        extension = mimetypes.guess_extension(mime_type) or ""
-                        file = File(
-                            name=f"generated_file{extension}",
-                            data=base64.b64encode(part.inline_data.data).decode('utf-8'),
-                            type=mime_type,
-                        )
-                        files.append(file)
+            if content := candidates[0].content:
+                if content.parts:
+                    parts = content.parts
+
+        printing_status: PrintingStatus | None = None
+        for part in parts:
+            if part.text is not None:
+                # Thought
+                if part.thought:
+                    printing_status = PrintingStatus.Thought
+                    thought += part.text
+                # Text
+                elif not part.thought:
+                    printing_status = PrintingStatus.Response
+                    text += part.text
+            # Code
+            if part.executable_code is not None:
+                code += part.executable_code.code
+            # Code Output
+            if part.code_execution_result is not None:
+                code_output += part.code_execution_result.output
+            # File
+            if part.inline_data is not None:
+                mime_type = part.inline_data.mime_type
+                extension = mimetypes.guess_extension(mime_type) or ""
+                file = File(
+                    name=f"generated_file{extension}",
+                    data=base64.b64encode(part.inline_data.data).decode('utf-8'),
+                    type=mime_type,
+                )
+                files.append(file)
 
         # Grounding Sources
         if candidates := response.candidates:
