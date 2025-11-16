@@ -105,8 +105,8 @@ api_type = "OpenAI"
 # api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
-stream = True
-# stream = False
+# stream = True
+stream = False
 
 
 async def main():

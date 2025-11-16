@@ -7,7 +7,7 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError, AsyncStream
-from openai.types.responses import ResponseStreamEvent
+from openai.types.responses import ResponseStreamEvent, ResponseReasoningSummaryTextDeltaEvent, ResponseTextDeltaEvent
 
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
@@ -18,15 +18,20 @@ from llm_bridge.type.serializer import serialize
 
 def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     text: str = ""
+    thought: str = ""
     files: list[File] = []
     citations: list[Citation] = []
 
     if event.type == "response.output_text.delta":
-        text = event.delta
+        text_delta_event: ResponseTextDeltaEvent = event
+        text = text_delta_event.delta
+    elif event.type == "response.reasoning_summary_text.delta":
+        reasoning_summary_text_delta_event: ResponseReasoningSummaryTextDeltaEvent = event
+        thought = reasoning_summary_text_delta_event.delta
     # Citation is unavailable in OpenAI Responses API
-    if event.type == "response.output_text.annotation.added":
+    elif event.type == "response.output_text.annotation.added":
         pass
-    # Image Generation untestable due to organization verification requirement
+    # Image Generation to be tested
     # if event.type == "response.image_generation_call.partial_image":
     #     file = File(
     #         name="generated_image.png",
@@ -37,6 +42,7 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
 
     chat_response = ChatResponse(
         text=text,
+        thought=thought,
         files=files,
         citations=citations,
     )
@@ -53,6 +59,7 @@ async def generate_chunk(
             output_tokens = count_openai_output_tokens(chat_response)
             yield ChatResponse(
                 text=chat_response.text,
+                thought=chat_response.thought,
                 files=chat_response.files,
                 citations=chat_response.citations,
                 input_tokens=input_tokens,

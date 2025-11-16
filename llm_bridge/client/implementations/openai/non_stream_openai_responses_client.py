@@ -7,7 +7,8 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError
-from openai.types.responses import WebSearchToolParam, Response
+from openai.types.responses import WebSearchToolParam, Response, ResponseOutputItem, ResponseOutputMessage, \
+    ResponseOutputText, ResponseReasoningItem
 
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
@@ -21,19 +22,22 @@ def process_openai_responses_non_stream_response(
         input_tokens: int,
 ) -> ChatResponse:
 
-    output_list = response.output
+    output_list: list[ResponseOutputItem] = response.output
 
     text: str = ""
+    thought: str = ""
     files: list[File] = []
     citations: list[Citation] = []
 
     for output in output_list:
         if output.type == "message":
-            for content in output.content:
+            output_message: ResponseOutputMessage = output
+            for content in output_message.content:
                 if content.type == "output_text":
-                    text += content.text
+                    output_text: ResponseOutputText = content
+                    text += output_text.text
                 # Citation is unavailable in OpenAI Responses API
-                # if annotations := content.annotations:
+                # elif annotations := content.annotations:
                 #     for annotation in annotations:
                 #         citations.append(
                 #             Citation(
@@ -41,7 +45,11 @@ def process_openai_responses_non_stream_response(
                 #                 url=annotation.url
                 #             )
                 #         )
-        # Image Generation untestable due to organization verification requirement
+        elif output.type == "reasoning":
+            reasoning_item: ResponseReasoningItem = output
+            for summary_delta in reasoning_item.summary:
+                thought += summary_delta.text
+        # Image Generation to be tested
         # if output.type == "image_generation_call":
         #     file = File(
         #         name="generated_image.png",
@@ -54,6 +62,7 @@ def process_openai_responses_non_stream_response(
     output_tokens = count_openai_output_tokens(chat_response)
     return ChatResponse(
         text=text,
+        thought=thought,
         files=files,
         citations=citations,
         input_tokens=input_tokens,

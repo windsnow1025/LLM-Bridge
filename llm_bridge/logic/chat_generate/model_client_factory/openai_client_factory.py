@@ -77,7 +77,10 @@ async def create_openai_client(
     if re.match(r"^o\d", model) or (re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest"):
         temperature = 1
     if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
-        reasoning = Reasoning(effort="high")
+        reasoning = Reasoning(
+            effort="high",
+            summary="auto",
+        )
         tools.append(
             ImageGeneration(
                 type="image_generation",
