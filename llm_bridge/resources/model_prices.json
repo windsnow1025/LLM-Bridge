@@ -1,6 +1,12 @@
 [
   {
     "apiType": "Gemini-Vertex",
+    "model": "gemini-3-pro-preview",
+    "input": 4,
+    "output": 18
+  },
+  {
+    "apiType": "Gemini-Vertex",
     "model": "gemini-2.5-flash",
     "input": 1,
     "output": 2.5
@@ -40,6 +46,12 @@
     "model": "gemini-2.5-flash-image-preview",
     "input": 0,
     "output": 0
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-3-pro-preview",
+    "input": 4,
+    "output": 18
   },
   {
     "apiType": "Gemini-Paid",
