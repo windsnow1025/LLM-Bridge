@@ -36,11 +36,11 @@ async def create_claude_client(
 
     max_tokens = min(
         32_000,  # Max output: Claude 4.5 64K; Claude 4.1 32K
-        200_000 - input_tokens  # Context window: Claude Sonnet 4.5 beta: 1M; otherwise 200K
+        200_000 - input_tokens,  # Context window: Claude Sonnet 4.5 beta: 1M; otherwise 200K
     )
     thinking = ThinkingConfigEnabledParam(
         type="enabled",
-        budget_tokens=min(32_000, max_tokens) // 2
+        budget_tokens=max(1024, max_tokens // 2), # Minimum budget tokens: 1024
     )
     temperature = 1
     betas: list[AnthropicBetaParam] = [
