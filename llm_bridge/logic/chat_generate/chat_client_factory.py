@@ -8,12 +8,12 @@ from llm_bridge.type.message import Message
 
 
 async def create_chat_client(
+        api_keys: dict,
         messages: list[Message],
         model: str,
         api_type: str,
         temperature: float,
         stream: bool,
-        api_keys: dict
 ) -> ChatClient:
     if api_type == 'OpenAI':
         return await create_openai_client(
