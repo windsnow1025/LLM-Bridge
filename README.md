@@ -21,12 +21,12 @@ PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge
 
 The features listed represent the maximum capabilities of each API type supported by LLM Bridge.
 
-| API Type | Input Format                   | Capabilities                                               | Output Format |
-|----------|--------------------------------|------------------------------------------------------------|---------------|
-| OpenAI   | Text, Image                    | Thinking, Web Search, Code Execution                       | Text          |
-| Gemini   | Text, Image, Video, Audio, PDF | Thinking + Thought, Web Search + Citations, Code Execution | Text, Image   |
-| Claude   | Text, Image, PDF               | Thinking, Web Search                                       | Text          |
-| Grok     | Text, Image                    |                                                            | Text          |
+| API Type | Input Format                   | Capabilities                                     | Output Format     |
+|----------|--------------------------------|--------------------------------------------------|-------------------|
+| OpenAI   | Text, Image                    | Thinking, Web Search, Code Execution             | Text              |
+| Gemini   | Text, Image, Video, Audio, PDF | Thinking, Web Search + Citations, Code Execution | Text, Image, File |
+| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution             | Text              |
+| Grok     | Text, Image                    |                                                  | Text              |
 
 #### Planned Features
 
