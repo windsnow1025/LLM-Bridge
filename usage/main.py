@@ -87,28 +87,32 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-# model = "gpt-5.1"
+model = "gpt-5.1"
 # model = "gpt-5"
 # model = "gpt-5-pro"
 # model = "gpt-4.1"
 # model = "gemini-2.5-flash-image-preview"
 # model = "gemini-flash-latest"
 # model = "gemini-2.5-pro"
-model = "gemini-3-pro-preview"
+# model = "gemini-3-pro-preview"
 # model = "grok-4-latest"
 # model = "claude-sonnet-4-5"
 # model = "claude-opus-4-1"
-# api_type = "OpenAI"
+api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-api_type = "Gemini-Vertex"
+# api_type = "Gemini-Vertex"
 # api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True
 # stream = False
+# thought = True
+thought = False
+# code_execution = True
+code_execution = False
 
 
 async def main():
@@ -117,11 +121,11 @@ async def main():
 
     input_tokens = 0
     output_tokens = 0
-    response = await workflow(api_keys, messages, model, api_type, temperature, stream)
+    response = await workflow(api_keys, messages, model, api_type, temperature, stream, thought, code_execution)
     text = ""
-    thought = ""
-    code = ""
-    code_output = ""
+    thought_text = ""
+    code_text = ""
+    code_output_text = ""
 
     if stream:
         async for chunk in response:
@@ -129,27 +133,27 @@ async def main():
             if chunk.text:
                 text += chunk.text
             if chunk.thought:
-                thought += chunk.thought
+                thought_text += chunk.thought
             if chunk.input_tokens:
                 input_tokens = chunk.input_tokens
             if chunk.output_tokens:
                 output_tokens += chunk.output_tokens
             if chunk.code:
-                code += chunk.code
+                code_text += chunk.code
             if chunk.code_output:
-                code_output += chunk.code_output
+                code_output_text += chunk.code_output
     else:
         pprint(response)
         text = response.text
-        thought = response.thought
-        code = response.code
-        code_output = response.code_output
+        thought_text = response.thought
+        code_text = response.code
+        code_output_text = response.code_output
         input_tokens = response.input_tokens
         output_tokens = response.output_tokens
     total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
-    print(f"Thought:\n{thought}\n")
-    print(f"Code:\n{code}\n")
-    print(f"Code Output:\n{code_output}\n")
+    print(f"Thought:\n{thought_text}\n")
+    print(f"Code:\n{code_text}\n")
+    print(f"Code Output:\n{code_output_text}\n")
     print(f"Text:\n{text}")
     print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 

@@ -14,80 +14,98 @@ async def create_chat_client(
         api_type: str,
         temperature: float,
         stream: bool,
+        thought: bool,
+        code_execution: bool,
 ) -> ChatClient:
     if api_type == 'OpenAI':
         return await create_openai_client(
+            api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]},
             messages=messages,
             model=model,
             api_type=api_type,
             temperature=temperature,
             stream=stream,
-            api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]}
+            thought=thought,
+            code_execution=code_execution,
         )
     elif api_type == 'OpenAI-Azure':
         return await create_openai_client(
-            messages=messages,
-            model=model,
-            api_type=api_type,
-            temperature=temperature,
-            stream=stream,
             api_keys={
                 "AZURE_API_KEY": api_keys["AZURE_API_KEY"],
                 "AZURE_API_BASE": api_keys["AZURE_API_BASE"]
-            }
+            },
+            messages=messages,
+            model=model,
+            api_type=api_type,
+            temperature=temperature,
+            stream=stream,
+            thought=thought,
+            code_execution=code_execution,
         )
     elif api_type == 'OpenAI-GitHub':
         return await create_openai_client(
+            api_keys={"GITHUB_API_KEY": api_keys["GITHUB_API_KEY"]},
             messages=messages,
             model=model,
             api_type=api_type,
             temperature=temperature,
             stream=stream,
-            api_keys={"GITHUB_API_KEY": api_keys["GITHUB_API_KEY"]}
+            thought=thought,
+            code_execution=code_execution,
         )
     elif api_type == 'Grok':
         return await create_openai_client(
+            api_keys={"XAI_API_KEY": api_keys["XAI_API_KEY"]},
             messages=messages,
             model=model,
             api_type=api_type,
             temperature=temperature,
             stream=stream,
-            api_keys={"XAI_API_KEY": api_keys["XAI_API_KEY"]}
+            thought=thought,
+            code_execution=code_execution,
         )
     elif api_type == 'Gemini-Free':
         return await create_gemini_client(
+            api_key=api_keys["GEMINI_FREE_API_KEY"],
+            vertexai=False,
             messages=messages,
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["GEMINI_FREE_API_KEY"],
-            vertexai=False,
+            thought=thought,
+            code_execution=code_execution,
         )
     elif api_type == 'Gemini-Paid':
         return await create_gemini_client(
+            api_key=api_keys["GEMINI_PAID_API_KEY"],
+            vertexai=False,
             messages=messages,
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["GEMINI_PAID_API_KEY"],
-            vertexai=False,
+            thought=thought,
+            code_execution=code_execution,
         )
     elif api_type == 'Gemini-Vertex':
         return await create_gemini_client(
+            api_key=api_keys["GEMINI_VERTEX_API_KEY"],
             messages=messages,
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["GEMINI_VERTEX_API_KEY"],
+            thought=thought,
+            code_execution=code_execution,
             vertexai=True,
         )
     elif api_type == 'Claude':
         return await create_claude_client(
+            api_key=api_keys["ANTHROPIC_API_KEY"],
             messages=messages,
             model=model,
             temperature=temperature,
             stream=stream,
-            api_key=api_keys["ANTHROPIC_API_KEY"]
+            thought=thought,
+            code_execution=code_execution,
         )
     else:
         raise HTTPException(status_code=400, detail="Invalid API type")

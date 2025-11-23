@@ -10,24 +10,25 @@ from llm_bridge.type.message import Message
 
 
 async def create_gemini_client(
+        api_key: str,
+        vertexai: bool,
         messages: list[Message],
         model: str,
         temperature: float,
         stream: bool,
-        api_key: str,
-        vertexai: bool,
+        thought: bool,
+        code_execution: bool,
 ):
     client = genai.Client(
         vertexai=vertexai,
         api_key=api_key,
     )
 
-    system_instruction = None
+    system_instruction = extract_system_messages(messages) or " "
     tools = []
     thinking_config = None
     response_modalities = [Modality.TEXT]
 
-    system_instruction = extract_system_messages(messages) or " "
     if "image" not in model:
         tools.append(
             types.Tool(
@@ -39,16 +40,18 @@ async def create_gemini_client(
                 url_context=types.UrlContext()
             )
         )
-        thinking_config = types.ThinkingConfig(
-            include_thoughts=True,
-            thinking_budget=-1,
-        )
-        if not vertexai:
-            tools.append(
-                types.Tool(
-                    code_execution=types.ToolCodeExecution()
-                )
+        if thought:
+            thinking_config = types.ThinkingConfig(
+                include_thoughts=True,
+                thinking_budget=-1,
             )
+        if not vertexai:
+            if code_execution:
+                tools.append(
+                    types.Tool(
+                        code_execution=types.ToolCodeExecution()
+                    )
+                )
     if "image" in model:
         response_modalities = [Modality.TEXT, Modality.IMAGE]
 

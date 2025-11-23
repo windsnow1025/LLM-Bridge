@@ -58,16 +58,27 @@ class NonStreamClaudeClient(ClaudeClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            message = await self.client.beta.messages.create(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-                system=self.system,
-                messages=serialize(self.messages),
-                thinking=self.thinking,
-                betas=self.betas,
-                tools=self.tools,
-            )
+            if self.thinking:
+                message = await self.client.beta.messages.create(
+                    model=self.model,
+                    max_tokens=self.max_tokens,
+                    temperature=self.temperature,
+                    system=self.system,
+                    messages=serialize(self.messages),
+                    betas=self.betas,
+                    tools=self.tools,
+                    thinking=self.thinking,
+                )
+            else:
+                message = await self.client.beta.messages.create(
+                    model=self.model,
+                    max_tokens=self.max_tokens,
+                    temperature=self.temperature,
+                    system=self.system,
+                    messages=serialize(self.messages),
+                    betas=self.betas,
+                    tools=self.tools,
+                )
 
             return await process_claude_non_stream_response(
                 message=message,

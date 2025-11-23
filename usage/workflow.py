@@ -9,7 +9,9 @@ async def workflow(
         model: str,
         api_type: str,
         temperature: float,
-        stream: bool
+        stream: bool,
+        thought: bool,
+        code_execution: bool,
 ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
     await preprocess_messages(messages, api_type)
 
@@ -20,6 +22,8 @@ async def workflow(
         api_type=api_type,
         temperature=temperature,
         stream=stream,
+        thought=thought,
+        code_execution=code_execution,
     )
 
     if stream:

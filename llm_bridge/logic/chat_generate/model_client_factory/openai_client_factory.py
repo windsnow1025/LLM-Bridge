@@ -17,12 +17,14 @@ from llm_bridge.type.message import Message
 
 
 async def create_openai_client(
+        api_keys: dict,
         messages: list[Message],
         model: str,
         api_type: str,
         temperature: float,
         stream: bool,
-        api_keys: dict
+        thought: bool,
+        code_execution: bool,
 ):
     if api_type == "OpenAI":
         client = openai.AsyncOpenAI(
@@ -61,12 +63,13 @@ async def create_openai_client(
     reasoning = None
 
     if model not in ["gpt-5-chat-latest", "gpt-5-pro"]:
-        tools.append(
-            CodeInterpreter(
-                type="code_interpreter",
-                container=CodeInterpreterContainerCodeInterpreterToolAuto(type="auto")
+        if code_execution:
+            tools.append(
+                CodeInterpreter(
+                    type="code_interpreter",
+                    container=CodeInterpreterContainerCodeInterpreterToolAuto(type="auto")
+                )
             )
-        )
     if model not in ["gpt-5-chat-latest"]:
         tools.append(
             WebSearchToolParam(
@@ -77,10 +80,11 @@ async def create_openai_client(
     if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
         temperature = 1
     if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
-        reasoning = Reasoning(
-            effort="high",
-            summary="auto",
-        )
+        if thought:
+            reasoning = Reasoning(
+                effort="high",
+                summary="auto",
+            )
         tools.append(
             ImageGeneration(
                 type="image_generation",

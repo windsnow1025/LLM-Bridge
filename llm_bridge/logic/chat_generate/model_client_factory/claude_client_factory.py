@@ -11,11 +11,13 @@ from llm_bridge.type.message import Message
 
 
 async def create_claude_client(
+        api_key: str,
         messages: list[Message],
         model: str,
         temperature: float,
         stream: bool,
-        api_key: str,
+        thought: bool,
+        code_execution: bool,
 ):
     client = anthropic.AsyncAnthropic(
         api_key=api_key,
@@ -38,11 +40,13 @@ async def create_claude_client(
         32_000,  # Max output: Claude 4.5 64K; Claude 4.1 32K
         200_000 - input_tokens,  # Context window: Claude Sonnet 4.5 beta: 1M; otherwise 200K
     )
-    thinking = ThinkingConfigEnabledParam(
-        type="enabled",
-        budget_tokens=max(1024, max_tokens // 2), # Minimum budget tokens: 1024
-    )
-    temperature = 1
+    thinking = None
+    if thought:
+        thinking = ThinkingConfigEnabledParam(
+            type="enabled",
+            budget_tokens=max(1024, max_tokens // 2),  # Minimum budget tokens: 1024
+        )
+        temperature = 1
     betas: list[AnthropicBetaParam] = [
         "context-1m-2025-08-07",
         "output-128k-2025-02-19",
@@ -53,11 +57,14 @@ async def create_claude_client(
             type="web_search_20250305",
             name="web_search",
         ),
-        BetaCodeExecutionTool20250825Param(
-            type="code_execution_20250825",
-            name="code_execution",
-        )
     ]
+    if code_execution:
+        tools.append(
+            BetaCodeExecutionTool20250825Param(
+                type="code_execution_20250825",
+                name="code_execution",
+            )
+        )
 
     if stream:
         return StreamClaudeClient(
@@ -67,10 +74,10 @@ async def create_claude_client(
             system=system,
             client=client,
             max_tokens=max_tokens,
-            thinking=thinking,
             betas=betas,
             input_tokens=input_tokens,
             tools=tools,
+            thinking=thinking,
         )
     else:
         return NonStreamClaudeClient(
@@ -80,8 +87,8 @@ async def create_claude_client(
             system=system,
             client=client,
             max_tokens=max_tokens,
-            thinking=thinking,
             betas=betas,
             input_tokens=input_tokens,
             tools=tools,
+            thinking=thinking,
         )

@@ -18,10 +18,10 @@ class ClaudeClient(ChatClient):
             system: str,
             client: anthropic.AsyncAnthropic,
             max_tokens: int,
-            thinking: ThinkingConfigEnabledParam,
             betas: list[AnthropicBetaParam],
             input_tokens: int,
             tools: list[BetaToolUnionParam],
+            thinking: ThinkingConfigEnabledParam,
     ):
         self.model = model
         self.messages = messages
@@ -29,10 +29,10 @@ class ClaudeClient(ChatClient):
         self.system = system
         self.client = client
         self.max_tokens = max_tokens
-        self.thinking = thinking
         self.betas = betas
         self.input_tokens = input_tokens
         self.tools = tools
+        self.thinking = thinking
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
