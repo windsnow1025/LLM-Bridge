@@ -1,6 +1,5 @@
 from google import genai
 from google.genai import types
-from google.genai._api_client import HttpOptions
 from google.genai.types import Modality
 
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
@@ -29,38 +28,27 @@ async def create_gemini_client(
     response_modalities = [Modality.TEXT]
 
     system_instruction = extract_system_messages(messages) or " "
-    if "image" not in model and not vertexai:
-        tools.append(
-            types.Tool(
-                google_search=types.GoogleSearch()
-            )
-        )
-        tools.append(
-            types.Tool(
-                url_context=types.UrlContext()
-            )
-        )
-        tools.append(
-            types.Tool(
-                code_execution=types.ToolCodeExecution()
-            )
-        )
-    if "image" not in model and vertexai:
-        tools.append(
-            types.Tool(
-                google_search=types.GoogleSearch()
-            )
-        )
-        tools.append(
-            types.Tool(
-                url_context=types.UrlContext()
-            )
-        )
     if "image" not in model:
+        tools.append(
+            types.Tool(
+                google_search=types.GoogleSearch()
+            )
+        )
+        tools.append(
+            types.Tool(
+                url_context=types.UrlContext()
+            )
+        )
         thinking_config = types.ThinkingConfig(
             include_thoughts=True,
             thinking_budget=-1,
         )
+        if not vertexai:
+            tools.append(
+                types.Tool(
+                    code_execution=types.ToolCodeExecution()
+                )
+            )
     if "image" in model:
         response_modalities = [Modality.TEXT, Modality.IMAGE]
 
