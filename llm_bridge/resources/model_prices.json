@@ -127,6 +127,12 @@
   },
   {
     "apiType": "Claude",
+    "model": "claude-opus-4-5",
+    "input": 5,
+    "output": 25
+  },
+  {
+    "apiType": "Claude",
     "model": "claude-sonnet-4-5",
     "input": 6,
     "output": 22.5
@@ -136,12 +142,6 @@
     "model": "claude-haiku-4-5",
     "input": 1,
     "output": 5
-  },
-  {
-    "apiType": "Claude",
-    "model": "claude-opus-4-1",
-    "input": 15,
-    "output": 75
   },
   {
     "apiType": "Grok",

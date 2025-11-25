@@ -87,7 +87,7 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5.1"
+# model = "gpt-5.1"
 # model = "gpt-5"
 # model = "gpt-5-pro"
 # model = "gpt-4.1"
@@ -97,22 +97,22 @@ model = "gpt-5.1"
 # model = "gemini-3-pro-preview"
 # model = "grok-4-latest"
 # model = "claude-sonnet-4-5"
-# model = "claude-opus-4-1"
-api_type = "OpenAI"
+model = "claude-opus-4-5"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
 # api_type = "Gemini-Vertex"
-# api_type = "Claude"
+api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True
 # stream = False
-# thought = True
-thought = False
-# code_execution = True
-code_execution = False
+thought = True
+# thought = False
+code_execution = True
+# code_execution = False
 
 
 async def main():

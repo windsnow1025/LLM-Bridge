@@ -36,9 +36,13 @@ async def create_claude_client(
         messages=claude_messages,
     )
 
+    context_window = 200_000
+    if model in ["claude-sonnet-4-5"]:
+        context_window = 1_000_000
+    max_output = 64_000
     max_tokens = min(
-        32_000,  # Max output: Claude 4.5 64K; Claude 4.1 32K
-        200_000 - input_tokens,  # Context window: Claude Sonnet 4.5 beta: 1M; otherwise 200K
+        max_output,
+        context_window - input_tokens,
     )
     thinking = None
     if thought:
@@ -52,12 +56,13 @@ async def create_claude_client(
         "output-128k-2025-02-19",
         "code-execution-2025-08-25",
     ]
-    tools: list[BetaToolUnionParam] = [
+    tools: list[BetaToolUnionParam] = []
+    tools.append(
         BetaWebSearchTool20250305Param(
             type="web_search_20250305",
             name="web_search",
-        ),
-    ]
+        )
+    )
     if code_execution:
         tools.append(
             BetaCodeExecutionTool20250825Param(
