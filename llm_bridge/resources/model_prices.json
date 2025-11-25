@@ -7,6 +7,12 @@
   },
   {
     "apiType": "Gemini-Vertex",
+    "model": "gemini-3-pro-image-preview",
+    "input": 2,
+    "output": 120
+  },
+  {
+    "apiType": "Gemini-Vertex",
     "model": "gemini-2.5-flash",
     "input": 1,
     "output": 2.5
@@ -16,12 +22,6 @@
     "model": "gemini-2.5-pro",
     "input": 2.5,
     "output": 15
-  },
-  {
-    "apiType": "Gemini-Vertex",
-    "model": "gemini-2.5-flash-image",
-    "input": 1.0,
-    "output": 2.5
   },
   {
     "apiType": "Gemini-Free",
@@ -38,12 +38,6 @@
   {
     "apiType": "Gemini-Free",
     "model": "gemini-2.5-pro",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-2.5-flash-image-preview",
     "input": 0,
     "output": 0
   },
@@ -55,6 +49,12 @@
   },
   {
     "apiType": "Gemini-Paid",
+    "model": "gemini-3-pro-image-preview",
+    "input": 2,
+    "output": 120
+  },
+  {
+    "apiType": "Gemini-Paid",
     "model": "gemini-flash-latest",
     "input": 1,
     "output": 2.5
@@ -70,12 +70,6 @@
     "model": "gemini-2.5-pro",
     "input": 2.5,
     "output": 15
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-flash-image",
-    "input": 1.0,
-    "output": 2.5
   },
   {
     "apiType": "OpenAI",

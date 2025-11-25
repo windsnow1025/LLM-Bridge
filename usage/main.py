@@ -55,13 +55,13 @@ messages = [
         role=Role.User,
         contents=[
             # Thinking
-            Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
 
             # Web Search
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # Image Generation
-            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            Content(type=ContentType.Text, data="Please generate an image of a cat."),
 
             # URL Context
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
@@ -88,23 +88,23 @@ messages = [
 ]
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-5.1"
-# model = "gpt-5"
 # model = "gpt-5-pro"
+# model = "gpt-5"
 # model = "gpt-4.1"
-# model = "gemini-2.5-flash-image-preview"
+# model = "gemini-3-pro-preview"
+model = "gemini-3-pro-image-preview"
 # model = "gemini-flash-latest"
 # model = "gemini-2.5-pro"
-# model = "gemini-3-pro-preview"
 # model = "grok-4-latest"
 # model = "claude-sonnet-4-5"
-model = "claude-opus-4-5"
+# model = "claude-opus-4-5"
+api_type = "Gemini-Vertex"
+# api_type = "Gemini-Free"
+# api_type = "Gemini-Paid"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-# api_type = "Gemini-Free"
-# api_type = "Gemini-Paid"
-# api_type = "Gemini-Vertex"
-api_type = "Claude"
+# api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True
@@ -126,6 +126,7 @@ async def main():
     thought_text = ""
     code_text = ""
     code_output_text = ""
+    files = []
 
     if stream:
         async for chunk in response:
@@ -142,6 +143,8 @@ async def main():
                 code_text += chunk.code
             if chunk.code_output:
                 code_output_text += chunk.code_output
+            if chunk.files:
+                files.extend(chunk.files)
     else:
         pprint(response)
         text = response.text
@@ -150,11 +153,13 @@ async def main():
         code_output_text = response.code_output
         input_tokens = response.input_tokens
         output_tokens = response.output_tokens
+        files = response.files
     total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
     print(f"Thought:\n{thought_text}\n")
     print(f"Code:\n{code_text}\n")
     print(f"Code Output:\n{code_output_text}\n")
     print(f"Text:\n{text}")
+    print(f"Files:\n{files}")
     print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 
 

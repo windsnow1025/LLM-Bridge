@@ -29,22 +29,22 @@ async def create_gemini_client(
     thinking_config = None
     response_modalities = [Modality.TEXT]
 
-    if "image" not in model:
-        tools.append(
-            types.Tool(
-                google_search=types.GoogleSearch()
-            )
+    tools.append(
+        types.Tool(
+            google_search=types.GoogleSearch()
         )
+    )
+    if thought:
+        thinking_config = types.ThinkingConfig(
+            include_thoughts=True,
+            thinking_budget=-1,
+        )
+    if "image" not in model:
         tools.append(
             types.Tool(
                 url_context=types.UrlContext()
             )
         )
-        if thought:
-            thinking_config = types.ThinkingConfig(
-                include_thoughts=True,
-                thinking_budget=-1,
-            )
         if not vertexai:
             if code_execution:
                 tools.append(
