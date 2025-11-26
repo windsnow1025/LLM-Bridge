@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-from google.genai.types import Modality
+from google.genai.types import Modality, HttpOptions, MediaResolution
 
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
@@ -58,6 +58,7 @@ async def create_gemini_client(
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
         temperature=temperature,
+        media_resolution=MediaResolution.MEDIA_RESOLUTION_HIGH,
         safety_settings=[
             types.SafetySetting(
                 category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,

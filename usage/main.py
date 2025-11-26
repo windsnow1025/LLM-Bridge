@@ -61,7 +61,11 @@ messages = [
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # Image Generation
-            Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+
+            # Image Understanding
+            Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
+            Content(type=ContentType.Text, data="What is in this image?"),
 
             # URL Context
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
@@ -92,15 +96,15 @@ messages = [
 # model = "gpt-5"
 # model = "gpt-4.1"
 # model = "gemini-3-pro-preview"
-model = "gemini-3-pro-image-preview"
+# model = "gemini-3-pro-image-preview"
 # model = "gemini-flash-latest"
-# model = "gemini-2.5-pro"
+model = "gemini-2.5-pro"
 # model = "grok-4-latest"
 # model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
-api_type = "Gemini-Vertex"
+# api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
-# api_type = "Gemini-Paid"
+api_type = "Gemini-Paid"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
