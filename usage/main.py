@@ -98,18 +98,18 @@ messages = [
 # model = "gemini-3-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-flash-latest"
-model = "gemini-2.5-pro"
-# model = "grok-4-latest"
+# model = "gemini-2.5-pro"
+model = "grok-4-1-fast-reasoning"
 # model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
-api_type = "Gemini-Paid"
+# api_type = "Gemini-Paid"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"
-# api_type = "Grok"
+api_type = "Grok"
 temperature = 0
 stream = True
 # stream = False
@@ -162,8 +162,8 @@ async def main():
     print(f"Thought:\n{thought_text}\n")
     print(f"Code:\n{code_text}\n")
     print(f"Code Output:\n{code_output_text}\n")
-    print(f"Text:\n{text}")
-    print(f"Files:\n{files}")
+    print(f"Text:\n{text}\n")
+    print(f"Files:\n{files}\n")
     print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 
 

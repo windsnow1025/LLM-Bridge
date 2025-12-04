@@ -139,38 +139,14 @@
   },
   {
     "apiType": "Grok",
-    "model": "grok-4-latest",
-    "input": 3,
-    "output": 15
-  },
-  {
-    "apiType": "Grok",
-    "model": "grok-3-fast-latest",
-    "input": 5,
+    "model": "grok-4-1-fast-reasoning",
+    "input": 0.4,
     "output": 25
   },
   {
     "apiType": "Grok",
-    "model": "grok-3-latest",
-    "input": 3,
-    "output": 15
-  },
-  {
-    "apiType": "Grok",
-    "model": "grok-3-mini-fast-latest",
-    "input": 0.6,
-    "output": 4
-  },
-  {
-    "apiType": "Grok",
-    "model": "grok-3-mini-latest",
-    "input": 0.3,
-    "output": 0.5
-  },
-  {
-    "apiType": "Grok",
-    "model": "grok-2-vision-latest",
-    "input": 2,
-    "output": 10
+    "model": "grok-4-1-fast-non-reasoning",
+    "input": 0.4,
+    "output": 25
   }
 ]
