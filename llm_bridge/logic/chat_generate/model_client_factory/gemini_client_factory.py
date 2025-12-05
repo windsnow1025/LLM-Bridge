@@ -1,3 +1,5 @@
+from typing import Any
+
 from google import genai
 from google.genai import types
 from google.genai.types import Modality, HttpOptions, MediaResolution
@@ -18,7 +20,7 @@ async def create_gemini_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
-        structured_output_schema: dict | None,
+        structured_output_schema: dict[str, Any] | None,
 ):
     client = genai.Client(
         vertexai=vertexai,

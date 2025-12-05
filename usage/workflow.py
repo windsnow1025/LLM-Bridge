@@ -1,4 +1,4 @@
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Any
 
 from llm_bridge import *
 
@@ -12,7 +12,7 @@ async def workflow(
         stream: bool,
         thought: bool,
         code_execution: bool,
-        structured_output_schema: dict | None,
+        structured_output_schema: dict[str, Any] | None,
 ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
     await preprocess_messages(messages, api_type)
 

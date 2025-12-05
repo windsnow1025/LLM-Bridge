@@ -1,4 +1,5 @@
 import re
+from typing import Any
 
 import openai
 from fastapi import HTTPException
@@ -6,6 +7,7 @@ from openai.types import Reasoning
 from openai.types.responses import WebSearchToolParam
 from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
     ImageGeneration
+from pydantic import BaseModel
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -14,6 +16,11 @@ from llm_bridge.client.implementations.openai.stream_openai_client import Stream
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_openai_responses, \
     convert_messages_to_openai
 from llm_bridge.type.message import Message
+
+
+# Structured Output unsupported: text_format is only for client.responses.stream()
+def json_schema_to_pydantic_model(json_schema: dict[str, Any]) -> BaseModel:
+    pass
 
 
 async def create_openai_client(
@@ -25,6 +32,7 @@ async def create_openai_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
+        structured_output_schema: dict[str, Any] | None,
 ):
     if api_type == "OpenAI":
         client = openai.AsyncOpenAI(
@@ -91,6 +99,11 @@ async def create_openai_client(
             )
         )
 
+    structured_output_base_model = None
+    if structured_output_schema:
+        structured_output_base_model = json_schema_to_pydantic_model(structured_output_schema)
+
+
     if use_responses_api:
         if stream:
             return StreamOpenAIResponsesClient(
@@ -101,6 +114,7 @@ async def create_openai_client(
                 client=client,
                 tools=tools,
                 reasoning=reasoning,
+                structured_output_base_model=structured_output_base_model,
             )
         else:
             return NonStreamOpenAIResponsesClient(
@@ -111,6 +125,7 @@ async def create_openai_client(
                 client=client,
                 tools=tools,
                 reasoning=reasoning,
+                structured_output_base_model=structured_output_base_model,
             )
     else:
         if stream:

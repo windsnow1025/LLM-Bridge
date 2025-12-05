@@ -86,6 +86,7 @@ class StreamOpenAIResponsesClient(OpenAIClient):
                 temperature=self.temperature,
                 stream=True,
                 tools=self.tools,
+                # text_format=self.structured_output_base_model,
             )
 
         except httpx.HTTPStatusError as e:

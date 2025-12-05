@@ -1,4 +1,5 @@
-from typing import AsyncGenerator, Iterable
+from typing import AsyncGenerator, Iterable, Type, Any
+from pydantic import BaseModel
 
 import openai.lib.azure
 from openai.types import Reasoning
@@ -20,6 +21,7 @@ class OpenAIClient(ChatClient):
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
             tools: Iterable[ToolParam],
             reasoning: Reasoning,
+            structured_output_base_model: Type[BaseModel] | None = None,
     ):
         self.model = model
         self.messages = messages
@@ -28,8 +30,10 @@ class OpenAIClient(ChatClient):
         self.client = client
         self.tools = tools
         self.reasoning = reasoning
+        self.structured_output_base_model = structured_output_base_model
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
+
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         raise NotImplementedError

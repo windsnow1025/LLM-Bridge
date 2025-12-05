@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import HTTPException
 
 from llm_bridge.client.chat_client import ChatClient
@@ -16,7 +18,7 @@ async def create_chat_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
-        structured_output_schema: dict | None,
+        structured_output_schema: dict[str, Any] | None,
 ) -> ChatClient:
     if api_type == 'OpenAI':
         return await create_openai_client(
@@ -28,6 +30,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'OpenAI-Azure':
         return await create_openai_client(
@@ -42,6 +45,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'OpenAI-GitHub':
         return await create_openai_client(
@@ -53,6 +57,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Grok':
         return await create_openai_client(
@@ -64,6 +69,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Gemini-Free':
         return await create_gemini_client(
