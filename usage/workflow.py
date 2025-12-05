@@ -12,7 +12,7 @@ async def workflow(
         stream: bool,
         thought: bool,
         code_execution: bool,
-        structured_output_schema: dict | None = None,
+        structured_output_schema: dict | None,
 ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
     await preprocess_messages(messages, api_type)
 

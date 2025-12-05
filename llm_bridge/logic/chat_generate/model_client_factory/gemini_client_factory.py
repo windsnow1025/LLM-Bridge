@@ -18,7 +18,7 @@ async def create_gemini_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
-        structured_output_schema: dict | None = None,
+        structured_output_schema: dict | None,
 ):
     client = genai.Client(
         vertexai=vertexai,

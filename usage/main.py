@@ -45,6 +45,7 @@ class Recipe(BaseModel):
     instructions: List[str]
 
 structured_output_schema = Recipe.model_json_schema()
+# structured_output_schema = None
 
 messages = [
     Message(
@@ -164,7 +165,7 @@ async def main():
         stream,
         thought,
         code_execution,
-        structured_output_schema=structured_output_schema,
+        structured_output_schema,
     )
     text = ""
     thought_text = ""

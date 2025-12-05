@@ -1,6 +1,5 @@
 import pytest
 
-from llm_bridge.logic.chat_generate.chat_client_factory import create_chat_client
 from llm_bridge.type.message import Message, Role, Content, ContentType
 
 

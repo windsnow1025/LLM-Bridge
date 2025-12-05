@@ -16,7 +16,7 @@ async def create_chat_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
-        structured_output_schema: dict | None = None,
+        structured_output_schema: dict | None,
 ) -> ChatClient:
     if api_type == 'OpenAI':
         return await create_openai_client(
