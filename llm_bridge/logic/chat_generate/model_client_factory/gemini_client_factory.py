@@ -2,11 +2,12 @@ from typing import Any
 
 from google import genai
 from google.genai import types
-from google.genai.types import Modality, HttpOptions, MediaResolution
+from google.genai.types import Modality, MediaResolution
 
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_gemini
+from llm_bridge.logic.chat_generate.model_client_factory.schema_converter import json_schema_to_pydantic_model
 from llm_bridge.logic.message_preprocess.message_preprocessor import extract_system_messages
 from llm_bridge.type.message import Message
 
@@ -89,9 +90,9 @@ async def create_gemini_client(
         response_modalities=response_modalities,
     )
 
-    if structured_output_schema is not None:
-        config.response_mime_type = "application/json"
-        config.response_json_schema = structured_output_schema
+    # if structured_output_schema:
+    #     config.response_mime_type = "application/json"
+    #     config.response_json_schema = json_schema_to_pydantic_model(structured_output_schema).model_json_schema()
 
     gemini_messages = await convert_messages_to_gemini(messages)
 

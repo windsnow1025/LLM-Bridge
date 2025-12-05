@@ -3,10 +3,8 @@ import logging
 import os
 import sys
 from pprint import pprint
-from typing import Optional, List
 
 from dotenv import load_dotenv
-from pydantic import BaseModel, Field
 
 from llm_bridge import *
 from usage.workflow import workflow
@@ -34,17 +32,20 @@ api_keys = {
     "XAI_API_KEY": os.environ.get("XAI_API_KEY"),
 }
 
-class Ingredient(BaseModel):
-    name: str = Field(description="Name of the ingredient.")
-    quantity: str = Field(description="Quantity of the ingredient, including units.")
-
-class Recipe(BaseModel):
-    recipe_name: str = Field(description="The name of the recipe.")
-    prep_time_minutes: Optional[int] = Field(description="Optional time in minutes to prepare the recipe.")
-    ingredients: List[Ingredient]
-    instructions: List[str]
-
-structured_output_schema = Recipe.model_json_schema()
+structured_output_schema = {
+    "type": "json_schema",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"},
+            "email": {"type": "string"},
+            "plan_interest": {"type": "string"},
+            "demo_requested": {"type": "boolean"}
+        },
+        "required": ["name", "email", "plan_interest", "demo_requested"],
+        "additionalProperties": False
+    }
+}
 # structured_output_schema = None
 
 messages = [
@@ -93,19 +94,7 @@ messages = [
             # Content(type=ContentType.Text, data="Please implement a minimum example of Neural Network in `script.py`"),
 
             # Structured Output
-            Content(type=ContentType.Text, data="""
-Please extract the recipe from the following text.
-The user wants to make delicious chocolate chip cookies.
-They need 2 and 1/4 cups of all-purpose flour, 1 teaspoon of baking soda,
-1 teaspoon of salt, 1 cup of unsalted butter (softened), 3/4 cup of granulated sugar,
-3/4 cup of packed brown sugar, 1 teaspoon of vanilla extract, and 2 large eggs.
-For the best part, they'll need 2 cups of semisweet chocolate chips.
-First, preheat the oven to 375°F (190°C). Then, in a small bowl, whisk together the flour,
-baking soda, and salt. In a large bowl, cream together the butter, granulated sugar, and brown sugar
-until light and fluffy. Beat in the vanilla and eggs, one at a time. Gradually beat in the dry
-ingredients until just combined. Finally, stir in the chocolate chips. Drop by rounded tablespoons
-onto ungreased baking sheets and bake for 9 to 11 minutes.
-            """),
+            Content(type=ContentType.Text, data="""Extract the key information from this email: John Smith (john@example.com) is interested in our Enterprise plan and wants to schedule a demo for next Tuesday at 2pm."""),
         ]
     ),
     # Message(
@@ -121,7 +110,7 @@ onto ungreased baking sheets and bake for 9 to 11 minutes.
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5.1"
+# model = "gpt-5.1"
 # model = "gpt-5-pro"
 # model = "gpt-5"
 # model = "gpt-4.1"
@@ -130,15 +119,15 @@ model = "gpt-5.1"
 # model = "gemini-flash-latest"
 # model = "gemini-2.5-pro"
 # model = "grok-4-1-fast-reasoning"
-# model = "claude-sonnet-4-5"
+model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-# api_type = "Claude"
+api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True

@@ -7,7 +7,6 @@ from openai.types import Reasoning
 from openai.types.responses import WebSearchToolParam
 from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
     ImageGeneration
-from pydantic import BaseModel
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -15,12 +14,8 @@ from llm_bridge.client.implementations.openai.steam_openai_responses_client impo
 from llm_bridge.client.implementations.openai.stream_openai_client import StreamOpenAIClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_openai_responses, \
     convert_messages_to_openai
+from llm_bridge.logic.chat_generate.model_client_factory.schema_converter import json_schema_to_pydantic_model
 from llm_bridge.type.message import Message
-
-
-# Structured Output unsupported: text_format is only for client.responses.stream()
-def json_schema_to_pydantic_model(json_schema: dict[str, Any]) -> BaseModel:
-    pass
 
 
 async def create_openai_client(
