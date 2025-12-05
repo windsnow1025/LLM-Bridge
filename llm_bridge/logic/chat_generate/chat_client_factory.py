@@ -16,6 +16,7 @@ async def create_chat_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
+        structured_output_schema: dict | None = None,
 ) -> ChatClient:
     if api_type == 'OpenAI':
         return await create_openai_client(
@@ -74,6 +75,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Gemini-Paid':
         return await create_gemini_client(
@@ -85,6 +87,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Gemini-Vertex':
         return await create_gemini_client(
@@ -96,6 +99,7 @@ async def create_chat_client(
             thought=thought,
             code_execution=code_execution,
             vertexai=True,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Claude':
         return await create_claude_client(

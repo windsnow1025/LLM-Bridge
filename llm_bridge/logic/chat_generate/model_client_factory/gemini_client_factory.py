@@ -18,6 +18,7 @@ async def create_gemini_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
+        structured_output_schema: dict | None = None,
 ):
     client = genai.Client(
         vertexai=vertexai,
@@ -85,6 +86,10 @@ async def create_gemini_client(
         thinking_config=thinking_config,
         response_modalities=response_modalities,
     )
+
+    if structured_output_schema is not None:
+        config.response_mime_type = "application/json"
+        config.response_json_schema = structured_output_schema
 
     gemini_messages = await convert_messages_to_gemini(messages)
 
