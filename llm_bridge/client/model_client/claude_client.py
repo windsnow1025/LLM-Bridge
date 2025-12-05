@@ -22,6 +22,7 @@ class ClaudeClient(ChatClient):
             input_tokens: int,
             tools: list[BetaToolUnionParam],
             thinking: ThinkingConfigEnabledParam,
+            output_format: dict[str, Any] | None,
     ):
         self.model = model
         self.messages = messages
@@ -33,8 +34,10 @@ class ClaudeClient(ChatClient):
         self.input_tokens = input_tokens
         self.tools = tools
         self.thinking = thinking
+        self.output_format = output_format
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
+
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         raise NotImplementedError

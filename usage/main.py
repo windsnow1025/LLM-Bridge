@@ -33,18 +33,63 @@ api_keys = {
 }
 
 structured_output_schema = {
-    "type": "json_schema",
-    "schema": {
-        "type": "object",
-        "properties": {
-            "name": {"type": "string"},
-            "email": {"type": "string"},
-            "plan_interest": {"type": "string"},
-            "demo_requested": {"type": "boolean"}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Product",
+  "description": "A product from Acme's catalog",
+  "type": "object",
+  "properties": {
+    "productId": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
+    "productName": {
+      "description": "Name of the product",
+      "type": "string"
+    },
+    "price": {
+      "description": "The price of the product",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "tags": {
+      "description": "Tags for the product",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": True
+    },
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "number"
         },
-        "required": ["name", "email", "plan_interest", "demo_requested"],
-        "additionalProperties": False
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "length",
+        "width",
+        "height"
+      ]
+    },
+    "warehouseLocation": {
+      "description": "Coordinates of the warehouse where the product is located.",
+      "$ref": "https://example.com/geographical-location.schema.json"
     }
+  },
+  "required": [
+    "productId",
+    "productName",
+    "price"
+  ]
 }
 # structured_output_schema = None
 
@@ -94,7 +139,7 @@ messages = [
             # Content(type=ContentType.Text, data="Please implement a minimum example of Neural Network in `script.py`"),
 
             # Structured Output
-            Content(type=ContentType.Text, data="""Extract the key information from this email: John Smith (john@example.com) is interested in our Enterprise plan and wants to schedule a demo for next Tuesday at 2pm."""),
+            Content(type=ContentType.Text, data="Please generate a product."),
         ]
     ),
     # Message(
@@ -110,7 +155,7 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-# model = "gpt-5.1"
+model = "gpt-5.1"
 # model = "gpt-5-pro"
 # model = "gpt-5"
 # model = "gpt-4.1"
@@ -119,15 +164,15 @@ messages = [
 # model = "gemini-flash-latest"
 # model = "gemini-2.5-pro"
 # model = "grok-4-1-fast-reasoning"
-model = "claude-sonnet-4-5"
+# model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-# api_type = "OpenAI"
+api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-api_type = "Claude"
+# api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True

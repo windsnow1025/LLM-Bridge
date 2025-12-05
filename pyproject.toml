@@ -24,7 +24,7 @@ dependencies = [
     "openai==1.106.1",
     "tiktoken==0.11.0",
     "google-genai==1.46.0",
-    "anthropic==0.66.0",
+    "anthropic==0.75.0",
     "PyMuPDF",
     "docxlatex>=1.1.1",
     "openpyxl",

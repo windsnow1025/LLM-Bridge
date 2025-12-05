@@ -1,4 +1,7 @@
+from typing import Any
+
 import anthropic
+from anthropic import Omit
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
 from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param
 
@@ -18,7 +21,10 @@ async def create_claude_client(
         stream: bool,
         thought: bool,
         code_execution: bool,
+        structured_output_schema: dict[str, Any] | None
 ):
+    omit = Omit()
+
     client = anthropic.AsyncAnthropic(
         api_key=api_key,
     )
@@ -44,7 +50,7 @@ async def create_claude_client(
         max_output,
         context_window - input_tokens,
     )
-    thinking = None
+    thinking = omit
     if thought:
         thinking = ThinkingConfigEnabledParam(
             type="enabled",
@@ -55,6 +61,7 @@ async def create_claude_client(
         "context-1m-2025-08-07",
         "output-128k-2025-02-19",
         "code-execution-2025-08-25",
+        "structured-outputs-2025-11-13"
     ]
     tools: list[BetaToolUnionParam] = []
     tools.append(
@@ -71,6 +78,13 @@ async def create_claude_client(
             )
         )
 
+    output_format = omit
+    # if structured_output_schema:
+    #     output_format = {
+    #         "type": "json_schema",
+    #         "schema": structured_output_schema
+    #     }
+
     if stream:
         return StreamClaudeClient(
             model=model,
@@ -83,6 +97,7 @@ async def create_claude_client(
             input_tokens=input_tokens,
             tools=tools,
             thinking=thinking,
+            output_format=output_format,
         )
     else:
         return NonStreamClaudeClient(
@@ -96,4 +111,5 @@ async def create_claude_client(
             input_tokens=input_tokens,
             tools=tools,
             thinking=thinking,
+            output_format=output_format,
         )

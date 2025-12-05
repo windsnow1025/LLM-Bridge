@@ -16,41 +16,24 @@ class StreamClaudeClient(ClaudeClient):
             logging.info(f"messages: {self.messages}")
 
             try:
-                if self.thinking:
-                    async with self.client.beta.messages.stream(
-                        model=self.model,
-                        max_tokens=self.max_tokens,
-                        temperature=self.temperature,
-                        system=self.system,
-                        messages=serialize(self.messages),
-                        betas=self.betas,
-                        tools=self.tools,
-                        thinking=self.thinking,
-                    ) as stream:
-                        async for event in stream:
-                            yield await process_claude_stream_response(
-                                event=event,
-                                input_tokens=self.input_tokens,
-                                client=self.client,
-                                model=self.model,
-                            )
-                else:
-                    async with self.client.beta.messages.stream(
+                async with self.client.beta.messages.stream(
+                    model=self.model,
+                    max_tokens=self.max_tokens,
+                    temperature=self.temperature,
+                    system=self.system,
+                    messages=serialize(self.messages),
+                    betas=self.betas,
+                    tools=self.tools,
+                    thinking=self.thinking,
+                    output_format=self.output_format,
+                ) as stream:
+                    async for event in stream:
+                        yield await process_claude_stream_response(
+                            event=event,
+                            input_tokens=self.input_tokens,
+                            client=self.client,
                             model=self.model,
-                            max_tokens=self.max_tokens,
-                            temperature=self.temperature,
-                            system=self.system,
-                            messages=serialize(self.messages),
-                            betas=self.betas,
-                            tools=self.tools,
-                    ) as stream:
-                        async for event in stream:
-                            yield await process_claude_stream_response(
-                                event=event,
-                                input_tokens=self.input_tokens,
-                                client=self.client,
-                                model=self.model,
-                            )
+                        )
 
             except Exception as e:
                 logging.exception(e)

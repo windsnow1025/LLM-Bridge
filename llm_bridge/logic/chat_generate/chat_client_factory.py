@@ -116,6 +116,7 @@ async def create_chat_client(
             stream=stream,
             thought=thought,
             code_execution=code_execution,
+            structured_output_schema=structured_output_schema,
         )
     else:
         raise HTTPException(status_code=400, detail="Invalid API type")
