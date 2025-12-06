@@ -86,7 +86,7 @@ class StreamOpenAIResponsesClient(OpenAIClient):
                 temperature=self.temperature,
                 stream=True,
                 tools=self.tools,
-                # text_format=self.structured_output_base_model,
+                # text_format=self.structured_output_base_model, # Async OpenAPI Responses Client does not support structured output
             )
 
         except httpx.HTTPStatusError as e:

@@ -7,7 +7,7 @@ httpcore # httpcore
 tenacity # tenacity
 
 # SDK
-openai==1.106.1 # openai
+openai==2.9.0 # openai
 tiktoken==0.11.0 # tiktoken
 google-genai==1.46.0 # google.genai
 anthropic==0.75.0 # anthropic
