@@ -89,9 +89,9 @@ async def create_gemini_client(
         response_modalities=response_modalities,
     )
 
-    # if structured_output_schema:
-    #     config.response_mime_type = "application/json"
-    #     config.response_json_schema = json_schema_to_pydantic_model(structured_output_schema).model_json_schema()
+    if structured_output_schema:
+        config.response_mime_type = "application/json"
+        config.response_json_schema = structured_output_schema
 
     gemini_messages = await convert_messages_to_gemini(messages)
 
