@@ -1,7 +1,7 @@
 from typing import Any
 
 import anthropic
-from anthropic import Omit
+from anthropic import Omit, transform_schema
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
 from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param
 
@@ -79,10 +79,10 @@ async def create_claude_client(
         )
 
     output_format = omit
-    # if structured_output_schema:
+    # if structured_output_schema: # Claude output format raises: TypeError: unhashable type: 'dict'
     #     output_format = {
     #         "type": "json_schema",
-    #         "schema": structured_output_schema
+    #         "schema": transform_schema(structured_output_schema),
     #     }
 
     if stream:
