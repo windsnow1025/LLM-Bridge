@@ -61,7 +61,6 @@ async def create_gemini_client(
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
         temperature=temperature,
-        media_resolution=MediaResolution.MEDIA_RESOLUTION_HIGH,
         safety_settings=[
             types.SafetySetting(
                 category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
@@ -88,6 +87,9 @@ async def create_gemini_client(
         thinking_config=thinking_config,
         response_modalities=response_modalities,
     )
+
+    if vertexai:
+        config.media_resolution=MediaResolution.MEDIA_RESOLUTION_HIGH
 
     if structured_output_schema:
         config.response_mime_type = "application/json"
