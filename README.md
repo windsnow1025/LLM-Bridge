@@ -52,7 +52,7 @@ pip install --upgrade llm_bridge
   uv sync
   ```
 
-### Pycharm
+### Pycharm Professional
 
 Add New Configuration >> uv run
    - script: `./usage/main.py`
