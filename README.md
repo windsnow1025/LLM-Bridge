@@ -54,7 +54,10 @@ pip install --upgrade llm_bridge
 
 ### Pycharm Professional
 
-Add New Configuration >> uv run >> script: `./usage/main.py`
+1. Add New Interpreter >> Add Local Interpreter
+  - Environment: Select existing
+  - Type: uv
+2. Add New Configuration >> uv run >> script: `./usage/main.py`
 
 ### Usage
 
