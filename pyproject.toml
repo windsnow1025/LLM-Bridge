@@ -1,22 +1,10 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "LLM-Bridge"
-version = "1.14.0-alpha.0"
-authors = [
-    {name = "windsnow1025", email = "windsnow1025@gmail.com"}
-]
-description = "A Bridge for LLMs"
-readme = "README.md"
-requires-python = ">=3.12"
-keywords = ["llm", "ai"]
-license = "MIT"
-classifiers = [
-    "Framework :: FastAPI",
-    "Programming Language :: Python :: 3",
-]
+version = "1.14.0-alpha.1"
 dependencies = [
     "fastapi",
     "httpx",
@@ -30,6 +18,18 @@ dependencies = [
     "openpyxl",
     "python-pptx", # pptx
 ]
+requires-python = ">=3.12"
+authors = [
+    {name = "windsnow1025", email = "windsnow1025@gmail.com"}
+]
+description = "A Bridge for LLMs"
+readme = "README.md"
+license = "MIT"
+keywords = ["llm", "ai"]
+classifiers = [
+    "Framework :: FastAPI",
+    "Programming Language :: Python :: 3",
+]
 
 [dependency-groups]
 dev = [
@@ -37,10 +37,6 @@ dev = [
     "pytest-asyncio",
     "python-dotenv", #dotenv
 ]
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["llm_bridge*"]
 
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "function"
