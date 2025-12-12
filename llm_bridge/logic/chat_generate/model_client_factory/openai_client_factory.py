@@ -65,7 +65,7 @@ async def create_openai_client(
     tools = []
     reasoning = None
 
-    if model not in ["gpt-5-chat-latest", "gpt-5-pro"]:
+    if model not in ["gpt-5-pro", "gpt-5.2-pro"]:
         if code_execution:
             tools.append(
                 CodeInterpreter(
@@ -73,16 +73,15 @@ async def create_openai_client(
                     container=CodeInterpreterContainerCodeInterpreterToolAuto(type="auto")
                 )
             )
-    if model not in ["gpt-5-chat-latest"]:
-        tools.append(
-            WebSearchToolParam(
-                type="web_search",
-                search_context_size="high",
-            )
+    tools.append(
+        WebSearchToolParam(
+            type="web_search",
+            search_context_size="high",
         )
-    if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
+    )
+    if re.match(r"gpt-5.*", model):
         temperature = 1
-    if re.match(r"gpt-5.*", model) and model != "gpt-5-chat-latest":
+    if re.match(r"gpt-5.*", model):
         if thought:
             reasoning = Reasoning(
                 effort="high",

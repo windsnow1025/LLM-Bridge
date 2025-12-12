@@ -111,14 +111,14 @@ messages = [
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
 
             # Code Execution
-            # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
+            Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
 
             # File Output
             # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1758384216123-script.py"),
             # Content(type=ContentType.Text, data="Please implement a minimum example of Neural Network in `script.py`"),
 
             # Structured Output
-            Content(type=ContentType.Text, data="Please generate a product."),
+            # Content(type=ContentType.Text, data="Please generate a product."),
         ]
     ),
     # Message(
@@ -134,6 +134,7 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
+model = "gpt-5.2"
 # model = "gpt-5.1"
 # model = "gpt-5-pro"
 # model = "gpt-5"
@@ -142,15 +143,15 @@ messages = [
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-flash-latest"
 # model = "grok-4-1-fast-reasoning"
-model = "claude-sonnet-4-5"
+# model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-# api_type = "OpenAI"
+api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-api_type = "Claude"
+# api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
 stream = True
