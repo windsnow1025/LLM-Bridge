@@ -41,18 +41,37 @@ The features listed represent the maximum capabilities of each API type supporte
 pip install --upgrade llm_bridge
 ```
 
-## Test
+## Development
 
-```bash
-pytest
-```
+### Python uv
 
-## Quick Start
+1. Install uv: `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+2. Install Python in uv: `uv python install 3.12`; upgrade Python in uv: `uv python install 3.12`
+3. Configure requirements:
+  ```bash
+  uv sync
+  ```
 
-### Setup
+### Pycharm
 
-1. Copy `./usage/.env.example` and rename it to `./usage/.env`, then fill in the environment variables.
-2. Install requirements: `pip install -r requirements.txt`
-3. In PyCharm, add a new Python configuration:
+Add New Configuration >> uv run
    - script: `./usage/main.py`
    - Paths to ".env" files: `./usage/.env`
+
+If uv interpreter is not found, create a new project with uv.
+
+### Usage
+
+Copy `./usage/.env.example` and rename it to `./usage/.env`, then fill in the environment variables.
+
+### Test
+
+```bash
+uv run pytest
+```
+
+### Build
+
+```bash
+uv build
+```

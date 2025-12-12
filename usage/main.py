@@ -18,7 +18,9 @@ logging.basicConfig(
     stream=output_file
 )
 
-load_dotenv(".env")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+env_path = os.path.join(script_dir, ".env")
+load_dotenv(env_path)
 
 api_keys = {
     "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),

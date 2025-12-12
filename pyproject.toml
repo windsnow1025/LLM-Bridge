@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LLM-Bridge"
-version = "1.13.1"
+version = "1.13.2"
 authors = [
     {name = "windsnow1025", email = "windsnow1025@gmail.com"}
 ]
@@ -23,20 +23,19 @@ dependencies = [
     "tenacity",
     "openai==2.9.0",
     "tiktoken==0.11.0",
-    "google-genai==1.46.0",
+    "google-genai==1.46.0", # google.genai
     "anthropic==0.75.0",
-    "PyMuPDF",
+    "PyMuPDF", # fitz
     "docxlatex>=1.1.1",
     "openpyxl",
-    "python-pptx",
+    "python-pptx", # pptx
 ]
 
-[project.optional-dependencies]
-test = [
+[dependency-groups]
+dev = [
     "pytest",
     "pytest-asyncio",
-    "python-dotenv",
-    "protobuf"
+    "python-dotenv", #dotenv
 ]
 
 [tool.setuptools.packages.find]
