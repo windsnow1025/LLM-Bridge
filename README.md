@@ -54,11 +54,7 @@ pip install --upgrade llm_bridge
 
 ### Pycharm Professional
 
-Add New Configuration >> uv run
-   - script: `./usage/main.py`
-   - Paths to ".env" files: `./usage/.env`
-
-If uv interpreter is not found, create a new project with uv.
+Add New Configuration >> uv run >> script: `./usage/main.py`
 
 ### Usage
 
