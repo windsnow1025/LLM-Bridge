@@ -35,12 +35,6 @@ The features listed represent the maximum capabilities of each API type supporte
 - More features for API Types
 - Native support for Grok
 
-## Installation
-
-```bash
-pip install --upgrade llm_bridge
-```
-
 ## Development
 
 ### Python uv
