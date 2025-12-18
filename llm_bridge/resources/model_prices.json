@@ -7,39 +7,27 @@
   },
   {
     "apiType": "Gemini-Vertex",
+    "model": "gemini-3-flash-preview",
+    "input": 1,
+    "output": 3
+  },
+  {
+    "apiType": "Gemini-Vertex",
     "model": "gemini-3-pro-image-preview",
     "input": 2,
     "output": 120
   },
   {
-    "apiType": "Gemini-Vertex",
-    "model": "gemini-2.5-flash",
+    "apiType": "Gemini-Free",
+    "model": "gemini-3-flash-preview",
+    "input": 0,
+    "output": 0
+  },
+  {
+    "apiType": "Gemini-Paid",
+    "model": "gemini-3-flash-preview",
     "input": 1,
-    "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Vertex",
-    "model": "gemini-2.5-pro",
-    "input": 2.5,
-    "output": 15
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-flash-latest",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-2.5-flash",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Gemini-Free",
-    "model": "gemini-2.5-pro",
-    "input": 0,
-    "output": 0
+    "output": 3
   },
   {
     "apiType": "Gemini-Paid",
@@ -58,18 +46,6 @@
     "model": "gemini-flash-latest",
     "input": 1,
     "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-flash",
-    "input": 1,
-    "output": 2.5
-  },
-  {
-    "apiType": "Gemini-Paid",
-    "model": "gemini-2.5-pro",
-    "input": 2.5,
-    "output": 15
   },
   {
     "apiType": "OpenAI",
