@@ -357,7 +357,7 @@ wheels = [
 
 [[package]]
 name = "llm-bridge"
-version = "1.14.1"
+version = "1.15.0a0"
 source = { editable = "." }
 dependencies = [
     { name = "anthropic" },
