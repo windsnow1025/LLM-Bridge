@@ -7,7 +7,7 @@ from google.genai.types import Part
 
 from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
 from llm_bridge.client.implementations.printing_status import PrintingStatus
-from llm_bridge.type.chat_response import Citation, ChatResponse, File
+from llm_bridge.type.chat_response import ChatResponse, File
 
 
 class GeminiResponseHandler:
@@ -26,7 +26,6 @@ class GeminiResponseHandler:
         code_output: str = ""
         files: list[File] = []
         display: Optional[str] = None
-        citations: list[Citation] = extract_citations(response)
         input_tokens, stage_output_tokens = await count_gemini_tokens(response)
 
         parts: list[Part] = []
@@ -89,19 +88,6 @@ class GeminiResponseHandler:
             code_output=code_output,
             files=files,
             display=display,
-            citations=citations,
             input_tokens=input_tokens,
             output_tokens=output_tokens,
         )
-
-
-def extract_citations(response: types.GenerateContentResponse) -> list[Citation]:
-    citations = []
-    if candidates := response.candidates:
-        if grounding_metadata := candidates[0].grounding_metadata:
-            if grounding_supports := grounding_metadata.grounding_supports:
-                for grounding_support in grounding_supports:
-                    citation_indices = [index + 1 for index in grounding_support.grounding_chunk_indices]
-                    citation_text = grounding_support.segment.text
-                    citations.append(Citation(text=citation_text, indices=citation_indices))
-    return citations

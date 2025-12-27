@@ -1,7 +1,6 @@
 import logging
 import re
-from pprint import pprint
-from typing import AsyncGenerator, Optional
+from typing import AsyncGenerator
 
 import httpx
 import openai
@@ -12,7 +11,7 @@ from openai.types.responses import ResponseStreamEvent, ResponseReasoningSummary
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse, Citation, File
+from llm_bridge.type.chat_response import ChatResponse, File
 from llm_bridge.type.serializer import serialize
 
 
@@ -20,7 +19,6 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     text: str = ""
     thought: str = ""
     files: list[File] = []
-    citations: list[Citation] = []
 
     if event.type == "response.output_text.delta":
         text_delta_event: ResponseTextDeltaEvent = event
@@ -28,23 +26,18 @@ def process_delta(event: ResponseStreamEvent) -> ChatResponse:
     elif event.type == "response.reasoning_summary_text.delta":
         reasoning_summary_text_delta_event: ResponseReasoningSummaryTextDeltaEvent = event
         thought = reasoning_summary_text_delta_event.delta
-    # Citation is unavailable in OpenAI Responses API
-    elif event.type == "response.output_text.annotation.added":
-        pass
-    # Image Generation to be tested
-    # if event.type == "response.image_generation_call.partial_image":
-    #     file = File(
-    #         name="generated_image.png",
-    #         data=event.partial_image_b64,
-    #         type="image/png",
-    #     )
-    #     files.append(file)
+    if event.type == "response.image_generation_call.partial_image":
+        file = File(
+            name="generated_image.png",
+            data=event.partial_image_b64,
+            type="image/png",
+        )
+        files.append(file)
 
     chat_response = ChatResponse(
         text=text,
         thought=thought,
         files=files,
-        citations=citations,
     )
     return chat_response
 
@@ -61,7 +54,6 @@ async def generate_chunk(
                 text=chat_response.text,
                 thought=chat_response.thought,
                 files=chat_response.files,
-                citations=chat_response.citations,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
             )

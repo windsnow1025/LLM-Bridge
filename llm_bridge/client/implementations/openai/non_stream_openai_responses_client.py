@@ -1,19 +1,17 @@
 import logging
 import re
-from pprint import pprint
-from typing import Optional
 
 import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError
-from openai.types.responses import WebSearchToolParam, Response, ResponseOutputItem, ResponseOutputMessage, \
+from openai.types.responses import Response, ResponseOutputItem, ResponseOutputMessage, \
     ResponseOutputText, ResponseReasoningItem
 
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse, Citation, File
+from llm_bridge.type.chat_response import ChatResponse, File
 from llm_bridge.type.serializer import serialize
 
 
@@ -27,7 +25,6 @@ def process_openai_responses_non_stream_response(
     text: str = ""
     thought: str = ""
     files: list[File] = []
-    citations: list[Citation] = []
 
     for output in output_list:
         if output.type == "message":
@@ -36,27 +33,17 @@ def process_openai_responses_non_stream_response(
                 if content.type == "output_text":
                     output_text: ResponseOutputText = content
                     text += output_text.text
-                # Citation is unavailable in OpenAI Responses API
-                # elif annotations := content.annotations:
-                #     for annotation in annotations:
-                #         citations.append(
-                #             Citation(
-                #                 text=content.text[annotation.start_index:annotation.end_index],
-                #                 url=annotation.url
-                #             )
-                #         )
         elif output.type == "reasoning":
             reasoning_item: ResponseReasoningItem = output
             for summary_delta in reasoning_item.summary:
                 thought += summary_delta.text
-        # Image Generation to be tested
-        # if output.type == "image_generation_call":
-        #     file = File(
-        #         name="generated_image.png",
-        #         data=output.result,
-        #         type="image/png",
-        #     )
-        #     files.append(file)
+        if output.type == "image_generation_call":
+            file = File(
+                name="generated_image.png",
+                data=output.result,
+                type="image/png",
+            )
+            files.append(file)
 
     chat_response = ChatResponse(text=text, files=files)
     output_tokens = count_openai_output_tokens(chat_response)
@@ -64,7 +51,6 @@ def process_openai_responses_non_stream_response(
         text=text,
         thought=thought,
         files=files,
-        citations=citations,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )

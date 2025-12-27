@@ -13,21 +13,21 @@ PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge
     1. **Model Message Converter**: converts general messages to model messages
         1. **Media Processor**: converts general media (Image, Audio, Video, PDF) to model compatible formats.
 3. **Chat Client**: generate stream or non-stream responses
-    - **Model Thoughts**: captures and formats the model's thinking process
-    - **Code Execution**: auto generate and execute Python code
-    - **Web Search + Citations**: extracts and formats citations from search results
+    - **Model Thoughts**: captures the model's thinking process
+    - **Code Execution**: generates and executes Python code
+    - **Web Search**: generates response from search results
     - **Token Counter**: tracks and reports input and output token usage
 
 ### Supported Features for API Types
 
 The features listed represent the maximum capabilities of each API type supported by LLM Bridge.
 
-| API Type | Input Format                   | Capabilities                                                        | Output Format     |
-|----------|--------------------------------|---------------------------------------------------------------------|-------------------|
-| OpenAI   | Text, Image, PDF               | Thinking, Web Search, Code Execution                                | Text              |
-| Gemini   | Text, Image, Video, Audio, PDF | Thinking, Web Search + Citations, Code Execution, Structured Output | Text, Image, File |
-| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution                                | Text              |
-| Grok     | Text, Image                    |                                                                     | Text              |
+| API Type | Input Format                   | Capabilities                                            | Output Format     |
+|----------|--------------------------------|---------------------------------------------------------|-------------------|
+| OpenAI   | Text, Image, PDF               | Thinking, Web Search, Code Execution                    | Text              |
+| Gemini   | Text, Image, Video, Audio, PDF | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
+| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution                    | Text              |
+| Grok     | Text, Image                    |                                                         | Text              |
 
 #### Planned Features
 
