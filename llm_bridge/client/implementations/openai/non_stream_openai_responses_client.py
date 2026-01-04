@@ -6,16 +6,18 @@ import openai
 from fastapi import HTTPException
 from openai import APIStatusError
 from openai.types.responses import Response, ResponseOutputItem, ResponseOutputMessage, \
-    ResponseOutputText, ResponseReasoningItem
+    ResponseOutputText, ResponseReasoningItem, ResponseCodeInterpreterToolCall
+from openai.types.responses.response_output_item import ImageGenerationCall
 
 from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
     count_openai_output_tokens
+from llm_bridge.client.implementations.openai.openai_responses_response_handler import process_code_interpreter_outputs
 from llm_bridge.client.model_client.openai_client import OpenAIClient
 from llm_bridge.type.chat_response import ChatResponse, File
 from llm_bridge.type.serializer import serialize
 
 
-def process_openai_responses_non_stream_response(
+async def process_openai_responses_non_stream_response(
         response: Response,
         input_tokens: int,
 ) -> ChatResponse:
@@ -24,6 +26,8 @@ def process_openai_responses_non_stream_response(
 
     text: str = ""
     thought: str = ""
+    code: str = ""
+    code_output: str = ""
     files: list[File] = []
 
     for output in output_list:
@@ -37,10 +41,19 @@ def process_openai_responses_non_stream_response(
             reasoning_item: ResponseReasoningItem = output
             for summary_delta in reasoning_item.summary:
                 thought += summary_delta.text
+        elif output.type == "code_interpreter_call":
+            code_interpreter_tool_call: ResponseCodeInterpreterToolCall = output
+            if interpreter_code := code_interpreter_tool_call.code:
+                code += interpreter_code
+            if interpreter_outputs := code_interpreter_tool_call.outputs:
+                interpreter_code_output, interpreter_files = await process_code_interpreter_outputs(interpreter_outputs)
+                code_output += interpreter_code_output
+                files.extend(interpreter_files)
         if output.type == "image_generation_call":
+            image_generation_call: ImageGenerationCall = output
             file = File(
-                name="generated_image.png",
-                data=output.result,
+                name="image_generation_call_output.png",
+                data=image_generation_call.result,
                 type="image/png",
             )
             files.append(file)
@@ -50,6 +63,8 @@ def process_openai_responses_non_stream_response(
     return ChatResponse(
         text=text,
         thought=thought,
+        code=code,
+        code_output=code_output,
         files=files,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
@@ -72,10 +87,11 @@ class NonStreamOpenAIResponsesClient(OpenAIClient):
                 temperature=self.temperature,
                 stream=False,
                 tools=self.tools,
+                include=self.include,
                 # text_format=self.structured_output_base_model, # Async OpenAPI Responses Client does not support structured output
             )
 
-            return process_openai_responses_non_stream_response(
+            return await process_openai_responses_non_stream_response(
                 response=response,
                 input_tokens=input_tokens,
             )

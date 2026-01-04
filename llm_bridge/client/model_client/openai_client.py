@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 import openai.lib.azure
 from openai.types import Reasoning
-from openai.types.responses import ToolParam
+from openai.types.responses import ToolParam, ResponseIncludable
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -21,6 +21,7 @@ class OpenAIClient(ChatClient):
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
             tools: Iterable[ToolParam],
             reasoning: Reasoning,
+            include: list[ResponseIncludable],
             structured_output_base_model: Type[BaseModel] | None = None,
     ):
         self.model = model
@@ -30,6 +31,7 @@ class OpenAIClient(ChatClient):
         self.client = client
         self.tools = tools
         self.reasoning = reasoning
+        self.include = include
         self.structured_output_base_model = structured_output_base_model
 
     async def generate_non_stream_response(self) -> ChatResponse:

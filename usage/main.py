@@ -70,7 +70,7 @@ structured_output_schema = {
     "price"
   ]
 }
-# structured_output_schema = None
+structured_output_schema = None
 
 messages = [
     Message(
@@ -101,8 +101,8 @@ messages = [
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # Image Understanding
-            Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
-            Content(type=ContentType.Text, data="What is in this image?"),
+            # Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
+            # Content(type=ContentType.Text, data="What is in this image?"),
 
             # Image Generation
             # Content(type=ContentType.Text, data="Please generate an image of a cat."),
@@ -114,7 +114,7 @@ messages = [
             # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
 
             # File Output
-            # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
+            Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
 
             # Structured Output
             # Content(type=ContentType.Text, data="Please generate a product."),
@@ -133,12 +133,12 @@ messages = [
     # ),
 ]
 # See /llm_bridge/resources/model_prices.json for available models
-# model = "gpt-5.2"
+model = "gpt-5.2"
 # model = "gpt-5.1"
 # model = "gpt-5-pro"
 # model = "gpt-5"
 # model = "gpt-4.1"
-model = "gpt-5-codex"
+# model = "gpt-5-codex"
 # model = "gemini-3-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3-flash-preview"

@@ -3,10 +3,11 @@ from typing import Any
 
 import openai
 from fastapi import HTTPException
+from openai import Omit
 from openai.types import Reasoning
-from openai.types.responses import WebSearchToolParam
+from openai.types.responses import WebSearchToolParam, ResponseIncludable
 from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
-    ImageGeneration
+    ImageGeneration, ToolParam
 
 from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
 from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
@@ -29,6 +30,8 @@ async def create_openai_client(
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ):
+    omit = Omit()
+
     if api_type == "OpenAI":
         client = openai.AsyncOpenAI(
             api_key=api_keys["OPENAI_API_KEY"],
@@ -62,8 +65,9 @@ async def create_openai_client(
     else:
         openai_messages = await convert_messages_to_openai(messages)
 
-    tools = []
-    reasoning = None
+    tools: list[ToolParam] = []
+    reasoning: Reasoning | Omit = omit
+    include: list[ResponseIncludable] = ["code_interpreter_call.outputs"]
 
     if model not in ["gpt-5-pro", "gpt-5.2-pro"] and "codex" not in model:
         if code_execution:
@@ -109,6 +113,7 @@ async def create_openai_client(
                 client=client,
                 tools=tools,
                 reasoning=reasoning,
+                include=include,
                 structured_output_base_model=structured_output_base_model,
             )
         else:
@@ -120,6 +125,7 @@ async def create_openai_client(
                 client=client,
                 tools=tools,
                 reasoning=reasoning,
+                include=include,
                 structured_output_base_model=structured_output_base_model,
             )
     else:
