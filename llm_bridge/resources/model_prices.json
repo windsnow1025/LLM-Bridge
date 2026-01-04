@@ -61,7 +61,25 @@
   },
   {
     "apiType": "OpenAI",
+    "model": "gpt-5.1-codex-max",
+    "input": 1.25,
+    "output": 10
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.1-codex",
+    "input": 1.25,
+    "output": 10
+  },
+  {
+    "apiType": "OpenAI",
     "model": "gpt-5",
+    "input": 1.25,
+    "output": 10
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5-codex",
     "input": 1.25,
     "output": 10
   },

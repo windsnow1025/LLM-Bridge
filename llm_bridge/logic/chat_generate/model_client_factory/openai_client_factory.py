@@ -65,7 +65,7 @@ async def create_openai_client(
     tools = []
     reasoning = None
 
-    if model not in ["gpt-5-pro", "gpt-5.2-pro"]:
+    if model not in ["gpt-5-pro", "gpt-5.2-pro"] and "codex" not in model:
         if code_execution:
             tools.append(
                 CodeInterpreter(
@@ -87,6 +87,7 @@ async def create_openai_client(
                 effort="high",
                 summary="auto",
             )
+    if re.match(r"gpt-5.*", model) and "codex" not in model:
         tools.append(
             ImageGeneration(
                 type="image_generation",
