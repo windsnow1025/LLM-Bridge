@@ -24,9 +24,9 @@ The features listed represent the maximum capabilities of each API type supporte
 
 | API Type | Input Format                   | Capabilities                                            | Output Format     |
 |----------|--------------------------------|---------------------------------------------------------|-------------------|
-| OpenAI   | Text, Image, PDF               | Thinking, Web Search, Code Execution                    | Text, Image       |
+| OpenAI   | Text, Image, PDF               | Thinking, Web Search, Code Execution (Partial)          | Text, Image       |
 | Gemini   | Text, Image, Video, Audio, PDF | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
-| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution                    | Text              |
+| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution                    | Text, File        |
 | Grok     | Text, Image                    |                                                         | Text              |
 
 #### Planned Features
