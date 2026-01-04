@@ -98,7 +98,7 @@ messages = [
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
 
             # Web Search
-            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # Image Understanding
             # Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
@@ -114,8 +114,7 @@ messages = [
             # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
 
             # File Output
-            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1758384216123-script.py"),
-            # Content(type=ContentType.Text, data="Please implement a minimum example of Neural Network in `script.py`"),
+            Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
 
             # Structured Output
             # Content(type=ContentType.Text, data="Please generate a product."),
@@ -139,23 +138,23 @@ messages = [
 # model = "gpt-5-pro"
 # model = "gpt-5"
 # model = "gpt-4.1"
-model = "gemini-3-pro-preview"
+# model = "gemini-3-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3-flash-preview"
 # model = "grok-4-1-fast-reasoning"
-# model = "claude-sonnet-4-5"
+model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
-api_type = "Gemini-Vertex"
+# api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-# api_type = "Claude"
+api_type = "Claude"
 # api_type = "Grok"
 temperature = 0
-# stream = True
-stream = False
+stream = True
+# stream = False
 thought = True
 # thought = False
 code_execution = True

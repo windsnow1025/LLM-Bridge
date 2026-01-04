@@ -30,7 +30,7 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                 )
                 content.append(image_content)
             elif sub_type == "pdf":
-                file_data, _ = await media_processor.get_encoded_content_from_url(file_url)
+                file_data, _ = await media_processor.get_base64_content_from_url(file_url)
                 pdf_content = ResponseInputFileParam(
                     type="input_file",
                     filename=get_file_name(file_url),

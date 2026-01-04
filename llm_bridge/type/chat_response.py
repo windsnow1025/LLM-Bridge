@@ -5,7 +5,7 @@ from typing import Optional
 @dataclass
 class File:
     name: str
-    data: str
+    data: str # Base64
     type: str
 
 

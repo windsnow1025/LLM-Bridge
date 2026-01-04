@@ -7,6 +7,7 @@ from google.genai.types import Part
 
 from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
 from llm_bridge.client.implementations.printing_status import PrintingStatus
+from llm_bridge.logic.chat_generate.media_processor import bytes_to_base64
 from llm_bridge.type.chat_response import ChatResponse, File
 
 
@@ -57,7 +58,7 @@ class GeminiResponseHandler:
                 extension = mimetypes.guess_extension(mime_type) or ""
                 file = File(
                     name=f"generated_file{extension}",
-                    data=base64.b64encode(part.inline_data.data).decode('utf-8'),
+                    data=bytes_to_base64(part.inline_data.data),
                     type=mime_type,
                 )
                 files.append(file)

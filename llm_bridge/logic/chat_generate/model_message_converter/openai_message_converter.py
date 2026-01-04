@@ -28,7 +28,7 @@ async def convert_message_to_openai(message: Message) -> OpenAIMessage:
                 )
                 content.append(image_content)
             elif file_type == "audio":
-                encoded_string, _ = await media_processor.get_encoded_content_from_url(file_url)
+                encoded_string, _ = await media_processor.get_base64_content_from_url(file_url)
                 audio_content = ChatCompletionContentPartInputAudioParam(
                     type="input_audio",
                     input_audio=InputAudio(data=encoded_string, format=sub_type)

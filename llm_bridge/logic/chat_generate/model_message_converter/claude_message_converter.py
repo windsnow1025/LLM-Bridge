@@ -25,7 +25,7 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                base64_image, media_type = await media_processor.get_encoded_content_from_url(file_url)
+                base64_image, media_type = await media_processor.get_base64_content_from_url(file_url)
                 image_content = ImageBlockParam(
                     type="image",
                     source=Base64ImageSourceParam(
@@ -36,7 +36,7 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
                 )
                 claude_content.append(image_content)
             elif sub_type == "pdf":
-                file_data, media_type = await media_processor.get_encoded_content_from_url(file_url)
+                file_data, media_type = await media_processor.get_base64_content_from_url(file_url)
                 pdf_content = DocumentBlockParam(
                     type="document",
                     source=Base64PDFSourceParam(
