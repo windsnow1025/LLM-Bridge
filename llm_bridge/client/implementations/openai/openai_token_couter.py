@@ -34,7 +34,11 @@ def count_openai_responses_input_tokens(messages: list[OpenAIResponsesMessage]) 
 
 
 def count_openai_output_tokens(chat_response: ChatResponse) -> int:
-    text = chat_response.text + chat_response.thought + chat_response.code
+    text = chat_response.text
+    if chat_response.thought:
+        text += chat_response.thought
+    if chat_response.code:
+        text += chat_response.code
     file_count = len(chat_response.files) if chat_response.files else 0
 
     return num_tokens_from_text(text) + file_count * 1000
