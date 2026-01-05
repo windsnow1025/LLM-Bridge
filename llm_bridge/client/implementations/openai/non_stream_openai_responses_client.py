@@ -5,70 +5,14 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError
-from openai.types.responses import Response, ResponseOutputItem, ResponseOutputMessage, \
-    ResponseOutputText, ResponseReasoningItem, ResponseCodeInterpreterToolCall
-from openai.types.responses.response_output_item import ImageGenerationCall
+from openai.types.responses import Response
 
-from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
-    count_openai_output_tokens
-from llm_bridge.client.implementations.openai.openai_responses_response_handler import process_code_interpreter_outputs
+from llm_bridge.client.implementations.openai.openai_responses_response_handler import \
+    process_openai_responses_non_stream_response
+from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens
 from llm_bridge.client.model_client.openai_client import OpenAIClient
-from llm_bridge.type.chat_response import ChatResponse, File
+from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
-
-
-async def process_openai_responses_non_stream_response(
-        response: Response,
-        input_tokens: int,
-) -> ChatResponse:
-
-    output_list: list[ResponseOutputItem] = response.output
-
-    text: str = ""
-    thought: str = ""
-    code: str = ""
-    code_output: str = ""
-    files: list[File] = []
-
-    for output in output_list:
-        if output.type == "message":
-            output_message: ResponseOutputMessage = output
-            for content in output_message.content:
-                if content.type == "output_text":
-                    output_text: ResponseOutputText = content
-                    text += output_text.text
-        elif output.type == "reasoning":
-            reasoning_item: ResponseReasoningItem = output
-            for summary_delta in reasoning_item.summary:
-                thought += summary_delta.text
-        elif output.type == "code_interpreter_call":
-            code_interpreter_tool_call: ResponseCodeInterpreterToolCall = output
-            if interpreter_code := code_interpreter_tool_call.code:
-                code += interpreter_code
-            if interpreter_outputs := code_interpreter_tool_call.outputs:
-                interpreter_code_output, interpreter_files = await process_code_interpreter_outputs(interpreter_outputs)
-                code_output += interpreter_code_output
-                files.extend(interpreter_files)
-        if output.type == "image_generation_call":
-            image_generation_call: ImageGenerationCall = output
-            file = File(
-                name="image_generation_call_output.png",
-                data=image_generation_call.result,
-                type="image/png",
-            )
-            files.append(file)
-
-    chat_response = ChatResponse(text=text, files=files)
-    output_tokens = count_openai_output_tokens(chat_response)
-    return ChatResponse(
-        text=text,
-        thought=thought,
-        code=code,
-        code_output=code_output,
-        files=files,
-        input_tokens=input_tokens,
-        output_tokens=output_tokens,
-    )
 
 
 class NonStreamOpenAIResponsesClient(OpenAIClient):

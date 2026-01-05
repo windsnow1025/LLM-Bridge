@@ -1,4 +1,3 @@
-import base64
 import mimetypes
 from typing import Optional
 

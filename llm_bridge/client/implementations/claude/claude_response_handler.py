@@ -73,26 +73,16 @@ async def process_content_block(
     )
 
 
-async def process_claude_non_stream_response(
-        message: BetaMessage,
+async def build_chat_response_with_tokens(
+        text: str,
+        thought: str,
+        code: str,
+        code_output: str,
+        files: list[File],
         input_tokens: int,
         client: AsyncAnthropic,
         model: str,
 ) -> ChatResponse:
-    text = ""
-    thought = ""
-    code = ""
-    code_output = ""
-    files: list[File] = []
-
-    for content_block in message.content:
-        content_block_chat_response = await process_content_block(content_block, client)
-        text += content_block_chat_response.text
-        thought += content_block_chat_response.thought
-        code += content_block_chat_response.code
-        code_output += content_block_chat_response.code_output
-        files.extend(content_block_chat_response.files)
-
     chat_response = ChatResponse(
         text=text,
         thought=thought,
@@ -113,6 +103,38 @@ async def process_claude_non_stream_response(
         files=files,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
+    )
+
+
+async def process_claude_non_stream_response(
+        message: BetaMessage,
+        input_tokens: int,
+        client: AsyncAnthropic,
+        model: str,
+) -> ChatResponse:
+    text = ""
+    thought = ""
+    code = ""
+    code_output = ""
+    files: list[File] = []
+
+    for content_block in message.content:
+        content_block_chat_response = await process_content_block(content_block, client)
+        text += content_block_chat_response.text
+        thought += content_block_chat_response.thought
+        code += content_block_chat_response.code
+        code_output += content_block_chat_response.code_output
+        files.extend(content_block_chat_response.files)
+
+    return await build_chat_response_with_tokens(
+        text=text,
+        thought=thought,
+        code=code,
+        code_output=code_output,
+        files=files,
+        input_tokens=input_tokens,
+        client=client,
+        model=model,
     )
 
 
@@ -152,24 +174,13 @@ async def process_claude_stream_response(
         code_output += content_block_chat_response.code_output
         files.extend(content_block_chat_response.files)
 
-    chat_response = ChatResponse(
-        text=text,
-        thought=thought,
-        code=code,
-        code_output=code_output,
-        files=files,
-    )
-    output_tokens = await count_claude_output_tokens(
-        client=client,
-        model=model,
-        chat_response=chat_response,
-    )
-    return ChatResponse(
+    return await build_chat_response_with_tokens(
         text=text,
         thought=thought,
         code=code,
         code_output=code_output,
         files=files,
         input_tokens=input_tokens,
-        output_tokens=output_tokens,
+        client=client,
+        model=model,
     )
