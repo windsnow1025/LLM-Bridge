@@ -18,7 +18,11 @@ def load_json_file(package: str, filename: str):
 
 
 def get_model_prices() -> list[ModelPrice]:
-    return load_json_file("llm_bridge.resources", "model_prices.json")
+    prices = load_json_file("llm_bridge.resources", "model_prices.json")
+    for price in prices:
+        price["input"] = float(price["input"])
+        price["output"] = float(price["output"])
+    return prices
 
 
 def find_model_prices(api_type: str, model: str) -> ModelPrice | None:
