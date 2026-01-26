@@ -1,6 +1,7 @@
 import mimetypes
 import os
 import re
+from pathlib import PurePosixPath
 
 from llm_bridge.logic.file_fetch import fetch_file_data
 from llm_bridge.logic.message_preprocess.code_file_extensions import code_file_extensions
@@ -14,9 +15,12 @@ def is_file_type_supported(file_name: str) -> bool:
 
 
 async def get_file_type(file_url: str) -> tuple[str, str]:
-    file_name = get_file_name(file_url)
+    file_name = get_filename_without_timestamp(file_url)
 
-    file_extension = '.' + file_name.split('.')[-1].lower() # Treat filenames without an extension as their own extension
+    # Treat filenames without an extension as their own extension
+    suffix = PurePosixPath(file_name).suffix.lower()
+    file_extension = suffix if suffix else '.' + file_name.lower()
+
     if file_extension in code_file_extensions:
         return 'text', 'code'
     if file_extension == '.pdf':
@@ -41,9 +45,8 @@ async def get_file_type(file_url: str) -> tuple[str, str]:
     return 'unknown', 'unknown'
 
 
-# Without Timestamp
-def get_file_name(file_url: str) -> str:
-    base_name = os.path.basename(file_url)
+def get_filename_without_timestamp(file_url: str) -> str:
+    base_name = PurePosixPath(file_url).name
     match = re.search(r'-(.+)', base_name)
     if match:
         return match.group(1)

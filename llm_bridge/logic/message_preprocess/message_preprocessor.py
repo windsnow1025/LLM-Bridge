@@ -1,5 +1,5 @@
 from llm_bridge.logic.message_preprocess import document_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_name
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
 from llm_bridge.type.message import Message, Role, Content, ContentType
 
 
@@ -24,7 +24,7 @@ async def extract_text_files_to_message(message: Message, api_type: str) -> None
         if sub_type == "pdf" and api_type in ("OpenAI", "OpenAI-Azure", "Gemini-Vertex", "Gemini-Free", "Gemini-Paid", "Claude"):
             continue
             
-        filename = get_file_name(file_url)
+        filename = get_filename_without_timestamp(file_url)
         file_text = await document_processor.extract_text_from_file(file_url)
         
         message.contents[i] = Content(

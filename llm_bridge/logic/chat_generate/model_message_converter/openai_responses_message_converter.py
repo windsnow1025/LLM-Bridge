@@ -2,7 +2,7 @@ from openai.types.responses import ResponseInputTextParam, ResponseInputImagePar
     ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputFileParam
 
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_name
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
 from llm_bridge.type.message import Message, ContentType
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
@@ -33,7 +33,7 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                 file_data, _ = await media_processor.get_base64_content_from_url(file_url)
                 pdf_content = ResponseInputFileParam(
                     type="input_file",
-                    filename=get_file_name(file_url),
+                    filename=get_filename_without_timestamp(file_url),
                     file_data=f"data:application/pdf;base64,{file_data}",
                 )
                 content.append(pdf_content)

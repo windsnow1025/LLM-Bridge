@@ -1,5 +1,5 @@
-import importlib.resources
 import json
+from importlib.resources import files
 from typing import TypedDict
 
 from fastapi import HTTPException
@@ -12,9 +12,9 @@ class ModelPrice(TypedDict):
     output: float
 
 
-def load_json_file(package, filename):
-    with importlib.resources.open_text(package, filename) as f:
-        return json.load(f)
+def load_json_file(package: str, filename: str):
+    content = files(package).joinpath(filename).read_text(encoding="utf-8")
+    return json.loads(content)
 
 
 def get_model_prices() -> list[ModelPrice]:

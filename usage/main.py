@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import sys
+from pathlib import Path
 from pprint import pprint
 
 from dotenv import load_dotenv
@@ -9,7 +10,15 @@ from dotenv import load_dotenv
 from llm_bridge import *
 from usage.workflow import workflow
 
-output_file = open("./usage/output.log", "w", encoding="utf-8")
+script_dir = Path(__file__).parent.resolve()
+
+# Env
+load_dotenv(script_dir / ".env")
+
+# Logging Output File
+output_path = script_dir / "output.log"
+output_path.parent.mkdir(parents=True, exist_ok=True)
+output_file = output_path.open("w", encoding="utf-8")
 sys.stdout = output_file
 
 logging.basicConfig(
@@ -17,10 +26,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     stream=output_file
 )
-
-script_dir = os.path.dirname(os.path.abspath(__file__))
-env_path = os.path.join(script_dir, ".env")
-load_dotenv(env_path)
 
 api_keys = {
     "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),
