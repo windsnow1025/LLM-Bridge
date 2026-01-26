@@ -41,10 +41,6 @@ api_keys = {
 
 
 async def main():
-    model_prices = get_model_prices()
-    pprint(model_prices)
-    print(structured_output_schema)
-
     input_tokens = 0
     output_tokens = 0
     response = await workflow(

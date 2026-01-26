@@ -29,7 +29,7 @@ async def extract_text_files_to_message(message: Message, api_type: str) -> None
         
         message.contents[i] = Content(
             type=ContentType.Text,
-            data=f"{filename}: \n{file_text}\n"
+            data=f"<file name=\"{filename}\">\n{file_text}\n</file>"
         )
 
 
