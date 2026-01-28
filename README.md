@@ -1,6 +1,6 @@
 # LLM Bridge
 
-LLM Bridge is a unified Python interface for native interactions with various LLM providers.
+LLM Bridge is a unified API wrapper for native interactions with various LLM providers.
 
 GitHub: [https://github.com/windsnow1025/LLM-Bridge](https://github.com/windsnow1025/LLM-Bridge)
 
