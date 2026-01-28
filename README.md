@@ -1,6 +1,6 @@
 # LLM Bridge
 
-LLM Bridge is a unified Python interface for interacting with LLMs, including OpenAI (Native / Azure / GitHub), Gemini (AI Studio / Vertex), Claude, and Grok.
+LLM Bridge is a unified Python interface for native interactions with various LLM providers.
 
 GitHub: [https://github.com/windsnow1025/LLM-Bridge](https://github.com/windsnow1025/LLM-Bridge)
 
@@ -56,12 +56,6 @@ The features listed represent the maximum capabilities of each API type supporte
 ### Usage
 
 Copy `./usage/.env.example` and rename it to `./usage/.env`, then fill in the environment variables.
-
-### Test
-
-```bash
-uv run pytest
-```
 
 ### Build
 
