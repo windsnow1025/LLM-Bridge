@@ -15,11 +15,11 @@ def is_file_type_supported(file_name: str) -> bool:
 
 
 async def get_file_type(file_url: str) -> tuple[str, str]:
-    file_name = get_filename_without_timestamp(file_url)
+    file_name: str = get_filename_without_timestamp(file_url)
 
     # Treat filenames without an extension as their own extension
-    suffix = PurePosixPath(file_name).suffix.lower()
-    file_extension = suffix if suffix else '.' + file_name.lower()
+    suffix: str = PurePosixPath(file_name).suffix.lower()
+    file_extension: str = suffix if suffix else '.' + file_name.lower()
 
     if file_extension in code_file_extensions:
         return 'text', 'code'
