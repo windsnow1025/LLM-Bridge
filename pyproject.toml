@@ -33,9 +33,9 @@ classifiers = [
 
 [dependency-groups]
 dev = [
-    "pytest",
-    "pytest-asyncio",
-    "python-dotenv", #dotenv
+    "pytest==9.0.2",
+    "pytest-asyncio==1.3.0",
+    "python-dotenv==1.2.1", #dotenv
 ]
 
 [tool.pytest.ini_options]
