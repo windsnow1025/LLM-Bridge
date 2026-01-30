@@ -3,18 +3,19 @@ from openai.types.responses import ResponseInputTextParam, ResponseInputImagePar
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
-from llm_bridge.type.message import Message, ContentType
+from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
 
 async def convert_message_to_openai_responses(message: Message) -> OpenAIResponsesMessage:
-    role = message.role.value
+    role = message.role
     content: list[ResponseInputContentParam | ResponseOutputTextParam] = []
+    contains_pdf = False
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
-            if role == "assistant":
-                text_content = ResponseOutputTextParam(type="output_text", text=content_item.data)
+            if role == Role.Assistant:
+                text_content = ResponseOutputTextParam(type="output_text", text=content_item.data, annotations=[])
             else:
                 text_content = ResponseInputTextParam(type="input_text", text=content_item.data)
             content.append(text_content)
@@ -30,6 +31,7 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                 )
                 content.append(image_content)
             elif sub_type == "pdf":
+                contains_pdf = True
                 file_data, _ = await media_processor.get_base64_content_from_url(file_url)
                 pdf_content = ResponseInputFileParam(
                     type="input_file",
@@ -52,7 +54,11 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                 )
                 content.append(text_content)
 
-    if role in ("user", "system"):
-        return EasyInputMessageParam(role=role, content=content)
+    # Force system role to user if the message contains a PDF
+    if role == Role.System and contains_pdf:
+        role = Role.User
+
+    if role in (Role.User, Role.System):
+        return EasyInputMessageParam(role=role.value, content=content)
     else:
-        return ResponseOutputMessageParam(role=role, content=content)
+        return ResponseOutputMessageParam(role=role.value, content=content)
