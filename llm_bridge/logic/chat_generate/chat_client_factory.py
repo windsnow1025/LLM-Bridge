@@ -10,7 +10,7 @@ from llm_bridge.type.message import Message
 
 
 async def create_chat_client(
-        api_keys: dict,
+        api_keys: dict[str, str],
         messages: list[Message],
         model: str,
         api_type: str,
