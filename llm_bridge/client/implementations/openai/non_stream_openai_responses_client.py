@@ -32,7 +32,7 @@ class NonStreamOpenAIResponsesClient(OpenAIClient):
                 stream=False,
                 tools=self.tools,
                 include=self.include,
-                # text_format=self.structured_output_base_model, # Async OpenAPI Responses Client does not support structured output
+                text=self.text,
             )
 
             return await process_openai_responses_non_stream_response(

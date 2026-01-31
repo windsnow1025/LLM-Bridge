@@ -56,7 +56,7 @@ class StreamOpenAIResponsesClient(OpenAIClient):
                 stream=True,
                 tools=self.tools,
                 include=self.include,
-                # text_format=self.structured_output_base_model, # Async OpenAPI Responses Client does not support structured output
+                text=self.text,
             )
 
         except httpx.HTTPStatusError as e:

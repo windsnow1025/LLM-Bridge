@@ -5,7 +5,8 @@ import openai
 from fastapi import HTTPException
 from openai import Omit
 from openai.types import Reasoning
-from openai.types.responses import WebSearchToolParam, ResponseIncludable
+from openai.types.responses import WebSearchToolParam, ResponseIncludable, ResponseTextConfigParam, \
+    ResponseFormatTextJSONSchemaConfigParam
 from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
     ImageGeneration, ToolParam
 
@@ -15,7 +16,6 @@ from llm_bridge.client.implementations.openai.steam_openai_responses_client impo
 from llm_bridge.client.implementations.openai.stream_openai_client import StreamOpenAIClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_openai_responses, \
     convert_messages_to_openai
-from llm_bridge.logic.chat_generate.model_client_factory.schema_converter import json_schema_to_pydantic_model
 from llm_bridge.type.message import Message
 
 
@@ -98,10 +98,16 @@ async def create_openai_client(
             )
         )
 
-    structured_output_base_model = None
+    text: ResponseTextConfigParam | Omit = omit
     if structured_output_schema:
-        structured_output_base_model = json_schema_to_pydantic_model(structured_output_schema)
-
+        text = ResponseTextConfigParam(
+            format=ResponseFormatTextJSONSchemaConfigParam(
+                name="structured_output",
+                schema=structured_output_schema,
+                type="json_schema",
+                strict=True,
+            )
+        )
 
     if use_responses_api:
         if stream:
@@ -114,7 +120,7 @@ async def create_openai_client(
                 tools=tools,
                 reasoning=reasoning,
                 include=include,
-                structured_output_base_model=structured_output_base_model,
+                text=text,
             )
         else:
             return NonStreamOpenAIResponsesClient(
@@ -126,7 +132,7 @@ async def create_openai_client(
                 tools=tools,
                 reasoning=reasoning,
                 include=include,
-                structured_output_base_model=structured_output_base_model,
+                text=text,
             )
     else:
         if stream:

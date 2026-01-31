@@ -1,9 +1,8 @@
-from typing import AsyncGenerator, Iterable, Type, Any
-from pydantic import BaseModel
+from typing import AsyncGenerator, Iterable
 
 import openai.lib.azure
 from openai.types import Reasoning
-from openai.types.responses import ToolParam, ResponseIncludable
+from openai.types.responses import ToolParam, ResponseIncludable, ResponseTextConfigParam
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -22,7 +21,7 @@ class OpenAIClient(ChatClient):
             tools: Iterable[ToolParam],
             reasoning: Reasoning,
             include: list[ResponseIncludable],
-            structured_output_base_model: Type[BaseModel] | None = None,
+            text: ResponseTextConfigParam,
     ):
         self.model = model
         self.messages = messages
@@ -32,7 +31,7 @@ class OpenAIClient(ChatClient):
         self.tools = tools
         self.reasoning = reasoning
         self.include = include
-        self.structured_output_base_model = structured_output_base_model
+        self.text = text
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError

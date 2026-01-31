@@ -1,5 +1,45 @@
 from llm_bridge import *
 
+# Standard JSON Schema
+# structured_output_schema = {
+#   "$schema": "https://json-schema.org/draft/2020-12/schema",
+#   "$id": "https://example.com/product.schema.json",
+#   "title": "Product",
+#   "description": "A product from Acme's catalog",
+#   "type": "object",
+#   "properties": {
+#     "productId": {
+#       "description": "The unique identifier for a product",
+#       "type": "integer"
+#     },
+#     "productName": {
+#       "description": "Name of the product",
+#       "type": "string"
+#     },
+#     "price": {
+#       "description": "The price of the product",
+#       "type": "number",
+#       "exclusiveMinimum": 0
+#     },
+#     "tags": {
+#       "description": "Tags for the product",
+#       "type": "array",
+#       "items": {
+#         "type": "string"
+#       },
+#       "minItems": 1,
+#       "uniqueItems": True
+#     }
+#   },
+#   "required": [
+#     "productId",
+#     "productName",
+#     "price"
+#   ],
+#   "additionalProperties": False
+# }
+
+# OpenAI Responses API JSON Schema
 structured_output_schema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/product.schema.json",
@@ -27,23 +67,24 @@ structured_output_schema = {
         "type": "string"
       },
       "minItems": 1,
-      "uniqueItems": True
     }
   },
   "required": [
     "productId",
     "productName",
-    "price"
-  ]
+    "price",
+    "tags"
+  ],
+  "additionalProperties": False
 }
-structured_output_schema = None
+# structured_output_schema = None
 
 messages = [
     Message(
         role=Role.System,
         contents=[
-            # Content(type=ContentType.Text, data="You are a helpful assistant."),
-            Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf")
+            Content(type=ContentType.Text, data="You are a helpful assistant."),
+            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf")
         ]
     ),
     # Message(
@@ -62,7 +103,7 @@ messages = [
         role=Role.User,
         contents=[
             # Simple Question
-            Content(type=ContentType.Text, data="What's this?"),
+            # Content(type=ContentType.Text, data="What's this?"),
 
             # Thinking
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
@@ -87,7 +128,7 @@ messages = [
             # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
 
             # Structured Output
-            # Content(type=ContentType.Text, data="Please generate a product."),
+            Content(type=ContentType.Text, data="Please generate a product."),
         ]
     ),
     # Message(
@@ -102,6 +143,7 @@ messages = [
     #     ]
     # ),
 ]
+
 # See /llm_bridge/resources/model_prices.json for available models
 model = "gpt-5.2"
 # model = "gpt-5.1"
@@ -115,6 +157,7 @@ model = "gpt-5.2"
 # model = "grok-4-1-fast-reasoning"
 # model = "claude-sonnet-4-5"
 # model = "claude-opus-4-5"
+
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
@@ -123,6 +166,7 @@ api_type = "OpenAI"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"
 # api_type = "Grok"
+
 temperature = 0
 stream = True
 # stream = False
