@@ -30,7 +30,7 @@ async def create_claude_client(
         api_key=api_key,
     )
 
-    system = extract_system_messages(messages)
+    system = await extract_system_messages(messages)
     if system == "":
         system = "/"
 

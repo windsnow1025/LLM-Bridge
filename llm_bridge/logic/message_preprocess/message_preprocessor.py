@@ -33,18 +33,21 @@ async def extract_text_files_to_message(message: Message, api_type: str) -> None
         )
 
 
-def extract_system_messages(messages: list[Message]) -> str:
+async def extract_system_messages(messages: list[Message]) -> str:
     system_message = ""
     indices_to_delete = []
     
     for i, message in enumerate(messages):
         if message.role != Role.System:
             continue
-            
-        # Concatenate all text content from the system message
+
         for content_item in message.contents:
             if content_item.type == ContentType.Text:
                 system_message += f"{content_item.data}\n"
+            elif content_item.type == ContentType.File:
+                file_url = content_item.data
+                file_type, sub_type = await get_file_type(file_url)
+                system_message += f"\n{file_url}: {file_type}/{sub_type} in system message not supported by the current model.\n"
                 
         indices_to_delete.append(i)
 

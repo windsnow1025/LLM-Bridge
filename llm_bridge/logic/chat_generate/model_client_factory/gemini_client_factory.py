@@ -27,7 +27,7 @@ async def create_gemini_client(
         api_key=api_key,
     )
 
-    system_instruction = extract_system_messages(messages) or " "
+    system_instruction = await extract_system_messages(messages) or " "
     tools = []
     thinking_config = None
     response_modalities = [Modality.TEXT]
