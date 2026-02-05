@@ -127,6 +127,12 @@
   },
   {
     "apiType": "Claude",
+    "model": "claude-opus-4-6",
+    "input": 5,
+    "output": 25
+  },
+  {
+    "apiType": "Claude",
     "model": "claude-opus-4-5",
     "input": 5,
     "output": 25

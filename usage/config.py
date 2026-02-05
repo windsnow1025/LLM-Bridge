@@ -156,15 +156,15 @@ model = "gpt-5.2"
 # model = "gemini-3-flash-preview"
 # model = "grok-4-1-fast-reasoning"
 # model = "claude-sonnet-4-5"
-# model = "claude-opus-4-5"
+model = "claude-opus-4-6"
 
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
 # api_type = "Gemini-Paid"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-# api_type = "Claude"
+api_type = "Claude"
 # api_type = "Grok"
 
 temperature = 0
