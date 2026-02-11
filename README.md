@@ -51,7 +51,7 @@ The features listed represent the maximum capabilities of each API type supporte
 1. Add New Interpreter >> Add Local Interpreter
   - Environment: Select existing
   - Type: uv
-2. Add New Configuration >> uv run >> script: `./usage/main.py`
+2. Add New Configuration >> uv run >> Script: `./usage/main.py`
 
 ### Usage
 
