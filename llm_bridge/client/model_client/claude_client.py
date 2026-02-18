@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, Any
+from typing import Any, AsyncGenerator
 
 import anthropic
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
@@ -22,7 +22,7 @@ class ClaudeClient(ChatClient):
             input_tokens: int,
             tools: list[BetaToolUnionParam],
             thinking: ThinkingConfigEnabledParam,
-            output_format: dict[str, Any] | None,
+            extra_body: dict[str, Any] | None,
     ):
         self.model = model
         self.messages = messages
@@ -34,7 +34,7 @@ class ClaudeClient(ChatClient):
         self.input_tokens = input_tokens
         self.tools = tools
         self.thinking = thinking
-        self.output_format = output_format
+        self.extra_body = extra_body
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError

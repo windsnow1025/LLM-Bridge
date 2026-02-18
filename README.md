@@ -26,12 +26,11 @@ The features listed represent the maximum capabilities of each API type supporte
 |----------|--------------------------------|---------------------------------------------------------|-------------------|
 | OpenAI   | Text, Image, PDF               | Thinking, Web Search, Code Execution, Structured Output | Text, Image       |
 | Gemini   | Text, Image, Video, Audio, PDF | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
-| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution                    | Text, File        |
+| Claude   | Text, Image, PDF               | Thinking, Web Search, Code Execution, Structured Output | Text, File        |
 | Grok     | Text, Image                    |                                                         | Text              |
 
 #### Planned Features
 
-- Structured Output
 - More features for API Types
 - Native support for Grok
 

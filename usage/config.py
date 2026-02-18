@@ -1,45 +1,6 @@
 from llm_bridge import *
 
 # Standard JSON Schema
-# structured_output_schema = {
-#   "$schema": "https://json-schema.org/draft/2020-12/schema",
-#   "$id": "https://example.com/product.schema.json",
-#   "title": "Product",
-#   "description": "A product from Acme's catalog",
-#   "type": "object",
-#   "properties": {
-#     "productId": {
-#       "description": "The unique identifier for a product",
-#       "type": "integer"
-#     },
-#     "productName": {
-#       "description": "Name of the product",
-#       "type": "string"
-#     },
-#     "price": {
-#       "description": "The price of the product",
-#       "type": "number",
-#       "exclusiveMinimum": 0
-#     },
-#     "tags": {
-#       "description": "Tags for the product",
-#       "type": "array",
-#       "items": {
-#         "type": "string"
-#       },
-#       "minItems": 1,
-#       "uniqueItems": True
-#     }
-#   },
-#   "required": [
-#     "productId",
-#     "productName",
-#     "price"
-#   ],
-#   "additionalProperties": False
-# }
-
-# OpenAI Responses API JSON Schema
 structured_output_schema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/product.schema.json",
@@ -67,16 +28,56 @@ structured_output_schema = {
         "type": "string"
       },
       "minItems": 1,
+      "uniqueItems": True
     }
   },
   "required": [
     "productId",
     "productName",
-    "price",
-    "tags"
+    "price"
   ],
   "additionalProperties": False
 }
+
+# OpenAI Responses API JSON Schema
+# structured_output_schema = {
+#   "$schema": "https://json-schema.org/draft/2020-12/schema",
+#   "$id": "https://example.com/product.schema.json",
+#   "title": "Product",
+#   "description": "A product from Acme's catalog",
+#   "type": "object",
+#   "properties": {
+#     "productId": {
+#       "description": "The unique identifier for a product",
+#       "type": "integer"
+#     },
+#     "productName": {
+#       "description": "Name of the product",
+#       "type": "string"
+#     },
+#     "price": {
+#       "description": "The price of the product",
+#       "type": "number",
+#       "exclusiveMinimum": 0
+#     },
+#     "tags": {
+#       "description": "Tags for the product",
+#       "type": "array",
+#       "items": {
+#         "type": "string"
+#       },
+#       "minItems": 1,
+#     }
+#   },
+#   "required": [
+#     "productId",
+#     "productName",
+#     "price",
+#     "tags"
+#   ],
+#   "additionalProperties": False
+# }
+
 # structured_output_schema = None
 
 messages = [
@@ -156,7 +157,6 @@ messages = [
 # model = "gemini-3-flash-preview"
 # model = "grok-4-1-fast-reasoning"
 model = "claude-sonnet-4-6"
-# model = "claude-opus-4-6"
 
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"

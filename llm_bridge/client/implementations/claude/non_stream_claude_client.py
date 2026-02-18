@@ -24,7 +24,7 @@ class NonStreamClaudeClient(ClaudeClient):
                 betas=self.betas,
                 tools=self.tools,
                 thinking=self.thinking,
-                output_format=self.output_format,
+                extra_body=self.extra_body,
             )
 
             return await process_claude_non_stream_response(

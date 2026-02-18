@@ -25,7 +25,7 @@ class StreamClaudeClient(ClaudeClient):
                     betas=self.betas,
                     tools=self.tools,
                     thinking=self.thinking,
-                    output_format=self.output_format,
+                    extra_body=self.extra_body,
                 ) as stream:
                     async for event in stream:
                         yield await process_claude_stream_response(

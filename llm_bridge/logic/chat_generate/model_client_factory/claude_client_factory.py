@@ -4,7 +4,7 @@ import anthropic
 from anthropic import Omit, transform_schema
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
 from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param, \
-    BetaToolBash20250124Param
+    BetaToolBash20250124Param, BetaJSONOutputFormatParam
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
@@ -51,13 +51,15 @@ async def create_claude_client(
         max_output,
         context_window - input_tokens,
     )
-    thinking = omit
+
+    thinking: ThinkingConfigEnabledParam | Omit = omit
     if thought:
         thinking = ThinkingConfigEnabledParam(
             type="enabled",
             budget_tokens=max(1024, max_tokens // 2),  # Minimum budget tokens: 1024
         )
         temperature = 1
+
     betas: list[AnthropicBetaParam] = [
         "context-1m-2025-08-07",
         "output-128k-2025-02-19",
@@ -65,6 +67,7 @@ async def create_claude_client(
         "files-api-2025-04-14",
         "structured-outputs-2025-11-13",
     ]
+
     tools: list[BetaToolUnionParam] = []
     tools.append(
         BetaWebSearchTool20250305Param(
@@ -86,12 +89,14 @@ async def create_claude_client(
             )
         )
 
-    output_format = omit
-    # if structured_output_schema: # Claude output format raises: TypeError: unhashable type: 'dict'
-    #     output_format = {
-    #         "type": "json_schema",
-    #         "schema": transform_schema(structured_output_schema),
-    #     }
+    extra_body = None
+    if structured_output_schema:
+        extra_body = {
+            "output_format": BetaJSONOutputFormatParam(
+                type="json_schema",
+                schema=transform_schema(structured_output_schema),
+            )
+        }
 
     if stream:
         return StreamClaudeClient(
@@ -105,7 +110,7 @@ async def create_claude_client(
             input_tokens=input_tokens,
             tools=tools,
             thinking=thinking,
-            output_format=output_format,
+            extra_body=extra_body,
         )
     else:
         return NonStreamClaudeClient(
@@ -119,5 +124,5 @@ async def create_claude_client(
             input_tokens=input_tokens,
             tools=tools,
             thinking=thinking,
-            output_format=output_format,
+            extra_body=extra_body,
         )
