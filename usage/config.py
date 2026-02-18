@@ -145,7 +145,7 @@ messages = [
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5.2"
+# model = "gpt-5.2"
 # model = "gpt-5.1"
 # model = "gpt-5-pro"
 # model = "gpt-5"
@@ -155,8 +155,8 @@ model = "gpt-5.2"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3-flash-preview"
 # model = "grok-4-1-fast-reasoning"
-# model = "claude-sonnet-4-5"
-model = "claude-opus-4-6"
+model = "claude-sonnet-4-6"
+# model = "claude-opus-4-6"
 
 # api_type = "Gemini-Vertex"
 # api_type = "Gemini-Free"
