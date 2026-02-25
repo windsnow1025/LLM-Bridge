@@ -142,8 +142,6 @@ async def create_openai_client(
                 temperature=temperature,
                 api_type=api_type,
                 client=client,
-                tools=tools,
-                reasoning=reasoning,
             )
         else:
             return NonStreamOpenAIClient(
@@ -152,6 +150,4 @@ async def create_openai_client(
                 temperature=temperature,
                 api_type=api_type,
                 client=client,
-                tools=tools,
-                reasoning=reasoning,
             )

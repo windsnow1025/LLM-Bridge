@@ -18,10 +18,10 @@ class OpenAIClient(ChatClient):
             temperature: float,
             api_type: str,
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
-            tools: Iterable[ToolParam],
-            reasoning: Reasoning,
-            include: list[ResponseIncludable],
-            text: ResponseTextConfigParam,
+            tools: Iterable[ToolParam] | None = None,
+            reasoning: Reasoning | None = None,
+            include: list[ResponseIncludable] | None = None,
+            text: ResponseTextConfigParam | None = None,
     ):
         self.model = model
         self.messages = messages
