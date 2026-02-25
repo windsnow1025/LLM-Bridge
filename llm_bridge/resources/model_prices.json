@@ -1,60 +1,60 @@
 [
   {
-    "apiType": "Gemini-Vertex",
+    "apiType": "Vertex AI",
     "model": "gemini-3.1-pro-preview",
     "input": 4,
     "output": 18
   },
   {
-    "apiType": "Gemini-Vertex",
+    "apiType": "Vertex AI",
     "model": "gemini-3-pro-preview",
     "input": 4,
     "output": 18
   },
   {
-    "apiType": "Gemini-Vertex",
+    "apiType": "Vertex AI",
     "model": "gemini-3-flash-preview",
     "input": 1,
     "output": 3
   },
   {
-    "apiType": "Gemini-Vertex",
+    "apiType": "Vertex AI",
     "model": "gemini-3-pro-image-preview",
     "input": 2,
     "output": 120
   },
   {
-    "apiType": "Gemini-Paid",
+    "apiType": "Google AI Studio",
     "model": "gemini-3.1-pro-preview",
     "input": 4,
     "output": 18
   },
   {
-    "apiType": "Gemini-Paid",
+    "apiType": "Google AI Studio",
     "model": "gemini-3-pro-preview",
     "input": 4,
     "output": 18
   },
   {
-    "apiType": "Gemini-Paid",
+    "apiType": "Google AI Studio",
     "model": "gemini-3-flash-preview",
     "input": 1,
     "output": 3
   },
   {
-    "apiType": "Gemini-Paid",
+    "apiType": "Google AI Studio",
     "model": "gemini-3-pro-image-preview",
     "input": 2,
     "output": 120
   },
   {
-    "apiType": "Gemini-Paid",
+    "apiType": "Google AI Studio",
     "model": "gemini-flash-latest",
     "input": 1,
     "output": 2.5
   },
   {
-    "apiType": "Gemini-Free",
+    "apiType": "Google AI Studio Free Tier",
     "model": "gemini-3-flash-preview",
     "input": 0,
     "output": 0
