@@ -158,9 +158,9 @@ messages = [
 # model = "grok-4-1-fast-reasoning"
 model = "claude-sonnet-4-6"
 
-# api_type = "Gemini-Vertex"
-# api_type = "Gemini-Free"
-# api_type = "Gemini-Paid"
+# api_type = "Vertex AI"
+# api_type = "Google AI Studio Free Tier"
+# api_type = "Google AI Studio"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"

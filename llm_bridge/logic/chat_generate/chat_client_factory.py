@@ -71,7 +71,7 @@ async def create_chat_client(
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
-    elif api_type == 'Gemini-Free':
+    elif api_type == 'Google AI Studio Free Tier':
         return await create_gemini_client(
             api_key=api_keys["GOOGLE_AI_STUDIO_FREE_TIER_API_KEY"],
             vertexai=False,
@@ -83,7 +83,7 @@ async def create_chat_client(
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
-    elif api_type == 'Gemini-Paid':
+    elif api_type == 'Google AI Studio':
         return await create_gemini_client(
             api_key=api_keys["GOOGLE_AI_STUDIO_API_KEY"],
             vertexai=False,
@@ -95,7 +95,7 @@ async def create_chat_client(
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
-    elif api_type == 'Gemini-Vertex':
+    elif api_type == 'Vertex AI':
         return await create_gemini_client(
             api_key=api_keys["VERTEX_AI_API_KEY"],
             messages=messages,
