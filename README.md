@@ -45,7 +45,7 @@ The features listed represent the maximum capabilities of each API type supporte
   uv sync --refresh
   ```
 
-### Pycharm
+### PyCharm
 
 1. Add New Interpreter >> Add Local Interpreter
   - Environment: Select existing
