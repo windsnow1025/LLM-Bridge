@@ -146,9 +146,10 @@ messages = [
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
+# model = "gpt-5.4"
 # model = "gpt-5.2"
 # model = "gpt-5.1"
-# model = "gpt-5-pro"
+# model = "gpt-5.4-pro"
 # model = "gpt-5"
 # model = "gpt-4.1"
 # model = "gpt-5-codex"
@@ -156,15 +157,15 @@ messages = [
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3-flash-preview"
 # model = "grok-4-1-fast-reasoning"
-model = "claude-sonnet-4-6"
+# model = "claude-sonnet-4-6"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
 # api_type = "Google AI Studio"
-# api_type = "OpenAI"
+api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-api_type = "Claude"
+# api_type = "Claude"
 # api_type = "Grok"
 
 temperature = 0
