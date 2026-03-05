@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "LLM-Bridge"
-version = "1.16.2"
+version = "1.16.3"
 dependencies = [
     "fastapi",
     "httpx",
@@ -22,7 +22,7 @@ requires-python = ">=3.12"
 authors = [
     {name = "windsnow1025", email = "windsnow1025@gmail.com"}
 ]
-description = "A Bridge for LLMs"
+description = "A library that wraps multiple LLM providers into a consistent API while using each provider's native SDK internally, supporting multimodal I/O, file processing, and stream output."
 readme = "README.md"
 license = "MIT"
 keywords = ["llm", "ai"]
