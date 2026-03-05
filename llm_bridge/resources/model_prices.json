@@ -24,6 +24,12 @@
     "output": 120
   },
   {
+    "apiType": "Vertex AI",
+    "model": "gemini-3.1-flash-image-preview",
+    "input": 0.5,
+    "output": 60
+  },
+  {
     "apiType": "Google AI Studio",
     "model": "gemini-3.1-pro-preview",
     "input": 4,
@@ -46,6 +52,12 @@
     "model": "gemini-3-pro-image-preview",
     "input": 2,
     "output": 120
+  },
+  {
+    "apiType": "Vertex AI",
+    "model": "gemini-3.1-flash-image-preview",
+    "input": 0.5,
+    "output": 60
   },
   {
     "apiType": "Google AI Studio",

@@ -78,7 +78,7 @@ structured_output_schema = {
 #   "additionalProperties": False
 # }
 
-# structured_output_schema = None
+structured_output_schema = None
 
 messages = [
     Message(
@@ -117,7 +117,7 @@ messages = [
             # Content(type=ContentType.Text, data="What is in this image?"),
 
             # Image Generation
-            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            Content(type=ContentType.Text, data="Please generate an image of a cat."),
 
             # URL Context
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
@@ -129,7 +129,7 @@ messages = [
             # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
 
             # Structured Output
-            Content(type=ContentType.Text, data="Please generate a product."),
+            # Content(type=ContentType.Text, data="Please generate a product."),
         ]
     ),
     # Message(
@@ -155,14 +155,15 @@ messages = [
 # model = "gpt-5-codex"
 # model = "gemini-3-pro-preview"
 # model = "gemini-3-pro-image-preview"
+model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
-# model = "grok-4-1-fast-reasoning"
 # model = "claude-sonnet-4-6"
+# model = "grok-4-1-fast-reasoning"
 
-# api_type = "Vertex AI"
+api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
 # api_type = "Google AI Studio"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"
