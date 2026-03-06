@@ -74,8 +74,8 @@
   {
     "apiType": "OpenAI",
     "model": "gpt-5.4",
-    "input": 2.5,
-    "output": 15
+    "input": 5,
+    "output": 22.5
   },
   {
     "apiType": "OpenAI",
@@ -122,8 +122,8 @@
   {
     "apiType": "OpenAI",
     "model": "gpt-5.4-pro",
-    "input": 30,
-    "output": 180
+    "input": 60,
+    "output": 270
   },
   {
     "apiType": "OpenAI",
