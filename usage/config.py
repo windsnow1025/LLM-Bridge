@@ -174,5 +174,7 @@ stream = True
 # stream = False
 thought = True
 # thought = False
+# web_search = True
+web_search = False
 # code_execution = True
 code_execution = False

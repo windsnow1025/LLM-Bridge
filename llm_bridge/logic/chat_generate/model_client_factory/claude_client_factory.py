@@ -21,6 +21,7 @@ async def create_claude_client(
         temperature: float,
         stream: bool,
         thought: bool,
+        web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None
 ):
@@ -69,12 +70,13 @@ async def create_claude_client(
     ]
 
     tools: list[BetaToolUnionParam] = []
-    tools.append(
-        BetaWebSearchTool20250305Param(
-            type="web_search_20250305",
-            name="web_search",
+    if web_search:
+        tools.append(
+            BetaWebSearchTool20250305Param(
+                type="web_search_20250305",
+                name="web_search",
+            )
         )
-    )
     if code_execution:
         tools.append(
             BetaToolBash20250124Param(

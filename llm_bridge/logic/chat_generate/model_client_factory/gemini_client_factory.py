@@ -19,6 +19,7 @@ async def create_gemini_client(
         temperature: float,
         stream: bool,
         thought: bool,
+        web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ):
@@ -32,11 +33,12 @@ async def create_gemini_client(
     thinking_config = None
     response_modalities = [Modality.TEXT]
 
-    tools.append(
-        types.Tool(
-            google_search=types.GoogleSearch()
+    if web_search:
+        tools.append(
+            types.Tool(
+                google_search=types.GoogleSearch()
+            )
         )
-    )
     if thought:
         thinking_config = types.ThinkingConfig(
             include_thoughts=True,

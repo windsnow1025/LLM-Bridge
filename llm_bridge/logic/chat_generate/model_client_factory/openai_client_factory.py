@@ -27,6 +27,7 @@ async def create_openai_client(
         temperature: float,
         stream: bool,
         thought: bool,
+        web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ):
@@ -77,12 +78,13 @@ async def create_openai_client(
                     container=CodeInterpreterContainerCodeInterpreterToolAuto(type="auto")
                 )
             )
-    tools.append(
-        WebSearchToolParam(
-            type="web_search",
-            search_context_size="high",
+    if web_search:
+        tools.append(
+            WebSearchToolParam(
+                type="web_search",
+                search_context_size="high",
+            )
         )
-    )
     if re.match(r"gpt-5.*", model):
         temperature = 1
     if re.match(r"gpt-5.*", model):

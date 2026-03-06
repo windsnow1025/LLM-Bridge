@@ -17,6 +17,7 @@ async def create_chat_client(
         temperature: float,
         stream: bool,
         thought: bool,
+        web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ) -> ChatClient:
@@ -29,6 +30,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
@@ -44,6 +46,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
@@ -56,6 +59,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
@@ -68,6 +72,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
@@ -80,6 +85,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
@@ -92,6 +98,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
@@ -115,6 +122,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )

@@ -11,6 +11,7 @@ async def workflow(
         temperature: float,
         stream: bool,
         thought: bool,
+        web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
@@ -24,6 +25,7 @@ async def workflow(
         temperature=temperature,
         stream=stream,
         thought=thought,
+        web_search=web_search,
         code_execution=code_execution,
         structured_output_schema=structured_output_schema,
     )

@@ -51,6 +51,7 @@ async def main():
         temperature,
         stream,
         thought,
+        web_search,
         code_execution,
         structured_output_schema,
     )
