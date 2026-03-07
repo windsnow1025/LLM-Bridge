@@ -105,13 +105,14 @@ async def create_chat_client(
     elif api_type == 'Vertex AI':
         return await create_gemini_client(
             api_key=api_keys["VERTEX_AI_API_KEY"],
+            vertexai=True,
             messages=messages,
             model=model,
             temperature=temperature,
             stream=stream,
             thought=thought,
+            web_search=web_search,
             code_execution=code_execution,
-            vertexai=True,
             structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Claude':
