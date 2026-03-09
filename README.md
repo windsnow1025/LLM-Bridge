@@ -47,10 +47,9 @@ The features listed represent the maximum capabilities of each API type supporte
 
 ### PyCharm
 
-1. Add New Interpreter >> Add Local Interpreter
+Add New Interpreter >> Add Local Interpreter
   - Environment: Select existing
   - Type: uv
-2. Add New Configuration >> uv run >> Script: `./usage/main.py`
 
 ### Usage
 

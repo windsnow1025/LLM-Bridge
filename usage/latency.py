@@ -45,11 +45,12 @@ async def measure_first_chunk_latency(
         messages,
         model,
         api_type,
-        0,
-        True,
-        False,
-        False,
-        None,
+        temperature=0,
+        stream=True,
+        thought=False,
+        web_search=False,
+        code_execution=False,
+        structured_output_schema=None,
     )
 
     async for _ in response:

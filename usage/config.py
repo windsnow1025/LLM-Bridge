@@ -146,7 +146,7 @@ messages = [
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
-# model = "gpt-5.4"
+model = "gpt-5.4"
 # model = "gpt-5.2"
 # model = "gpt-5.1"
 # model = "gpt-5.4-pro"
