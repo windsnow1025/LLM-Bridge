@@ -45,7 +45,7 @@ async def create_claude_client(
     )
 
     context_window = 200_000
-    if model in ["claude-sonnet-4-5"]:
+    if model in ["claude-opus-4-6", "claude-sonnet-4-6", "claude-sonnet-4-5"]:
         context_window = 1_000_000
     max_output = 64_000
     max_tokens = min(
