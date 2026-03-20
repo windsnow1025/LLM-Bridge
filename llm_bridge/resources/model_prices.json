@@ -193,13 +193,13 @@
   },
   {
     "apiType": "Grok",
-    "model": "grok-4-1-fast-reasoning",
+    "model": "grok-4.20-reasoning",
     "input": 0.4,
     "output": 25
   },
   {
     "apiType": "Grok",
-    "model": "grok-4-1-fast-non-reasoning",
+    "model": "grok-4.20-fast-non-reasoning",
     "input": 0.4,
     "output": 25
   }

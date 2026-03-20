@@ -110,14 +110,14 @@ messages = [
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
 
             # Web Search
-            # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # Image Understanding
             # Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
             # Content(type=ContentType.Text, data="What is in this image?"),
 
             # Image Generation
-            Content(type=ContentType.Text, data="Please generate an image of a cat."),
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
 
             # URL Context
             # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
@@ -146,7 +146,7 @@ messages = [
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5.4-mini"
+# model = "gpt-5.4-mini"
 # model = "gpt-5.2"
 # model = "gpt-5.1"
 # model = "gpt-5.4-pro"
@@ -158,16 +158,16 @@ model = "gpt-5.4-mini"
 # model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
 # model = "claude-sonnet-4-6"
-# model = "grok-4-1-fast-reasoning"
+model = "grok-4.20-reasoning"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
 # api_type = "Google AI Studio"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"
-# api_type = "Grok"
+api_type = "Grok"
 
 temperature = 0
 stream = True
