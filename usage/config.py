@@ -85,9 +85,13 @@ messages = [
         role=Role.System,
         contents=[
             Content(type=ContentType.Text, data="You are a helpful assistant."),
-            # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf")
+
+            # PDF Input in System Message
+            # Content(type=ContentType.File, data="https://pdfobject.com/pdf/sample.pdf")
         ]
     ),
+    # Message History
+
     # Message(
     #     role=Role.User,
     #     contents=[
@@ -100,49 +104,59 @@ messages = [
     #         Content(type=ContentType.Text, data="Hello! How can I assist you today?")
     #     ]
     # ),
-    Message(
-        role=Role.User,
-        contents=[
-            # Simple Question
-            # Content(type=ContentType.Text, data="What's this?"),
 
-            # Thinking
-            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-
-            # Web Search
-            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-
-            # Image Understanding
-            # Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
-            # Content(type=ContentType.Text, data="What is in this image?"),
-
-            # Image Generation
-            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
-
-            # URL Context
-            # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
-
-            # Code Execution
-            # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
-
-            # File Output
-            # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
-
-            # Structured Output
-            # Content(type=ContentType.Text, data="Please generate a product."),
-        ]
-    ),
+    # Capabilities
     # Message(
     #     role=Role.User,
     #     contents=[
-    #         Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1769429581512-Test.txt"),
-    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746208707489-image.png"),
-    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746209841847-A%20Tutorial%20on%20Spectral%20Clustering.pdf"),
-    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212253473-file_example_MP3_700KB.mp3"),
-    #         # Content(type=ContentType.File, data="https://www.windsnow1025.com/minio/windsnow/uploads/1/1746212980820-file_example_MP4_480_1_5MG.mp4"),
-    #         Content(type=ContentType.Text, data="What's this?"),
+    #         # Simple Question
+    #         # Content(type=ContentType.Text, data="What's this?"),
+    #
+    #         # Thinking
+    #         # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+    #
+    #         # Web Search
+    #         # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+    #
+    #         # URL Context
+    #         # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
+    #
+    #         # Code Execution
+    #         # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
+    #
+    #         # Structured Output
+    #         # Content(type=ContentType.Text, data="Please generate a product."),
+    #
+    #         # Image Output
+    #         # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+    #
+    #         # File Output
+    #         # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
     #     ]
     # ),
+
+    # File Inputs
+    Message(
+        role=Role.User,
+        contents=[
+            # Text Input
+            # Content(type=ContentType.File, data="https://example-files.online-convert.com/document/txt/example.txt"),
+
+            # PDF Input
+            # Content(type=ContentType.File, data="https://pdfobject.com/pdf/sample.pdf")
+
+            # Image Input
+            # Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
+
+            # Audio Input
+            # Content(type=ContentType.File, data="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"),
+
+            # Video Input
+            Content(type=ContentType.File, data="https://examplefiles.org/files/video/mp4-example-video-download-640x480.mp4"),
+
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    ),
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
@@ -153,21 +167,21 @@ messages = [
 # model = "gpt-5"
 # model = "gpt-4.1"
 # model = "gpt-5-codex"
-# model = "gemini-3-pro-preview"
+model = "gemini-3-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
 # model = "claude-sonnet-4-6"
-model = "grok-4.20-reasoning"
+# model = "grok-4.20-reasoning"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
-# api_type = "Google AI Studio"
+api_type = "Google AI Studio"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"
-api_type = "Grok"
+# api_type = "Grok"
 
 temperature = 0
 stream = True
