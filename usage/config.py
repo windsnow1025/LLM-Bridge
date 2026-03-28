@@ -146,13 +146,13 @@ messages = [
             # Content(type=ContentType.File, data="https://pdfobject.com/pdf/sample.pdf")
 
             # Image Input
-            # Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
+            Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
 
             # Audio Input
             # Content(type=ContentType.File, data="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"),
 
             # Video Input
-            Content(type=ContentType.File, data="https://examplefiles.org/files/video/mp4-example-video-download-640x480.mp4"),
+            # Content(type=ContentType.File, data="https://examplefiles.org/files/video/mp4-example-video-download-640x480.mp4"),
 
             Content(type=ContentType.Text, data="What's this?"),
         ]
@@ -163,11 +163,11 @@ messages = [
 # model = "gpt-5.4-mini"
 # model = "gpt-5.2"
 # model = "gpt-5.1"
-# model = "gpt-5.4-pro"
+model = "gpt-5.4"
 # model = "gpt-5"
 # model = "gpt-4.1"
 # model = "gpt-5-codex"
-model = "gemini-3-pro-preview"
+# model = "gemini-3-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
@@ -176,8 +176,8 @@ model = "gemini-3-pro-preview"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
-api_type = "Google AI Studio"
-# api_type = "OpenAI"
+# api_type = "Google AI Studio"
+api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"

@@ -21,7 +21,8 @@ async def convert_message_to_openai(message: Message) -> OpenAIMessage:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                image_url = await media_processor.get_openai_image_content_from_url(file_url)
+                base64_image, media_type = await media_processor.get_base64_content_from_url(file_url)
+                image_url = f"data:{media_type};base64,{base64_image}"
                 image_content = ChatCompletionContentPartImageParam(
                     type="image_url",
                     image_url=ImageURL(url=image_url)

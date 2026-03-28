@@ -1,5 +1,7 @@
+from openai.types.chat import ChatCompletionContentPartInputAudioParam
 from openai.types.responses import ResponseInputTextParam, ResponseInputImageParam, ResponseOutputTextParam, \
     ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputFileParam
+from openai.types.responses.response_input_audio_param import InputAudio
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
@@ -23,7 +25,8 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                image_url = await media_processor.get_openai_image_content_from_url(file_url)
+                base64_image, media_type = await media_processor.get_base64_content_from_url(file_url)
+                image_url = f"data:{media_type};base64,{base64_image}"
                 image_content = ResponseInputImageParam(
                     type="input_image",
                     image_url=image_url,
@@ -40,13 +43,13 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                 )
                 content.append(pdf_content)
             # TODO: Responses API is currently unsupported for audio input
-            # elif file_type == "audio":
-            #     encoded_string = await media_processor.get_gpt_audio_content_from_url(file_url)
-            #     audio_content = ChatCompletionContentPartInputAudioParam(
-            #         type="input_audio",
-            #         input_audio=InputAudio(data=encoded_string, format=sub_type)
-            #     )
-            #     content.append(audio_content)
+            elif file_type == "audio":
+                file_data, _ = await media_processor.get_base64_content_from_url(file_url)
+                audio_content = ResponseInputAudioParam(
+                    type="input_audio",
+                    input_audio=InputAudio(data=file_data, format=sub_type)
+                )
+                content.append(audio_content)
             else:
                 text_content = ResponseInputTextParam(
                     type="input_text",
