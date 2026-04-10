@@ -1,30 +1,12 @@
 import asyncio
-import os
 import random
 import time
 from dataclasses import dataclass
-from pathlib import Path
-
-from dotenv import load_dotenv
 
 from llm_bridge import *
-from usage.batch.config import BackoffBase, Configs, MaxRetries, Messages, TestConfig, TimeoutSeconds
+from usage.keys import api_keys
+from usage.batch.config import BackoffBase, Configs, MaxRetries, TestConfig, TimeoutSeconds
 from usage.workflow import workflow
-
-script_dir = Path(__file__).parent.resolve()
-load_dotenv(script_dir.parent / ".env")
-
-api_keys = {
-    "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),
-    "AZURE_API_KEY": os.environ.get("AZURE_API_KEY"),
-    "AZURE_API_BASE": os.environ.get("AZURE_API_BASE"),
-    "GITHUB_API_KEY": os.environ.get("GITHUB_API_KEY"),
-    "GOOGLE_AI_STUDIO_FREE_TIER_API_KEY": os.environ.get("GOOGLE_AI_STUDIO_FREE_TIER_API_KEY"),
-    "GOOGLE_AI_STUDIO_API_KEY": os.environ.get("GOOGLE_AI_STUDIO_API_KEY"),
-    "VERTEX_AI_API_KEY": os.environ.get("VERTEX_AI_API_KEY"),
-    "ANTHROPIC_API_KEY": os.environ.get("ANTHROPIC_API_KEY"),
-    "XAI_API_KEY": os.environ.get("XAI_API_KEY"),
-}
 
 
 @dataclass
@@ -44,7 +26,7 @@ async def measure_first_chunk_latency(
     start = time.perf_counter()
     response = await workflow(
         api_keys,
-        Messages,
+        config.messages,
         model,
         api_type,
         temperature=config.temperature,

@@ -1,19 +1,14 @@
 import asyncio
 import logging
-import os
 import sys
 from pathlib import Path
 from pprint import pprint
 
-from dotenv import load_dotenv
-
+from usage.keys import api_keys
 from usage.single.config import *
 from usage.workflow import workflow
 
 script_dir = Path(__file__).parent.resolve()
-
-# Env
-load_dotenv(script_dir.parent / ".env")
 
 # Logging Output File
 output_path = script_dir / "output.log"
@@ -26,18 +21,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     stream=output_file
 )
-
-api_keys = {
-    "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),
-    "AZURE_API_KEY": os.environ.get("AZURE_API_KEY"),
-    "AZURE_API_BASE": os.environ.get("AZURE_API_BASE"),
-    "GITHUB_API_KEY": os.environ.get("GITHUB_API_KEY"),
-    "GOOGLE_AI_STUDIO_FREE_TIER_API_KEY": os.environ.get("GOOGLE_AI_STUDIO_FREE_TIER_API_KEY"),
-    "GOOGLE_AI_STUDIO_API_KEY": os.environ.get("GOOGLE_AI_STUDIO_API_KEY"),
-    "VERTEX_AI_API_KEY": os.environ.get("VERTEX_AI_API_KEY"),
-    "ANTHROPIC_API_KEY": os.environ.get("ANTHROPIC_API_KEY"),
-    "XAI_API_KEY": os.environ.get("XAI_API_KEY"),
-}
 
 
 async def main():
