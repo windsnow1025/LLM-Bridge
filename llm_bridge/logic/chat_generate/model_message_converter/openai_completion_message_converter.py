@@ -10,6 +10,7 @@ from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUs
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_extension, \
     get_filename_without_timestamp
+from llm_bridge.logic.message_preprocess.message_preprocessor import extract_file_as_text
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_completion_message import OpenAICompletionMessage, OpenAICompletionContent
 
@@ -61,6 +62,9 @@ async def convert_message_to_openai_completion(message: Message) -> OpenAIComple
                     ),
                 )
                 content.append(file_content)
+            elif file_type in ("text", "application"):
+                extracted_text = await extract_file_as_text(file_url)
+                content.append(ChatCompletionContentPartTextParam(type="text", text=extracted_text))
             else:
                 content.append(create_unsupported_content(file_url, file_type, sub_type))
 

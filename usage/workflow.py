@@ -15,8 +15,6 @@ async def workflow(
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
-    await preprocess_messages(messages, api_type)
-
     chat_client = await create_chat_client(
         api_keys=api_keys,
         messages=messages,

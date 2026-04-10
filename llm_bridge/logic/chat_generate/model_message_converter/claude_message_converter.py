@@ -3,6 +3,7 @@ from anthropic.types import TextBlockParam, ImageBlockParam, DocumentBlockParam,
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.logic.message_preprocess.message_preprocessor import extract_file_as_text
 from llm_bridge.type.message import Message, Role, ContentType
 from llm_bridge.type.model_message.claude_message import ClaudeMessage, ClaudeRole, ClaudeContent
 
@@ -61,6 +62,9 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
                     claude_content.append(pdf_content)
                 else:
                     claude_content.append(create_unsupported_content(file_url, file_type, sub_type))
+            elif file_type in ("text", "application"):
+                extracted_text = await extract_file_as_text(file_url)
+                claude_content.append(TextBlockParam(type="text", text=extracted_text))
             else:
                 claude_content.append(create_unsupported_content(file_url, file_type, sub_type))
 

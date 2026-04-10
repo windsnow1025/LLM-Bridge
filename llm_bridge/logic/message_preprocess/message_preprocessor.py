@@ -1,39 +1,12 @@
 from llm_bridge.logic.message_preprocess import document_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
-from llm_bridge.type.message import Message, Role, Content, ContentType
+from llm_bridge.type.message import Message, Role, ContentType
 
 
-async def preprocess_messages(messages: list[Message], api_type: str) -> None:
-    for message in messages:
-        await extract_text_files_to_message(message, api_type)
-
-
-async def extract_text_files_to_message(message: Message, api_type: str) -> None:
-    if api_type == "Grok":
-        return
-
-    for i in range(len(message.contents) - 1, -1, -1):
-        content_item = message.contents[i]
-
-        if content_item.type != ContentType.File:
-            continue
-
-        file_url = content_item.data
-        file_type, sub_type = await get_file_type(file_url)
-
-        if file_type != "text" and file_type != "application":
-            continue
-
-        if sub_type == "pdf":
-            continue
-            
-        filename = get_filename_without_timestamp(file_url)
-        file_text = await document_processor.extract_text_from_file(file_url)
-        
-        message.contents[i] = Content(
-            type=ContentType.Text,
-            data=f"<file name=\"{filename}\">\n{file_text}\n</file>"
-        )
+async def extract_file_as_text(file_url: str) -> str:
+    filename = get_filename_without_timestamp(file_url)
+    file_text = await document_processor.extract_text_from_file(file_url)
+    return f"<file name=\"{filename}\">\n{file_text}\n</file>"
 
 
 async def extract_system_messages(messages: list[Message]) -> str:

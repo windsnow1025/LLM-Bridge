@@ -4,6 +4,7 @@ from openai.types.responses import ResponseInputTextParam, ResponseInputImagePar
 # from openai.types.responses.response_input_audio_param import InputAudio
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
+from llm_bridge.logic.message_preprocess.message_preprocessor import extract_file_as_text
 # from llm_bridge.logic.message_preprocess.file_type_checker import get_file_extension
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage, \
@@ -56,6 +57,9 @@ async def convert_input_content(message: Message) -> tuple[list[OpenAIResponsesC
             #         content.append(audio_content)
             #     else:
             #         content.append(create_unsupported_content(file_url, file_type, sub_type))
+            elif file_type in ("text", "application"):
+                extracted_text = await extract_file_as_text(file_url)
+                content.append(ResponseInputTextParam(type="input_text", text=extracted_text))
             else:
                 content.append(create_unsupported_content(file_url, file_type, sub_type))
 
