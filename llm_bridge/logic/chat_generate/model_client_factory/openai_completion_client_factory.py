@@ -27,11 +27,6 @@ async def create_openai_completion_client(
             base_url="https://models.inference.ai.azure.com",
             api_key=api_keys["GITHUB_API_KEY"],
         )
-    elif api_type == "Grok":
-        client = openai.AsyncOpenAI(
-            base_url="https://api.x.ai/v1",
-            api_key=api_keys["XAI_API_KEY"],
-        )
     else:
         raise HTTPException(status_code=500, detail="API Type not matched")
 

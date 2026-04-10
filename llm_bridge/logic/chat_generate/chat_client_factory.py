@@ -9,6 +9,7 @@ from llm_bridge.logic.chat_generate.model_client_factory.openai_completion_clien
     create_openai_completion_client
 from llm_bridge.logic.chat_generate.model_client_factory.openai_responses_client_factory import \
     create_openai_responses_client
+from llm_bridge.logic.chat_generate.model_client_factory.xai_client_factory import create_xai_client
 from llm_bridge.type.message import Message
 
 
@@ -64,11 +65,10 @@ async def create_chat_client(
             thought=thought,
         )
     elif api_type == 'Grok':
-        return await create_openai_completion_client(
-            api_keys={"XAI_API_KEY": api_keys["XAI_API_KEY"]},
+        return await create_xai_client(
+            api_key=api_keys["XAI_API_KEY"],
             messages=messages,
             model=model,
-            api_type=api_type,
             temperature=temperature,
             stream=stream,
             thought=thought,
