@@ -29,6 +29,7 @@ class NonStreamOpenAICompletionClient(OpenAICompletionClient):
                 temperature=self.temperature,
                 stream=False,
                 reasoning_effort=self.reasoning_effort,
+                response_format=self.response_format,
             )
 
             content = completion.choices[0].message.content

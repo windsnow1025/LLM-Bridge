@@ -63,6 +63,7 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
+            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Grok':
         return await create_xai_client(

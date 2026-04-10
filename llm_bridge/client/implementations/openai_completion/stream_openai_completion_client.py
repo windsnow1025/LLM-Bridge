@@ -59,6 +59,7 @@ class StreamOpenAICompletionClient(OpenAICompletionClient):
                 temperature=self.temperature,
                 stream=True,
                 reasoning_effort=self.reasoning_effort,
+                response_format=self.response_format,
             )
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code

@@ -1,9 +1,12 @@
 import re
+from typing import Any
 
 import openai
 from fastapi import HTTPException
 from openai import Omit
 from openai.types.shared import ReasoningEffort
+from openai.types.shared_params import ResponseFormatJSONSchema
+from openai.types.shared_params.response_format_json_schema import JSONSchema
 
 from llm_bridge.client.implementations.openai_completion.non_stream_openai_completion_client import \
     NonStreamOpenAICompletionClient
@@ -21,6 +24,7 @@ async def create_openai_completion_client(
         temperature: float,
         stream: bool,
         thought: bool,
+        structured_output_schema: dict[str, Any] | None,
 ) -> StreamOpenAICompletionClient | NonStreamOpenAICompletionClient:
     if api_type == "OpenAI-GitHub":
         client = openai.AsyncOpenAI(
@@ -38,6 +42,17 @@ async def create_openai_completion_client(
         if thought:
             reasoning_effort = "high"
 
+    response_format: ResponseFormatJSONSchema | Omit = omit
+    if structured_output_schema:
+        response_format = ResponseFormatJSONSchema(
+            type="json_schema",
+            json_schema=JSONSchema(
+                name="structured_output",
+                schema=structured_output_schema,
+                strict=True,
+            ),
+        )
+
     if stream:
         return StreamOpenAICompletionClient(
             model=model,
@@ -46,6 +61,7 @@ async def create_openai_completion_client(
             api_type=api_type,
             client=client,
             reasoning_effort=reasoning_effort,
+            response_format=response_format,
         )
     else:
         return NonStreamOpenAICompletionClient(
@@ -55,4 +71,5 @@ async def create_openai_completion_client(
             api_type=api_type,
             client=client,
             reasoning_effort=reasoning_effort,
+            response_format=response_format,
         )

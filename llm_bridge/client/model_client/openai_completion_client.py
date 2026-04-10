@@ -4,6 +4,7 @@ import openai.lib.azure
 import openai
 from openai import Omit
 from openai.types.shared import ReasoningEffort
+from openai.types.shared_params import ResponseFormatJSONSchema
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -19,6 +20,7 @@ class OpenAICompletionClient(ChatClient):
             api_type: str,
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
             reasoning_effort: ReasoningEffort | Omit,
+            response_format: ResponseFormatJSONSchema | Omit,
     ):
         self.model = model
         self.messages = messages
@@ -26,6 +28,7 @@ class OpenAICompletionClient(ChatClient):
         self.api_type = api_type
         self.client = client
         self.reasoning_effort = reasoning_effort
+        self.response_format = response_format
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
