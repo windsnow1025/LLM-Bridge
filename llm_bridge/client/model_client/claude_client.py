@@ -1,6 +1,7 @@
 from typing import Any, AsyncGenerator
 
 import anthropic
+from anthropic import Omit
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
 from anthropic.types.beta import BetaToolUnionParam
 
@@ -21,7 +22,7 @@ class ClaudeClient(ChatClient):
             betas: list[AnthropicBetaParam],
             input_tokens: int,
             tools: list[BetaToolUnionParam],
-            thinking: ThinkingConfigEnabledParam,
+            thinking: ThinkingConfigEnabledParam | Omit,
             extra_body: dict[str, Any] | None,
     ):
         self.model = model
