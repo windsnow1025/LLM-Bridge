@@ -110,7 +110,7 @@ messages = [
     #     role=Role.User,
     #     contents=[
     #         # Simple Question
-    #         # Content(type=ContentType.Text, data="What's this?"),
+    #         # Content(type=ContentType.Text, data="Say this is a test."),
     #
     #         # Thinking
     #         # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
