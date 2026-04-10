@@ -151,12 +151,12 @@ messages = [
     # *LatencyMessages,
     # *TextFileMessages,
     # *CodeFileMessages,
-    *PdfFileMessages,
+    # *PdfFileMessages,
     # *ImageFileMessages,
     # *AudioFileMessages,
     # *VideoFileMessages,
     # *DocxFileMessages,
-    # *XlsxFileMessages,
+    *XlsxFileMessages,
     # *PptxFileMessages,
 ]
 

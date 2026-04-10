@@ -81,7 +81,7 @@ XlsxFileMessages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.File, data="https://samplelib.com/xls/sample-simple-1.xls"),
+            Content(type=ContentType.File, data="https://download.microsoft.com/download/1/4/E/14EDED28-6C58-4055-A65C-23B4DA81C4DE/Financial Sample.xlsx"),
             Content(type=ContentType.Text, data="What's this?"),
         ]
     )
