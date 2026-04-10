@@ -23,7 +23,7 @@ class TestConfig:
     structured_output_schema: dict | None
 
 
-TimeoutSeconds = 120
+TimeoutSeconds = 180
 MaxRetries = 4
 BackoffBase = 10
 
