@@ -16,6 +16,7 @@ class TestConfig:
 
 TimeoutSeconds = 60
 MaxRetries = 5
+BackoffBase = 1.0
 
 Messages = [
     Message(
