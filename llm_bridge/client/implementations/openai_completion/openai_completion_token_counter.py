@@ -2,10 +2,8 @@ import tiktoken
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.model_message.openai_message import OpenAIMessage
 
-from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
-
-def count_openai_input_tokens(messages: list[OpenAIMessage]) -> int:
+def count_openai_completion_input_tokens(messages: list[OpenAIMessage]) -> int:
     text = ''
     file_count = 0
 
@@ -19,21 +17,7 @@ def count_openai_input_tokens(messages: list[OpenAIMessage]) -> int:
     return num_tokens_from_text(text) + file_count * 1000
 
 
-def count_openai_responses_input_tokens(messages: list[OpenAIResponsesMessage]) -> int:
-    text = ''
-    file_count = 0
-
-    for message in messages:
-        for content in message['content']:
-            if content['type'] in ("output_text", "input_text"):
-                text += content['text']
-            elif content['type'] in ("input_image", "input_file"):
-                file_count += 1
-
-    return num_tokens_from_text(text) + file_count * 1000
-
-
-def count_openai_output_tokens(chat_response: ChatResponse) -> int:
+def count_openai_completion_output_tokens(chat_response: ChatResponse) -> int:
     text = chat_response.text
     if chat_response.thought:
         text += chat_response.thought

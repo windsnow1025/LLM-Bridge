@@ -8,11 +8,11 @@ from fastapi import HTTPException
 from openai import APIStatusError, AsyncStream
 from openai.types.responses import ResponseStreamEvent
 
-from llm_bridge.client.implementations.openai.openai_responses_response_handler import \
+from llm_bridge.client.implementations.openai_responses.openai_responses_response_handler import \
     process_openai_responses_stream_response
-from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens, \
-    count_openai_output_tokens
-from llm_bridge.client.model_client.openai_client import OpenAIClient
+from llm_bridge.client.implementations.openai_responses.openai_responses_token_counter import \
+    count_openai_responses_input_tokens, count_openai_responses_output_tokens
+from llm_bridge.client.model_client.openai_responses_client import OpenAIResponsesClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
 
@@ -24,7 +24,7 @@ async def generate_chunk(
     try:
         async for event in stream:
             chat_response = await process_openai_responses_stream_response(event)
-            output_tokens = count_openai_output_tokens(chat_response)
+            output_tokens = count_openai_responses_output_tokens(chat_response)
             yield ChatResponse(
                 text=chat_response.text,
                 thought=chat_response.thought,
@@ -39,7 +39,7 @@ async def generate_chunk(
         yield ChatResponse(error=repr(e))
 
 
-class StreamOpenAIResponsesClient(OpenAIClient):
+class StreamOpenAIResponsesClient(OpenAIResponsesClient):
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
             logging.info(f"messages: {self.messages}")
@@ -50,11 +50,11 @@ class StreamOpenAIResponsesClient(OpenAIClient):
 
             stream: AsyncStream[ResponseStreamEvent] = await self.client.responses.create(
                 model=self.model,
-                reasoning=self.reasoning,
                 input=serialize(self.messages),
                 temperature=self.temperature,
                 stream=True,
                 tools=self.tools,
+                reasoning=self.reasoning,
                 include=self.include,
                 text=self.text,
             )

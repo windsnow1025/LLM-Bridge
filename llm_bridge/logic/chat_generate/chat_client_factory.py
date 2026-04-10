@@ -5,7 +5,10 @@ from fastapi import HTTPException
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.logic.chat_generate.model_client_factory.claude_client_factory import create_claude_client
 from llm_bridge.logic.chat_generate.model_client_factory.gemini_client_factory import create_gemini_client
-from llm_bridge.logic.chat_generate.model_client_factory.openai_client_factory import create_openai_client
+from llm_bridge.logic.chat_generate.model_client_factory.openai_completion_client_factory import \
+    create_openai_completion_client
+from llm_bridge.logic.chat_generate.model_client_factory.openai_responses_client_factory import \
+    create_openai_responses_client
 from llm_bridge.type.message import Message
 
 
@@ -22,7 +25,7 @@ async def create_chat_client(
         structured_output_schema: dict[str, Any] | None,
 ) -> ChatClient:
     if api_type == 'OpenAI':
-        return await create_openai_client(
+        return await create_openai_responses_client(
             api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]},
             messages=messages,
             model=model,
@@ -35,7 +38,7 @@ async def create_chat_client(
             structured_output_schema=structured_output_schema,
         )
     elif api_type == 'OpenAI-Azure':
-        return await create_openai_client(
+        return await create_openai_responses_client(
             api_keys={
                 "AZURE_API_KEY": api_keys["AZURE_API_KEY"],
                 "AZURE_API_BASE": api_keys["AZURE_API_BASE"]
@@ -51,7 +54,7 @@ async def create_chat_client(
             structured_output_schema=structured_output_schema,
         )
     elif api_type == 'OpenAI-GitHub':
-        return await create_openai_client(
+        return await create_openai_completion_client(
             api_keys={"GITHUB_API_KEY": api_keys["GITHUB_API_KEY"]},
             messages=messages,
             model=model,
@@ -59,12 +62,9 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
-            web_search=web_search,
-            code_execution=code_execution,
-            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Grok':
-        return await create_openai_client(
+        return await create_openai_completion_client(
             api_keys={"XAI_API_KEY": api_keys["XAI_API_KEY"]},
             messages=messages,
             model=model,
@@ -72,9 +72,6 @@ async def create_chat_client(
             temperature=temperature,
             stream=stream,
             thought=thought,
-            web_search=web_search,
-            code_execution=code_execution,
-            structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Google AI Studio Free Tier':
         return await create_gemini_client(

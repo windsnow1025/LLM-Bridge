@@ -6,7 +6,8 @@ from openai.types.responses import ResponseStreamEvent, ResponseReasoningSummary
 from openai.types.responses.response_code_interpreter_tool_call import Output, OutputLogs, OutputImage
 from openai.types.responses.response_output_item import ImageGenerationCall
 
-from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_output_tokens
+from llm_bridge.client.implementations.openai_responses.openai_responses_token_counter import \
+    count_openai_responses_output_tokens
 from llm_bridge.logic.chat_generate.media_processor import get_base64_content_from_url
 from llm_bridge.type.chat_response import ChatResponse, File
 
@@ -74,7 +75,7 @@ async def process_openai_responses_non_stream_response(
             files.append(file)
 
     chat_response = ChatResponse(text=text, files=files)
-    output_tokens = count_openai_output_tokens(chat_response)
+    output_tokens = count_openai_responses_output_tokens(chat_response)
     return ChatResponse(
         text=text,
         thought=thought,

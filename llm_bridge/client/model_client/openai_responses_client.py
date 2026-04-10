@@ -1,27 +1,28 @@
 from typing import AsyncGenerator, Iterable
 
 import openai.lib.azure
+import openai
+from openai import Omit
 from openai.types import Reasoning
 from openai.types.responses import ToolParam, ResponseIncludable, ResponseTextConfigParam
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
-from llm_bridge.type.model_message.openai_message import OpenAIMessage
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
 
 
-class OpenAIClient(ChatClient):
+class OpenAIResponsesClient(ChatClient):
     def __init__(
             self,
             model: str,
-            messages: list[OpenAIMessage | OpenAIResponsesMessage],
+            messages: list[OpenAIResponsesMessage],
             temperature: float,
             api_type: str,
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
-            tools: Iterable[ToolParam] | None = None,
-            reasoning: Reasoning | None = None,
-            include: list[ResponseIncludable] | None = None,
-            text: ResponseTextConfigParam | None = None,
+            tools: Iterable[ToolParam] | Omit,
+            reasoning: Reasoning | Omit,
+            include: list[ResponseIncludable] | Omit,
+            text: ResponseTextConfigParam | Omit,
     ):
         self.model = model
         self.messages = messages

@@ -10,16 +10,15 @@ from openai.types.responses import WebSearchToolParam, ResponseIncludable, Respo
 from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
     ImageGeneration, ToolParam
 
-from llm_bridge.client.implementations.openai.non_stream_openai_client import NonStreamOpenAIClient
-from llm_bridge.client.implementations.openai.non_stream_openai_responses_client import NonStreamOpenAIResponsesClient
-from llm_bridge.client.implementations.openai.steam_openai_responses_client import StreamOpenAIResponsesClient
-from llm_bridge.client.implementations.openai.stream_openai_client import StreamOpenAIClient
-from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_openai_responses, \
-    convert_messages_to_openai
+from llm_bridge.client.implementations.openai_responses.non_stream_openai_responses_client import \
+    NonStreamOpenAIResponsesClient
+from llm_bridge.client.implementations.openai_responses.stream_openai_responses_client import \
+    StreamOpenAIResponsesClient
+from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_openai_responses
 from llm_bridge.type.message import Message
 
 
-async def create_openai_client(
+async def create_openai_responses_client(
         api_keys: dict[str, str],
         messages: list[Message],
         model: str,
@@ -43,28 +42,10 @@ async def create_openai_client(
             azure_endpoint=api_keys["AZURE_API_BASE"],
             api_key=api_keys["AZURE_API_KEY"],
         )
-    elif api_type == "OpenAI-GitHub":
-        client = openai.AsyncOpenAI(
-            base_url="https://models.inference.ai.azure.com",
-            api_key=api_keys["GITHUB_API_KEY"],
-        )
-    elif api_type == "Grok":
-        client = openai.AsyncOpenAI(
-            base_url="https://api.x.ai/v1",
-            api_key=api_keys["XAI_API_KEY"],
-        )
     else:
         raise HTTPException(status_code=500, detail="API Type not matched")
 
-    if api_type in ("OpenAI", "OpenAI-Azure"):
-        use_responses_api = True
-    else:
-        use_responses_api = False
-
-    if use_responses_api:
-        openai_messages = await convert_messages_to_openai_responses(messages)
-    else:
-        openai_messages = await convert_messages_to_openai(messages)
+    openai_messages = await convert_messages_to_openai_responses(messages)
 
     tools: list[ToolParam] = []
     reasoning: Reasoning | Omit = omit
@@ -111,45 +92,27 @@ async def create_openai_client(
             )
         )
 
-    if use_responses_api:
-        if stream:
-            return StreamOpenAIResponsesClient(
-                model=model,
-                messages=openai_messages,
-                temperature=temperature,
-                api_type=api_type,
-                client=client,
-                tools=tools,
-                reasoning=reasoning,
-                include=include,
-                text=text,
-            )
-        else:
-            return NonStreamOpenAIResponsesClient(
-                model=model,
-                messages=openai_messages,
-                temperature=temperature,
-                api_type=api_type,
-                client=client,
-                tools=tools,
-                reasoning=reasoning,
-                include=include,
-                text=text,
-            )
+    if stream:
+        return StreamOpenAIResponsesClient(
+            model=model,
+            messages=openai_messages,
+            temperature=temperature,
+            api_type=api_type,
+            client=client,
+            tools=tools,
+            reasoning=reasoning,
+            include=include,
+            text=text,
+        )
     else:
-        if stream:
-            return StreamOpenAIClient(
-                model=model,
-                messages=openai_messages,
-                temperature=temperature,
-                api_type=api_type,
-                client=client,
-            )
-        else:
-            return NonStreamOpenAIClient(
-                model=model,
-                messages=openai_messages,
-                temperature=temperature,
-                api_type=api_type,
-                client=client,
-            )
+        return NonStreamOpenAIResponsesClient(
+            model=model,
+            messages=openai_messages,
+            temperature=temperature,
+            api_type=api_type,
+            client=client,
+            tools=tools,
+            reasoning=reasoning,
+            include=include,
+            text=text,
+        )

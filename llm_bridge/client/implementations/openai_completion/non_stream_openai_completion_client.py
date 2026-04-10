@@ -5,39 +5,38 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError
-from openai.types.responses import Response
 
-from llm_bridge.client.implementations.openai.openai_responses_response_handler import \
-    process_openai_responses_non_stream_response
-from llm_bridge.client.implementations.openai.openai_token_couter import count_openai_responses_input_tokens
-from llm_bridge.client.model_client.openai_client import OpenAIClient
+from llm_bridge.client.implementations.openai_completion.openai_completion_token_counter import \
+    count_openai_completion_input_tokens, count_openai_completion_output_tokens
+from llm_bridge.client.model_client.openai_completion_client import OpenAICompletionClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
 
 
-class NonStreamOpenAIResponsesClient(OpenAIClient):
+class NonStreamOpenAICompletionClient(OpenAICompletionClient):
     async def generate_non_stream_response(self) -> ChatResponse:
         try:
             logging.info(f"messages: {self.messages}")
 
-            input_tokens = count_openai_responses_input_tokens(
+            input_tokens = count_openai_completion_input_tokens(
                 messages=self.messages
             )
 
-            response: Response = await self.client.responses.create(
+            completion = await self.client.chat.completions.create(
+                messages=serialize(self.messages),
                 model=self.model,
-                reasoning=self.reasoning,
-                input=serialize(self.messages),
                 temperature=self.temperature,
                 stream=False,
-                tools=self.tools,
-                include=self.include,
-                text=self.text,
+                reasoning_effort=self.reasoning_effort,
             )
 
-            return await process_openai_responses_non_stream_response(
-                response=response,
+            content = completion.choices[0].message.content
+            chat_response = ChatResponse(text=content)
+            output_tokens = count_openai_completion_output_tokens(chat_response)
+            return ChatResponse(
+                text=content,
                 input_tokens=input_tokens,
+                output_tokens=output_tokens,
             )
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code
