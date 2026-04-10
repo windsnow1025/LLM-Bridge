@@ -5,6 +5,44 @@ from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
 from llm_bridge.type.message import Message, Role, ContentType
 from llm_bridge.type.model_message.gemini_message import GeminiMessage, GeminiRole, GeminiContent
 
+# https://ai.google.dev/gemini-api/docs/file-input-methods
+GeminiSupportedMimeTypes = {
+    "text/html",
+    "text/css",
+    "text/plain",
+    "text/xml",
+    "text/csv",
+    "text/rtf",
+    "text/javascript",
+
+    "application/json",
+    "application/pdf",
+
+    "image/bmp",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+
+    # https://ai.google.dev/gemini-api/docs/audio#supported-formats
+    "audio/wav",
+    "audio/mp3",
+    "audio/aiff",
+    "audio/aac",
+    "audio/ogg",
+    "audio/flac",
+
+    # https://ai.google.dev/gemini-api/docs/video-understanding#supported-formats
+    "video/mp4",
+    "video/mpeg",
+    "video/mov",
+    "video/avi",
+    "video/x-flv",
+    "video/mpg",
+    "video/webm",
+    "video/wmv",
+    "video/3gpp",
+}
+
 
 async def convert_message_to_gemini(message: Message) -> GeminiMessage:
     role: GeminiRole
@@ -23,13 +61,11 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
             contents.append(types.Part.from_text(text=content_item.data))
         elif content_item.type == ContentType.File:
             file_url = content_item.data
-            file_type, sub_type = await get_file_type(file_url)
-            if sub_type == "pdf" or file_type in ("image", "video", "audio"):
-                file_data, media_type = await media_processor.get_bytes_content_from_url(file_url)
-                if media_type == 'video/webm':
-                    media_type = 'audio/webm'
+            file_data, media_type = await media_processor.get_bytes_content_from_url(file_url)
+            if media_type in GeminiSupportedMimeTypes:
                 contents.append(types.Part.from_bytes(data=file_data, mime_type=media_type))
             else:
+                file_type, sub_type = await get_file_type(file_url)
                 text_content = types.Part.from_text(
                     text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
                 )
