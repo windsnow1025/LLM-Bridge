@@ -2,18 +2,17 @@ import asyncio
 import os
 import time
 from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 from llm_bridge import *
+from usage.batch.config import Configs, MaxRetries, Messages, TestConfig, TimeoutSeconds
 from usage.workflow import workflow
 
 script_dir = Path(__file__).parent.resolve()
 load_dotenv(script_dir.parent / ".env")
-
-TimeoutSeconds = 60
-MaxRetries = 5
 
 api_keys = {
     "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),
@@ -28,29 +27,32 @@ api_keys = {
 }
 
 
+@dataclass
+class TestResult:
+    api_type: str
+    model: str
+    config_name: str
+    latency: float | None
+    status: str
+
+
 async def measure_first_chunk_latency(
         api_type: str,
         model: str,
+        config: TestConfig,
 ) -> float:
-    messages = [
-        Message(
-            role=Role.User,
-            contents=[Content(type=ContentType.Text, data="Hello")]
-        )
-    ]
-
     start = time.perf_counter()
     response = await workflow(
         api_keys,
-        messages,
+        Messages,
         model,
         api_type,
-        temperature=0,
-        stream=True,
-        thought=False,
-        web_search=False,
-        code_execution=False,
-        structured_output_schema=None,
+        temperature=config.temperature,
+        stream=config.stream,
+        thought=config.thought,
+        web_search=config.web_search,
+        code_execution=config.code_execution,
+        structured_output_schema=config.structured_output_schema,
     )
 
     async for chunk in response:
@@ -63,37 +65,38 @@ async def measure_first_chunk_latency(
 
 async def test_models(
         models: list[dict],
-) -> list[tuple[str, str, float | None, str]]:
-    results: list[tuple[str, str, float | None, str]] = []
+) -> list[TestResult]:
+    results: list[TestResult] = []
 
     for price in models:
         api_type: str = price["apiType"]
         model: str = price["model"]
 
-        latency: float | None = None
-        error: str | None = None
+        for config in Configs:
+            latency: float | None = None
+            error: str | None = None
 
-        for attempt in range(1, MaxRetries + 1):
-            try:
-                latency = await asyncio.wait_for(
-                    measure_first_chunk_latency(api_type, model),
-                    timeout=TimeoutSeconds,
-                )
-                print(f"  [{attempt}/{MaxRetries}] OK      {api_type:28s} {model:35s} {latency:8.3f}s")
-                break
-            except asyncio.TimeoutError:
-                error = f"TIMEOUT ({TimeoutSeconds}s)"
-                print(f"  [{attempt}/{MaxRetries}] TIMEOUT {api_type:28s} {model:35s}")
-            except Exception as e:
-                error = str(e)
-                print(f"  [{attempt}/{MaxRetries}] ERROR   {api_type:28s} {model:35s} - {e}")
+            for attempt in range(1, MaxRetries + 1):
+                try:
+                    latency = await asyncio.wait_for(
+                        measure_first_chunk_latency(api_type, model, config),
+                        timeout=TimeoutSeconds,
+                    )
+                    print(f"  [{attempt}/{MaxRetries}] OK      {api_type:28s} {model:35s} [{config.name:5s}] {latency:8.3f}s")
+                    break
+                except asyncio.TimeoutError:
+                    error = f"TIMEOUT ({TimeoutSeconds}s)"
+                    print(f"  [{attempt}/{MaxRetries}] TIMEOUT {api_type:28s} {model:35s} [{config.name:5s}]")
+                except Exception as e:
+                    error = str(e)
+                    print(f"  [{attempt}/{MaxRetries}] ERROR   {api_type:28s} {model:35s} [{config.name:5s}] - {e}")
 
-        if latency is not None:
-            status = "OK"
-        else:
-            status = f"FAILED: {error}"
+            if latency is not None:
+                status = "OK"
+            else:
+                status = f"FAILED: {error}"
 
-        results.append((api_type, model, latency, status))
+            results.append(TestResult(api_type, model, config.name, latency, status))
 
     return results
 
@@ -108,17 +111,17 @@ async def main():
     tasks = [test_models(models) for models in groups.values()]
     group_results = await asyncio.gather(*tasks)
 
-    results: list[tuple[str, str, float | None, str]] = []
+    results: list[TestResult] = []
     for group_result in group_results:
         results.extend(group_result)
 
-    print(f"\n{'=' * 95}")
-    print(f"{'API Type':28s} {'Model':35s} {'Latency':>10s}  {'Status'}")
-    print(f"{'-' * 95}")
-    for api_type, model, latency, status in results:
-        latency_str = f"{latency:.3f}s" if latency is not None else "N/A"
-        print(f"{api_type:28s} {model:35s} {latency_str:>10s}  {status}")
-    print(f"{'=' * 95}")
+    print(f"\n{'=' * 110}")
+    print(f"{'API Type':28s} {'Model':35s} {'Config':8s} {'Latency':>10s}  {'Status'}")
+    print(f"{'-' * 110}")
+    for r in results:
+        latency_str = f"{r.latency:.3f}s" if r.latency is not None else "N/A"
+        print(f"{r.api_type:28s} {r.model:35s} {r.config_name:8s} {latency_str:>10s}  {r.status}")
+    print(f"{'=' * 110}")
 
 
 if __name__ == "__main__":
