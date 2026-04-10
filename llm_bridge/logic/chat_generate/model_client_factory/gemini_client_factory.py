@@ -14,6 +14,7 @@ from llm_bridge.type.message import Message
 async def create_gemini_client(
         api_key: str,
         vertexai: bool,
+        free_tier: bool,
         messages: list[Message],
         model: str,
         temperature: float,
@@ -33,7 +34,7 @@ async def create_gemini_client(
     thinking_config = None
     response_modalities = [Modality.TEXT]
 
-    if web_search:
+    if web_search and not free_tier:
         tools.append(
             types.Tool(
                 google_search=types.GoogleSearch()
