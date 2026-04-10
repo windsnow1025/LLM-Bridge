@@ -53,10 +53,12 @@ async def measure_first_chunk_latency(
         structured_output_schema=None,
     )
 
-    async for _ in response:
+    async for chunk in response:
+        if chunk.error:
+            raise RuntimeError(chunk.error)
         return time.perf_counter() - start
 
-    return time.perf_counter() - start
+    raise RuntimeError("No response chunks received")
 
 
 async def main():
