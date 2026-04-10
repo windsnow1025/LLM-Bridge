@@ -1,4 +1,12 @@
 from llm_bridge import *
+from usage.messages import (
+    AudioFileMessages,
+    ImageFileMessages,
+    LatencyMessages,
+    PdfFileMessages,
+    TextFileMessages,
+    VideoFileMessages,
+)
 
 # Standard JSON Schema
 structured_output_schema = {
@@ -136,27 +144,12 @@ messages = [
     # ),
 
     # File Inputs
-    Message(
-        role=Role.User,
-        contents=[
-            # Text Input
-            # Content(type=ContentType.File, data="https://example-files.online-convert.com/document/txt/example.txt"),
-
-            # PDF Input
-            # Content(type=ContentType.File, data="https://pdfobject.com/pdf/sample.pdf")
-
-            # Image Input
-            Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
-
-            # Audio Input
-            # Content(type=ContentType.File, data="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"),
-
-            # Video Input
-            # Content(type=ContentType.File, data="https://examplefiles.org/files/video/mp4-example-video-download-640x480.mp4"),
-
-            Content(type=ContentType.Text, data="What's this?"),
-        ]
-    ),
+    # *LatencyMessages,
+    # *TextFileMessages,
+    # *PdfFileMessages,
+    # *AudioFileMessages,
+    # *VideoFileMessages,
+    *ImageFileMessages,
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
