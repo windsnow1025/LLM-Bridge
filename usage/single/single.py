@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sys
+from collections.abc import AsyncGenerator
 from pathlib import Path
 from pprint import pprint
 
@@ -44,7 +45,7 @@ async def main():
     code_output_text = ""
     files = []
 
-    if stream:
+    if stream and isinstance(response, AsyncGenerator):
         async for chunk in response:
             pprint(chunk)
             if chunk.text:
@@ -61,14 +62,14 @@ async def main():
                 code_output_text += chunk.code_output
             if chunk.files:
                 files.extend(chunk.files)
-    else:
+    elif isinstance(response, ChatResponse):
         pprint(response)
         text = response.text
         thought_text = response.thought
         code_text = response.code
         code_output_text = response.code_output
-        input_tokens = response.input_tokens
-        output_tokens = response.output_tokens
+        input_tokens = response.input_tokens or 0
+        output_tokens = response.output_tokens or 0
         files = response.files
     total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
     print(f"Thought:\n{thought_text}\n")
