@@ -3,11 +3,15 @@ from dataclasses import dataclass
 from llm_bridge import Message
 from usage.messages import (
     AudioFileMessages,
+    CodeFileMessages,
+    DocxFileMessages,
     ImageFileMessages,
     LatencyMessages,
     PdfFileMessages,
+    PptxFileMessages,
     TextFileMessages,
     VideoFileMessages,
+    XlsxFileMessages,
 )
 
 
@@ -49,6 +53,16 @@ Configs = [
         structured_output_schema=None,
     ),
     TestConfig(
+        name="code_file",
+        messages=CodeFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
         name="pdf_file",
         messages=PdfFileMessages,
         temperature=0,
@@ -81,6 +95,36 @@ Configs = [
     TestConfig(
         name="video_file",
         messages=VideoFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="docx_file",
+        messages=DocxFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="xlsx_file",
+        messages=XlsxFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="pptx_file",
+        messages=PptxFileMessages,
         temperature=0,
         stream=True,
         thought=True,
