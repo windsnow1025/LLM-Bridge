@@ -1,4 +1,5 @@
 import xai_sdk
+from xai_sdk.chat import ReasoningEffort
 
 from llm_bridge.client.implementations.xai.non_stream_xai_client import NonStreamXAIClient
 from llm_bridge.client.implementations.xai.stream_xai_client import StreamXAIClient
@@ -20,12 +21,17 @@ async def create_xai_client(
 
     xai_messages = await convert_messages_to_xai(messages)
 
+    reasoning_effort: ReasoningEffort | None = None
+    if thought:
+        reasoning_effort = "high"
+
     if stream:
         return StreamXAIClient(
             model=model,
             messages=xai_messages,
             temperature=temperature,
             client=client,
+            reasoning_effort=reasoning_effort,
         )
     else:
         return NonStreamXAIClient(
@@ -33,4 +39,5 @@ async def create_xai_client(
             messages=xai_messages,
             temperature=temperature,
             client=client,
+            reasoning_effort=reasoning_effort,
         )
