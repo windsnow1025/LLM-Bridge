@@ -14,7 +14,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
     reraise=True,
 )
 async def fetch_file_data(file_url: str) -> tuple[bytes, str]:
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
         try:
             response = await client.get(file_url)
         except httpx.ConnectError as e:
