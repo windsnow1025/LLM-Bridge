@@ -41,7 +41,7 @@ AudioFileMessages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.File, data="https://samplelib.com/mp3/sample-3s.mp3"),
+            Content(type=ContentType.File, data="https://samplelib.com/wav/sample-3s.wav"),
             Content(type=ContentType.Text, data="What's this?"),
         ]
     )
