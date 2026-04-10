@@ -2,12 +2,14 @@ from openai.types.chat import ChatCompletionContentPartTextParam, ChatCompletion
     ChatCompletionContentPartInputAudioParam
 from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 from openai.types.chat.chat_completion_content_part_input_audio_param import InputAudio
+from openai.types.chat.chat_completion_content_part_param import File, FileFile
 
 from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam, \
     ChatCompletionAssistantMessageParam
 
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_extension
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_extension, \
+    get_filename_without_timestamp
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_completion_message import OpenAICompletionMessage, OpenAICompletionContent
 
@@ -48,6 +50,17 @@ async def convert_message_to_openai_completion(message: Message) -> OpenAIComple
                     content.append(audio_content)
                 else:
                     content.append(create_unsupported_content(file_url, file_type, sub_type))
+            elif sub_type == "pdf":
+                base64_data, media_type = await media_processor.get_base64_content_from_url(file_url)
+                filename = get_filename_without_timestamp(file_url)
+                file_content = File(
+                    type="file",
+                    file=FileFile(
+                        file_data=f"data:{media_type};base64,{base64_data}",
+                        filename=filename,
+                    ),
+                )
+                content.append(file_content)
             else:
                 content.append(create_unsupported_content(file_url, file_type, sub_type))
 

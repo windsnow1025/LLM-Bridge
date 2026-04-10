@@ -153,10 +153,10 @@ messages = [
     # *CodeFileMessages,
     # *PdfFileMessages,
     # *ImageFileMessages,
-    # *AudioFileMessages,
+    *AudioFileMessages,
     # *VideoFileMessages,
     # *DocxFileMessages,
-    *XlsxFileMessages,
+    # *XlsxFileMessages,
     # *PptxFileMessages,
 ]
 
