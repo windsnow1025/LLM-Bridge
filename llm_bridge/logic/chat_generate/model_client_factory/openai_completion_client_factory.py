@@ -21,7 +21,7 @@ async def create_openai_completion_client(
         temperature: float,
         stream: bool,
         thought: bool,
-):
+) -> StreamOpenAICompletionClient | NonStreamOpenAICompletionClient:
     if api_type == "OpenAI-GitHub":
         client = openai.AsyncOpenAI(
             base_url="https://models.inference.ai.azure.com",

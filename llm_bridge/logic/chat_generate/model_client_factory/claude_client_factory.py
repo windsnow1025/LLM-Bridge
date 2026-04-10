@@ -24,7 +24,7 @@ async def create_claude_client(
         web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None
-):
+) -> StreamClaudeClient | NonStreamClaudeClient:
     omit = Omit()
 
     client = anthropic.AsyncAnthropic(

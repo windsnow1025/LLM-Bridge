@@ -23,7 +23,7 @@ async def create_gemini_client(
         web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
-):
+) -> StreamGeminiClient | NonStreamGeminiClient:
     client = genai.Client(
         vertexai=vertexai,
         api_key=api_key,

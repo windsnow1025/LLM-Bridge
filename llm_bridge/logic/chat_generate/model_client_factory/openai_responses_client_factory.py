@@ -29,7 +29,7 @@ async def create_openai_responses_client(
         web_search: bool,
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
-):
+) -> StreamOpenAIResponsesClient | NonStreamOpenAIResponsesClient:
     omit = Omit()
 
     if api_type == "OpenAI":
