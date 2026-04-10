@@ -1,11 +1,15 @@
 from llm_bridge import *
 from usage.messages import (
     AudioFileMessages,
+    CodeFileMessages,
+    DocxFileMessages,
     ImageFileMessages,
     LatencyMessages,
     PdfFileMessages,
+    PptxFileMessages,
     TextFileMessages,
     VideoFileMessages,
+    XlsxFileMessages,
 )
 
 # Standard JSON Schema
@@ -146,10 +150,14 @@ messages = [
     # File Inputs
     # *LatencyMessages,
     # *TextFileMessages,
-    # *PdfFileMessages,
+    # *CodeFileMessages,
+    *PdfFileMessages,
+    # *ImageFileMessages,
     # *AudioFileMessages,
     # *VideoFileMessages,
-    *ImageFileMessages,
+    # *DocxFileMessages,
+    # *XlsxFileMessages,
+    # *PptxFileMessages,
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models

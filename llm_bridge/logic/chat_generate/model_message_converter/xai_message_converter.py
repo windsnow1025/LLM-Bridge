@@ -1,6 +1,7 @@
-from xai_sdk.chat import user, assistant, system, text, image
+from xai_sdk.chat import user, assistant, system, text, image, file
 
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.logic.chat_generate import media_processor
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.xai_message import XAIMessage, XAIContent
 
@@ -30,7 +31,15 @@ async def convert_message_to_xai(message: Message) -> XAIMessage:
                     )
                 )
             else:
-                contents.append(create_unsupported_content(file_url, file_type, sub_type))
+                file_data, media_type = await media_processor.get_bytes_content_from_url(file_url)
+                filename = get_filename_without_timestamp(file_url)
+                contents.append(
+                    file(
+                        data=file_data,
+                        filename=filename,
+                        mime_type=media_type,
+                    )
+                )
 
     if message.role == Role.User:
         return user(*contents)

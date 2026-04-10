@@ -17,6 +17,16 @@ TextFileMessages = [
     )
 ]
 
+CodeFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://raw.githubusercontent.com/windsnow1025/LLM-Bridge/main/pyproject.toml"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
 PdfFileMessages = [
     Message(
         role=Role.User,
@@ -52,6 +62,36 @@ VideoFileMessages = [
         role=Role.User,
         contents=[
             Content(type=ContentType.File, data="https://samplelib.com/mp4/sample-5s.mp4"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+DocxFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://example-files.online-convert.com/document/docx/example.docx"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+XlsxFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://samplelib.com/xls/sample-simple-1.xls"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+PptxFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://wiki.documentfoundation.org/images/4/47/Extlst-test.pptx"),
             Content(type=ContentType.Text, data="What's this?"),
         ]
     )

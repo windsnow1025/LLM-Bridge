@@ -51,7 +51,7 @@ def get_file_extension(file_url: str) -> str:
 
 def get_filename_without_timestamp(file_url: str) -> str:
     base_name = PurePosixPath(file_url).name
-    match = re.search(r'-(.+)', base_name)
+    match = re.match(r'^\d+-(.+)', base_name)
     if match:
         return match.group(1)
     else:

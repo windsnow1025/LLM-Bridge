@@ -9,15 +9,18 @@ async def preprocess_messages(messages: list[Message], api_type: str) -> None:
 
 
 async def extract_text_files_to_message(message: Message, api_type: str) -> None:
+    if api_type == "Grok":
+        return
+
     for i in range(len(message.contents) - 1, -1, -1):
         content_item = message.contents[i]
-        
+
         if content_item.type != ContentType.File:
             continue
-            
+
         file_url = content_item.data
         file_type, sub_type = await get_file_type(file_url)
-        
+
         if file_type != "text" and file_type != "application":
             continue
 
