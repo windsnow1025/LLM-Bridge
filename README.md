@@ -22,13 +22,13 @@ PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge
 
 The features listed represent the maximum capabilities of each API type supported by LLM Bridge.
 
-| API Type              | Input Format                       | Capabilities                                            | Output Format     |
-|-----------------------|------------------------------------|---------------------------------------------------------|-------------------|
-| OpenAI Completion API | Text, Image                        | Thinking                                                | Text              |
-| OpenAI Responses API  | Text, Image, PDF                   | Thinking, Web Search, Code Execution, Structured Output | Text, Image       |
-| Google GenAI          | Text, Image, PDF, Audio, Video     | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
-| Anthropic             | Text, Image, PDF                   | Thinking, Web Search, Code Execution, Structured Output | Text, File        |
-| xAI                   | Text, Image, PDF, docx, xlsx, pptx |                                                         | Text              |
+| API Type              | Input Format                                      | Capabilities                                            | Output Format     |
+|-----------------------|---------------------------------------------------|---------------------------------------------------------|-------------------|
+| OpenAI Completion API | Text, Image                                       | Thinking                                                | Text              |
+| OpenAI Responses API  | Text, Image, PDF                                  | Thinking, Web Search, Code Execution, Structured Output | Text, Image       |
+| Google GenAI          | Text, Image, PDF, Audio, Video                    | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
+| Anthropic             | Text, Image, PDF                                  | Thinking, Web Search, Code Execution, Structured Output | Text, File        |
+| xAI                   | Text, Image, PDF, Audio, Viddeo, docx, xlsx, pptx |                                                         | Text              |
 
 #### Planned Features
 
