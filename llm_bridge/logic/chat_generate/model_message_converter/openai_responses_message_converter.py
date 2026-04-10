@@ -1,11 +1,19 @@
-# from openai.types.responses import ResponseInputAudioParam
-# from openai.types.responses.response_input_audio_param import InputAudio
 from openai.types.responses import ResponseInputTextParam, ResponseInputImageParam, ResponseOutputTextParam, \
     ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputFileParam
+# from openai.types.responses import ResponseInputAudioParam
+# from openai.types.responses.response_input_audio_param import InputAudio
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
+# from llm_bridge.logic.message_preprocess.file_type_checker import get_file_extension
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
+
+
+def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> ResponseInputTextParam:
+    return ResponseInputTextParam(
+        type="input_text",
+        text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
+    )
 
 
 async def convert_message_to_openai_responses(message: Message) -> OpenAIResponsesMessage:
@@ -41,20 +49,20 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
                     file_data=f"data:application/pdf;base64,{file_data}",
                 )
                 content.append(pdf_content)
-            # Responses API is unsupported for audio input
+            # Audio Input not supported in Responses API
             # elif file_type == "audio":
-            #     file_data, _ = await media_processor.get_base64_content_from_url(file_url)
-            #     audio_content = ResponseInputAudioParam(
-            #         type="input_audio",
-            #         input_audio=InputAudio(data=file_data, format=sub_type)
-            #     )
-            #     content.append(audio_content)
+            #     audio_format = get_file_extension(file_url)
+            #     if audio_format in ("wav", "mp3"):
+            #         file_data, _ = await media_processor.get_base64_content_from_url(file_url)
+            #         audio_content = ResponseInputAudioParam(
+            #             type="input_audio",
+            #             input_audio=InputAudio(data=file_data, format=audio_format)
+            #         )
+            #         content.append(audio_content)
+            #     else:
+            #         content.append(create_unsupported_content(file_url, file_type, sub_type))
             else:
-                text_content = ResponseInputTextParam(
-                    type="input_text",
-                    text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
-                )
-                content.append(text_content)
+                content.append(create_unsupported_content(file_url, file_type, sub_type))
 
     # Force system role to user if the message contains a PDF
     if role == Role.System and contains_pdf:
