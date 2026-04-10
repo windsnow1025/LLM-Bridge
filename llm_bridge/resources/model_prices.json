@@ -7,12 +7,6 @@
   },
   {
     "apiType": "Vertex AI",
-    "model": "gemini-3-pro-preview",
-    "input": 4,
-    "output": 18
-  },
-  {
-    "apiType": "Vertex AI",
     "model": "gemini-3-flash-preview",
     "input": 1,
     "output": 3
@@ -32,12 +26,6 @@
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3.1-pro-preview",
-    "input": 4,
-    "output": 18
-  },
-  {
-    "apiType": "Google AI Studio",
-    "model": "gemini-3-pro-preview",
     "input": 4,
     "output": 18
   },
