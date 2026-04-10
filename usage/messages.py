@@ -51,7 +51,7 @@ VideoFileMessages = [
     Message(
         role=Role.User,
         contents=[
-            Content(type=ContentType.File, data="https://examplefiles.org/files/video/mp4-example-video-download-640x480.mp4"),
+            Content(type=ContentType.File, data="https://samplelib.com/mp4/sample-5s.mp4"),
             Content(type=ContentType.Text, data="What's this?"),
         ]
     )
