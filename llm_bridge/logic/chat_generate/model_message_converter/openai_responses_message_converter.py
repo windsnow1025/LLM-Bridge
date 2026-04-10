@@ -1,12 +1,13 @@
 from openai.types.responses import ResponseInputTextParam, ResponseInputImageParam, ResponseOutputTextParam, \
-    ResponseInputContentParam, EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputFileParam
+    EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputFileParam
 # from openai.types.responses import ResponseInputAudioParam
 # from openai.types.responses.response_input_audio_param import InputAudio
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
 # from llm_bridge.logic.message_preprocess.file_type_checker import get_file_extension
 from llm_bridge.type.message import Message, ContentType, Role
-from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
+from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage, \
+    OpenAIResponsesContent, OpenAIResponsesRole
 
 
 def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> ResponseInputTextParam:
@@ -16,39 +17,33 @@ def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> 
     )
 
 
-async def convert_message_to_openai_responses(message: Message) -> OpenAIResponsesMessage:
-    role = message.role
-    content: list[ResponseInputContentParam | ResponseOutputTextParam] = []
+async def convert_input_content(message: Message) -> tuple[list[OpenAIResponsesContent], bool]:
+    content: list[OpenAIResponsesContent] = []
+
     contains_pdf = False
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
-            if role == Role.Assistant:
-                text_content = ResponseOutputTextParam(type="output_text", text=content_item.data, annotations=[])
-            else:
-                text_content = ResponseInputTextParam(type="input_text", text=content_item.data)
-            content.append(text_content)
+            content.append(ResponseInputTextParam(type="input_text", text=content_item.data))
         elif content_item.type == ContentType.File:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
                 base64_image, media_type = await media_processor.get_base64_content_from_url(file_url)
                 image_url = f"data:{media_type};base64,{base64_image}"
-                image_content = ResponseInputImageParam(
+                content.append(ResponseInputImageParam(
                     type="input_image",
                     image_url=image_url,
                     detail="auto"
-                )
-                content.append(image_content)
+                ))
             elif sub_type == "pdf":
                 contains_pdf = True
                 file_data, _ = await media_processor.get_base64_content_from_url(file_url)
-                pdf_content = ResponseInputFileParam(
+                content.append(ResponseInputFileParam(
                     type="input_file",
                     filename=get_filename_without_timestamp(file_url),
                     file_data=f"data:application/pdf;base64,{file_data}",
-                )
-                content.append(pdf_content)
+                ))
             # Audio Input not supported in Responses API
             # elif file_type == "audio":
             #     audio_format = get_file_extension(file_url)
@@ -64,11 +59,31 @@ async def convert_message_to_openai_responses(message: Message) -> OpenAIRespons
             else:
                 content.append(create_unsupported_content(file_url, file_type, sub_type))
 
-    # Force system role to user if the message contains a PDF
-    if role == Role.System and contains_pdf:
-        role = Role.User
+    return content, contains_pdf
 
-    if role in (Role.User, Role.System):
-        return EasyInputMessageParam(role=role.value, content=content)
+
+async def convert_output_content(message: Message) -> list[OpenAIResponsesContent]:
+    content: list[OpenAIResponsesContent] = []
+
+    for content_item in message.contents:
+        if content_item.type == ContentType.Text:
+            content.append(ResponseOutputTextParam(type="output_text", text=content_item.data, annotations=[]))
+
+    return content
+
+
+async def convert_message_to_openai_responses(message: Message) -> OpenAIResponsesMessage:
+    if message.role == Role.Assistant:
+        role: OpenAIResponsesRole = Role.Assistant
+        output_content = await convert_output_content(message)
+        return ResponseOutputMessageParam(role=role, content=output_content)
     else:
-        return ResponseOutputMessageParam(role=role.value, content=content)
+        input_content, contains_pdf = await convert_input_content(message)
+        role: OpenAIResponsesRole
+        if message.role == Role.System and contains_pdf:
+            role = Role.User
+        elif message.role == Role.System:
+            role = Role.System
+        else:
+            role = Role.User
+        return EasyInputMessageParam(role=role, content=input_content)

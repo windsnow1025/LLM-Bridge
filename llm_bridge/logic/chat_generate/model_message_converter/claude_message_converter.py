@@ -15,12 +15,14 @@ def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> 
 
 
 async def convert_message_to_claude(message: Message) -> ClaudeMessage:
-    role = message.role
-    
-    if role in (Role.System, Role.User):
+    role: ClaudeRole
+
+    if message.role in (Role.System, Role.User):
         role = ClaudeRole.User
-    if role == Role.Assistant:
+    elif message.role == Role.Assistant:
         role = ClaudeRole.Assistant
+    else:
+        raise ValueError(f"Invalid role: {message.role}")
 
     claude_content: list[ClaudeContent] = []
 

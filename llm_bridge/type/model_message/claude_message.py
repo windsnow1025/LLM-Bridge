@@ -1,15 +1,16 @@
-from enum import Enum
+from enum import StrEnum
+from typing import TypeAlias
 
 from anthropic.types import MessageParam, TextBlockParam, ImageBlockParam, DocumentBlockParam
-from typing_extensions import TypeAlias
 
 
-class ClaudeRole(Enum):
+class ClaudeRole(StrEnum):
     User = "user"
     Assistant = "assistant"
 
 
-ClaudeContent = TextBlockParam | ImageBlockParam | DocumentBlockParam
+ClaudeContent: TypeAlias = TextBlockParam | ImageBlockParam | DocumentBlockParam
+
 ClaudeMessage: TypeAlias = MessageParam
 
 # class MessageParam(TypedDict, total=False):

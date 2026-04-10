@@ -1,9 +1,10 @@
 import logging
 import re
-from typing import AsyncGenerator
+from typing import AsyncGenerator, AsyncIterator
 
 import httpx
 from fastapi import HTTPException
+from google.genai.types import GenerateContentResponse
 
 from llm_bridge.client.implementations.gemini.gemini_response_handler import GeminiResponseHandler
 from llm_bridge.client.model_client.gemini_client import GeminiClient
@@ -15,7 +16,7 @@ class StreamGeminiClient(GeminiClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            response = await self.client.aio.models.generate_content_stream(
+            response: AsyncIterator[GenerateContentResponse] = await self.client.aio.models.generate_content_stream(
                 model=self.model,
                 contents=self.messages,
                 config=self.config,

@@ -1,14 +1,14 @@
 import tiktoken
 from llm_bridge.type.chat_response import ChatResponse
-from llm_bridge.type.model_message.openai_message import OpenAIMessage
+from llm_bridge.type.model_message.openai_completion_message import OpenAICompletionMessage
 
 
-def count_openai_completion_input_tokens(messages: list[OpenAIMessage]) -> int:
+def count_openai_completion_input_tokens(messages: list[OpenAICompletionMessage]) -> int:
     text = ''
     file_count = 0
 
     for message in messages:
-        for content in message.content:
+        for content in message["content"]:
             if content['type'] == "text":
                 text += content['text']
             elif content['type'] in ("image_url", "input_audio"):

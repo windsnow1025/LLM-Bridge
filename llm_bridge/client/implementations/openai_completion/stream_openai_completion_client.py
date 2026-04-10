@@ -53,7 +53,7 @@ class StreamOpenAICompletionClient(OpenAICompletionClient):
 
             input_tokens = count_openai_completion_input_tokens(self.messages)
 
-            completion = await self.client.chat.completions.create(
+            completion: AsyncStream[ChatCompletionChunk] = await self.client.chat.completions.create(
                 messages=serialize(self.messages),
                 model=self.model,
                 temperature=self.temperature,

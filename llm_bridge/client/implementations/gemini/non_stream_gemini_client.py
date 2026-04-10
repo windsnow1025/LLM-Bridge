@@ -3,6 +3,7 @@ import re
 
 import httpx
 from fastapi import HTTPException
+from google.genai.types import GenerateContentResponse
 
 from llm_bridge.client.implementations.gemini.gemini_response_handler import *
 from llm_bridge.client.model_client.gemini_client import GeminiClient
@@ -14,7 +15,7 @@ class NonStreamGeminiClient(GeminiClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            response = await self.client.aio.models.generate_content(
+            response: GenerateContentResponse = await self.client.aio.models.generate_content(
                 model=self.model,
                 contents=self.messages,
                 config=self.config,

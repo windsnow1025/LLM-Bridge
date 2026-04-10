@@ -3,10 +3,13 @@ from openai.types.chat import ChatCompletionContentPartTextParam, ChatCompletion
 from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 from openai.types.chat.chat_completion_content_part_input_audio_param import InputAudio
 
+from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam, \
+    ChatCompletionAssistantMessageParam
+
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_extension
-from llm_bridge.type.message import Message, ContentType
-from llm_bridge.type.model_message.openai_message import OpenAIMessage
+from llm_bridge.type.message import Message, ContentType, Role
+from llm_bridge.type.model_message.openai_completion_message import OpenAICompletionMessage, OpenAICompletionContent
 
 
 def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> ChatCompletionContentPartTextParam:
@@ -16,9 +19,8 @@ def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> 
     )
 
 
-async def convert_message_to_openai(message: Message) -> OpenAIMessage:
-    role = message.role
-    content = []
+async def convert_message_to_openai_completion(message: Message) -> OpenAICompletionMessage:
+    content: list[OpenAICompletionContent] = []
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
@@ -49,4 +51,11 @@ async def convert_message_to_openai(message: Message) -> OpenAIMessage:
             else:
                 content.append(create_unsupported_content(file_url, file_type, sub_type))
 
-    return OpenAIMessage(role=role, content=content)
+    if message.role == Role.System:
+        return ChatCompletionSystemMessageParam(role=message.role, content=content)
+    elif message.role == Role.Assistant:
+        return ChatCompletionAssistantMessageParam(role=message.role, content=content)
+    elif message.role == Role.User:
+        return ChatCompletionUserMessageParam(role=message.role, content=content)
+    else:
+        raise ValueError(f"Invalid role: {message.role}")

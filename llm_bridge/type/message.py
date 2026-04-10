@@ -1,14 +1,14 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, StrEnum
 
 
-class Role(Enum):
+class Role(StrEnum):
     User = "user"
     Assistant = "assistant"
     System = "system"
 
 
-class ContentType(Enum):
+class ContentType(StrEnum):
     Text = "text"
     File = "file"
 
