@@ -1,7 +1,7 @@
 import asyncio
-import math
 import os
 import time
+from collections import defaultdict
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -12,8 +12,8 @@ from usage.workflow import workflow
 script_dir = Path(__file__).parent.resolve()
 load_dotenv(script_dir / ".env")
 
-Timeout_Seconds = 60
-Trial_Count = 3
+TimeoutSeconds = 60
+MaxRetries = 5
 
 api_keys = {
     "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),
@@ -61,54 +61,64 @@ async def measure_first_chunk_latency(
     raise RuntimeError("No response chunks received")
 
 
-async def main():
-    model_prices = get_model_prices()
+async def test_models(
+        models: list[dict],
+) -> list[tuple[str, str, float | None, str]]:
+    results: list[tuple[str, str, float | None, str]] = []
 
-    results: list[tuple[str, str, float | None, float | None, str]] = []
-
-    for price in model_prices:
+    for price in models:
         api_type: str = price["apiType"]
         model: str = price["model"]
 
-        latencies: list[float] = []
-        errors: set[str] = set()
+        latency: float | None = None
+        error: str | None = None
 
-        for trial in range(Trial_Count):
+        for attempt in range(1, MaxRetries + 1):
             try:
                 latency = await asyncio.wait_for(
                     measure_first_chunk_latency(api_type, model),
-                    timeout=Timeout_Seconds,
+                    timeout=TimeoutSeconds,
                 )
-                latencies.append(latency)
-                print(f"  [{trial + 1}/{Trial_Count}] OK      {api_type:20s} {model:35s} {latency:8.3f}s")
+                print(f"  [{attempt}/{MaxRetries}] OK      {api_type:28s} {model:35s} {latency:8.3f}s")
+                break
             except asyncio.TimeoutError:
-                errors.add(f"TIMEOUT ({Timeout_Seconds}s)")
-                print(f"  [{trial + 1}/{Trial_Count}] TIMEOUT {api_type:20s} {model:35s}")
+                error = f"TIMEOUT ({TimeoutSeconds}s)"
+                print(f"  [{attempt}/{MaxRetries}] TIMEOUT {api_type:28s} {model:35s}")
             except Exception as e:
-                errors.add(str(e))
-                print(f"  [{trial + 1}/{Trial_Count}] ERROR   {api_type:20s} {model:35s} - {e}")
+                error = str(e)
+                print(f"  [{attempt}/{MaxRetries}] ERROR   {api_type:28s} {model:35s} - {e}")
 
-        avg_latency = sum(latencies) / len(latencies) if latencies else None
-        std_latency = math.sqrt(sum((l - avg_latency) ** 2 for l in latencies) / len(latencies)) if len(latencies) == Trial_Count else None
-        if errors:
-            error_str = " | ".join(sorted(errors))
-            status = f"ERRORS ({len(latencies)}/{Trial_Count} OK): {error_str}" if avg_latency is not None else f"FAILED: {error_str}"
-        else:
+        if latency is not None:
             status = "OK"
+        else:
+            status = f"FAILED: {error}"
 
-        results.append((api_type, model, avg_latency, std_latency, status))
-        avg_str = f"{avg_latency:.3f}s" if avg_latency is not None else "N/A"
-        std_str = f"{std_latency:.3f}s" if std_latency is not None else "N/A"
-        print(f"  => AVG  {api_type:20s} {model:35s} {avg_str:>8s} ± {std_str:<8s}  {status}\n")
+        results.append((api_type, model, latency, status))
 
-    print(f"{'=' * 110}")
-    print(f"{'API Type':20s} {'Model':35s} {'Avg Latency':>12s} {'Std Dev':>10s}  {'Status'}")
-    print(f"{'-' * 110}")
-    for api_type, model, avg_latency, std_latency, status in results:
-        avg_str = f"{avg_latency:.3f}s" if avg_latency is not None else "N/A"
-        std_str = f"{std_latency:.3f}s" if std_latency is not None else "N/A"
-        print(f"{api_type:20s} {model:35s} {avg_str:>12s} {std_str:>10s}  {status}")
-    print(f"{'=' * 110}")
+    return results
+
+
+async def main():
+    model_prices = get_model_prices()
+
+    groups: defaultdict[str, list[dict]] = defaultdict(list)
+    for price in model_prices:
+        groups[price["apiType"]].append(price)
+
+    tasks = [test_models(models) for models in groups.values()]
+    group_results = await asyncio.gather(*tasks)
+
+    results: list[tuple[str, str, float | None, str]] = []
+    for group_result in group_results:
+        results.extend(group_result)
+
+    print(f"\n{'=' * 95}")
+    print(f"{'API Type':28s} {'Model':35s} {'Latency':>10s}  {'Status'}")
+    print(f"{'-' * 95}")
+    for api_type, model, latency, status in results:
+        latency_str = f"{latency:.3f}s" if latency is not None else "N/A"
+        print(f"{api_type:28s} {model:35s} {latency_str:>10s}  {status}")
+    print(f"{'=' * 95}")
 
 
 if __name__ == "__main__":
