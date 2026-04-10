@@ -7,8 +7,8 @@ from google.genai.types import Modality, MediaResolution
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_gemini
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
-from llm_bridge.logic.message_preprocess.message_preprocessor import extract_system_messages
+from llm_bridge.logic.message_process.file_type_checker import get_file_type
+from llm_bridge.logic.message_process.message_preprocessor import extract_system_messages
 from llm_bridge.type.message import Message, ContentType
 
 

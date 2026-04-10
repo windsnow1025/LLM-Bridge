@@ -1,8 +1,8 @@
 from google.genai import types
 
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
-from llm_bridge.logic.message_preprocess.message_preprocessor import extract_file_as_text
+from llm_bridge.logic.message_process.file_type_checker import get_file_type
+from llm_bridge.logic.message_process.message_preprocessor import extract_file_as_text
 from llm_bridge.type.message import Message, Role, ContentType
 from llm_bridge.type.model_message.gemini_message import GeminiMessage, GeminiRole, GeminiContent
 

@@ -1,5 +1,5 @@
-from llm_bridge.logic.message_preprocess import document_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
+from llm_bridge.logic.message_process import document_processor
+from llm_bridge.logic.message_process.file_type_checker import get_file_type, get_filename_without_timestamp
 from llm_bridge.type.message import Message, Role, ContentType
 
 

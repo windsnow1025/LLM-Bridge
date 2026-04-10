@@ -1,7 +1,7 @@
 from xai_sdk.chat import user, assistant, system, text, image, file
 
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
+from llm_bridge.logic.message_process.file_type_checker import get_file_type, get_filename_without_timestamp
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.xai_message import XAIMessage, XAIContent
 

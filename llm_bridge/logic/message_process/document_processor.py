@@ -8,7 +8,7 @@ from fastapi import HTTPException
 from pptx import Presentation
 
 from llm_bridge.logic.file_fetch import fetch_file_data
-from llm_bridge.logic.message_preprocess import file_type_checker
+from llm_bridge.logic.message_process import file_type_checker
 
 
 async def extract_text_from_file(file_url: str) -> str:

@@ -3,7 +3,7 @@ import re
 from pathlib import PurePosixPath
 
 from llm_bridge.logic.file_fetch import fetch_file_data
-from llm_bridge.logic.message_preprocess.code_file_extensions import code_file_extensions
+from llm_bridge.logic.message_process.code_file_extensions import code_file_extensions
 
 
 def is_file_type_supported(file_name: str) -> bool:

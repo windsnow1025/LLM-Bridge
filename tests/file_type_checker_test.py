@@ -1,6 +1,6 @@
 import pytest
 
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.logic.message_process.file_type_checker import get_file_type
 
 
 @pytest.mark.asyncio

@@ -3,8 +3,8 @@ from openai.types.responses import ResponseInputTextParam, ResponseInputImagePar
 # from openai.types.responses import ResponseInputAudioParam
 # from openai.types.responses.response_input_audio_param import InputAudio
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_filename_without_timestamp
-from llm_bridge.logic.message_preprocess.message_preprocessor import extract_file_as_text
+from llm_bridge.logic.message_process.file_type_checker import get_file_type, get_filename_without_timestamp
+from llm_bridge.logic.message_process.message_preprocessor import extract_file_as_text
 # from llm_bridge.logic.message_preprocess.file_type_checker import get_file_extension
 from llm_bridge.type.message import Message, ContentType, Role
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage, \
