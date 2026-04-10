@@ -10,7 +10,7 @@ from llm_bridge import *
 from usage.workflow import workflow
 
 script_dir = Path(__file__).parent.resolve()
-load_dotenv(script_dir / ".env")
+load_dotenv(script_dir.parent / ".env")
 
 TimeoutSeconds = 60
 MaxRetries = 5

@@ -7,13 +7,13 @@ from pprint import pprint
 
 from dotenv import load_dotenv
 
-from usage.config import *
+from usage.single.config import *
 from usage.workflow import workflow
 
 script_dir = Path(__file__).parent.resolve()
 
 # Env
-load_dotenv(script_dir / ".env")
+load_dotenv(script_dir.parent / ".env")
 
 # Logging Output File
 output_path = script_dir / "output.log"
