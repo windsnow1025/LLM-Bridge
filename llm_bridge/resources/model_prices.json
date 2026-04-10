@@ -187,7 +187,7 @@
   },
   {
     "apiType": "Grok",
-    "model": "grok-4.20-fast-non-reasoning",
+    "model": "grok-4.20-non-reasoning",
     "input": 0.4,
     "output": 25
   }
