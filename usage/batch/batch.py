@@ -59,14 +59,14 @@ async def test_model(
                 measure_first_chunk_latency(api_type, model, config),
                 timeout=TimeoutSeconds,
             )
-            print(f"  [{attempt}/{MaxRetries}] OK      {api_type:28s} {model:35s} [{config.name:5s}] {latency:8.3f}s")
+            print(f"  [{attempt}/{MaxRetries}] OK      {api_type:28s} {model:35s} [{config.name:10s}] {latency:8.3f}s")
             break
         except asyncio.TimeoutError:
             error = f"TIMEOUT ({TimeoutSeconds}s)"
-            print(f"  [{attempt}/{MaxRetries}] TIMEOUT {api_type:28s} {model:35s} [{config.name:5s}]")
+            print(f"  [{attempt}/{MaxRetries}] TIMEOUT {api_type:28s} {model:35s} [{config.name:10s}]")
         except Exception as e:
             error = str(e)
-            print(f"  [{attempt}/{MaxRetries}] ERROR   {api_type:28s} {model:35s} [{config.name:5s}] - {e}")
+            print(f"  [{attempt}/{MaxRetries}] ERROR   {api_type:28s} {model:35s} [{config.name:10s}] - {e}")
 
         if attempt < MaxRetries:
             delay = random.uniform(0, BackoffBase * 2 ** attempt)
@@ -91,11 +91,11 @@ async def main():
     results = await asyncio.gather(*tasks)
 
     print(f"\n{'=' * 110}")
-    print(f"{'API Type':28s} {'Model':35s} {'Config':8s} {'Latency':>10s}  {'Status'}")
+    print(f"{'API Type':28s} {'Model':35s} {'Config':12s} {'Latency':>10s}  {'Status'}")
     print(f"{'-' * 110}")
     for r in results:
         latency_str = f"{r.latency:.3f}s" if r.latency is not None else "N/A"
-        print(f"{r.api_type:28s} {r.model:35s} {r.config_name:8s} {latency_str:>10s}  {r.status}")
+        print(f"{r.api_type:28s} {r.model:35s} {r.config_name:12s} {latency_str:>10s}  {r.status}")
     print(f"{'=' * 110}")
 
 

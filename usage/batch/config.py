@@ -16,39 +16,70 @@ class TestConfig:
 
 
 TimeoutSeconds = 60
-MaxRetries = 5
+MaxRetries = 8
 BackoffBase = 1.0
 
-BasicMessages = [
+LatencyMessages = [
     Message(
         role=Role.User,
         contents=[Content(type=ContentType.Text, data="Hello")]
     )
 ]
 
-FullMessages = [
-    Message(
-        role=Role.System,
-        contents=[Content(type=ContentType.Text, data="You are a helpful assistant.")]
-    ),
+TextFileMessages = [
     Message(
         role=Role.User,
-        contents=[Content(type=ContentType.Text, data="Hello")]
-    ),
-    Message(
-        role=Role.Assistant,
-        contents=[Content(type=ContentType.Text, data="Hello! How can I assist you today?")]
-    ),
+        contents=[
+            Content(type=ContentType.File, data="https://example-files.online-convert.com/document/txt/example.txt"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+PdfFileMessages = [
     Message(
         role=Role.User,
-        contents=[Content(type=ContentType.Text, data="Say this is a test.")]
-    ),
+        contents=[
+            Content(type=ContentType.File, data="https://pdfobject.com/pdf/sample.pdf"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+ImageFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://www.gstatic.com/webp/gallery3/1.png"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+AudioFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
+]
+
+VideoFileMessages = [
+    Message(
+        role=Role.User,
+        contents=[
+            Content(type=ContentType.File, data="https://examplefiles.org/files/video/mp4-example-video-download-640x480.mp4"),
+            Content(type=ContentType.Text, data="What's this?"),
+        ]
+    )
 ]
 
 Configs = [
     TestConfig(
-        name="basic",
-        messages=BasicMessages,
+        name="latency",
+        messages=LatencyMessages,
         temperature=0,
         stream=True,
         thought=False,
@@ -57,8 +88,48 @@ Configs = [
         structured_output_schema=None,
     ),
     TestConfig(
-        name="full",
-        messages=FullMessages,
+        name="text_file",
+        messages=TextFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="pdf_file",
+        messages=PdfFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="image_file",
+        messages=ImageFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="audio_file",
+        messages=AudioFileMessages,
+        temperature=0,
+        stream=True,
+        thought=True,
+        web_search=True,
+        code_execution=True,
+        structured_output_schema=None,
+    ),
+    TestConfig(
+        name="video_file",
+        messages=VideoFileMessages,
         temperature=0,
         stream=True,
         thought=True,
