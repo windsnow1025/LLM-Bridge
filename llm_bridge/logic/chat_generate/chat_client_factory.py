@@ -71,7 +71,6 @@ async def create_chat_client(
             model=model,
             temperature=temperature,
             stream=stream,
-            thought=thought,
         )
     elif api_type == 'Google AI Studio Free Tier':
         return await create_gemini_client(

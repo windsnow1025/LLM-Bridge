@@ -13,7 +13,6 @@ async def create_xai_client(
         model: str,
         temperature: float,
         stream: bool,
-        thought: bool,
 ) -> StreamXAIClient | NonStreamXAIClient:
     client = xai_sdk.AsyncClient(
         api_key=api_key,

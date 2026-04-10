@@ -28,7 +28,7 @@ The features listed represent the maximum capabilities of each API type supporte
 | OpenAI Responses API  | Text, Image, PDF                                 | Thinking, Web Search, Code Execution, Structured Output | Text, Image       |
 | Google GenAI          | Text, Image, PDF, Audio, Video                   | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
 | Anthropic             | Text, Image, PDF                                 | Thinking, Web Search, Code Execution, Structured Output | Text, File        |
-| xAI                   | Text, Image, PDF, Audio, Video, docx, xlsx, pptx |                                                         | Text              |
+| xAI                   | Text, Image, PDF, Audio, Video, docx, xlsx, pptx | Thinking                                                | Text              |
 
 #### Planned Features
 
