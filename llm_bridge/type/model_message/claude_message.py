@@ -1,10 +1,7 @@
-from dataclasses import dataclass
 from enum import Enum
 
-from anthropic.types import MessageParam
+from anthropic.types import MessageParam, TextBlockParam, ImageBlockParam, DocumentBlockParam
 from typing_extensions import TypeAlias
-
-from llm_bridge.type.message import Role
 
 
 class ClaudeRole(Enum):
@@ -12,6 +9,7 @@ class ClaudeRole(Enum):
     Assistant = "assistant"
 
 
+ClaudeContent = TextBlockParam | ImageBlockParam | DocumentBlockParam
 ClaudeMessage: TypeAlias = MessageParam
 
 # class MessageParam(TypedDict, total=False):

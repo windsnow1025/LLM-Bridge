@@ -1,4 +1,5 @@
 from google.genai import types
+from google.genai.types import Part
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
@@ -14,7 +15,7 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
     if role == Role.Assistant:
         role = GeminiRole.Model
 
-    parts = []
+    parts: list[Part] = []
 
     for content_item in message.contents:
         if content_item.type == ContentType.Text:
