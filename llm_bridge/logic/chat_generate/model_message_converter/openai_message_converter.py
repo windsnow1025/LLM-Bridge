@@ -4,9 +4,16 @@ from openai.types.chat.chat_completion_content_part_image_param import ImageURL
 from openai.types.chat.chat_completion_content_part_input_audio_param import InputAudio
 
 from llm_bridge.logic.chat_generate import media_processor
-from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type
+from llm_bridge.logic.message_preprocess.file_type_checker import get_file_type, get_file_extension
 from llm_bridge.type.message import Message, ContentType
 from llm_bridge.type.model_message.openai_message import OpenAIMessage
+
+
+def create_unsupported_content(file_url: str, file_type: str, sub_type: str) -> ChatCompletionContentPartTextParam:
+    return ChatCompletionContentPartTextParam(
+        type="text",
+        text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
+    )
 
 
 async def convert_message_to_openai(message: Message) -> OpenAIMessage:
@@ -29,17 +36,17 @@ async def convert_message_to_openai(message: Message) -> OpenAIMessage:
                 )
                 content.append(image_content)
             elif file_type == "audio":
-                encoded_string, _ = await media_processor.get_base64_content_from_url(file_url)
-                audio_content = ChatCompletionContentPartInputAudioParam(
-                    type="input_audio",
-                    input_audio=InputAudio(data=encoded_string, format=sub_type)
-                )
-                content.append(audio_content)
+                audio_format = get_file_extension(file_url)
+                if audio_format in ("wav", "mp3"):
+                    encoded_string, _ = await media_processor.get_base64_content_from_url(file_url)
+                    audio_content = ChatCompletionContentPartInputAudioParam(
+                        type="input_audio",
+                        input_audio=InputAudio(data=encoded_string, format=audio_format)
+                    )
+                    content.append(audio_content)
+                else:
+                    content.append(create_unsupported_content(file_url, file_type, sub_type))
             else:
-                text_content = ChatCompletionContentPartTextParam(
-                    type="text",
-                    text=f"\n{file_url}: {file_type}/{sub_type} not supported by the current model.\n"
-                )
-                content.append(text_content)
+                content.append(create_unsupported_content(file_url, file_type, sub_type))
 
     return OpenAIMessage(role=role, content=content)

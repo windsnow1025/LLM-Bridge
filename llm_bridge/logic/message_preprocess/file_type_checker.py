@@ -45,6 +45,10 @@ async def get_file_type(file_url: str) -> tuple[str, str]:
     return 'unknown', 'unknown'
 
 
+def get_file_extension(file_url: str) -> str:
+    return PurePosixPath(file_url).suffix.lstrip(".").lower()
+
+
 def get_filename_without_timestamp(file_url: str) -> str:
     base_name = PurePosixPath(file_url).name
     match = re.search(r'-(.+)', base_name)
