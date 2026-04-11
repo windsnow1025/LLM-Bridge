@@ -4,7 +4,7 @@ import anthropic
 from anthropic import Omit, transform_schema
 from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
 from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param, \
-    BetaToolBash20250124Param, BetaJSONOutputFormatParam
+    BetaJSONOutputFormatParam
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
@@ -78,12 +78,6 @@ async def create_claude_client(
             )
         )
     if code_execution:
-        tools.append(
-            BetaToolBash20250124Param(
-                type="bash_20250124",
-                name="bash",
-            )
-        )
         tools.append(
             BetaCodeExecutionTool20250825Param(
                 type="code_execution_20250825",
