@@ -20,6 +20,7 @@ class NonStreamXAIClient(XAIClient):
                 temperature=self.temperature,
                 store_messages=False,
                 tools=self.tools,
+                response_format=self.response_format,
             )
 
             response: Response = await chat.sample()

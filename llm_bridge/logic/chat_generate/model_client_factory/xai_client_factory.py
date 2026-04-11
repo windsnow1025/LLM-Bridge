@@ -1,3 +1,6 @@
+import json
+from typing import Any
+
 import xai_sdk
 from xai_sdk.proto import chat_pb2
 from xai_sdk.tools import web_search as web_search_tool, x_search as x_search_tool, \
@@ -17,6 +20,7 @@ async def create_xai_client(
         stream: bool,
         web_search: bool,
         code_execution: bool,
+        structured_output_schema: dict[str, Any] | None,
 ) -> StreamXAIClient | NonStreamXAIClient:
     client = xai_sdk.AsyncClient(
         api_key=api_key,
@@ -36,6 +40,13 @@ async def create_xai_client(
     if code_execution:
         tools.append(code_execution_tool())
 
+    response_format: chat_pb2.ResponseFormat | None = None
+    if structured_output_schema:
+        response_format = chat_pb2.ResponseFormat(
+            format_type=chat_pb2.FormatType.FORMAT_TYPE_JSON_SCHEMA,
+            schema=json.dumps(structured_output_schema),
+        )
+
     if stream:
         return StreamXAIClient(
             model=model,
@@ -43,6 +54,7 @@ async def create_xai_client(
             temperature=temperature,
             client=client,
             tools=tools,
+            response_format=response_format,
         )
     else:
         return NonStreamXAIClient(
@@ -51,4 +63,5 @@ async def create_xai_client(
             temperature=temperature,
             client=client,
             tools=tools,
+            response_format=response_format,
         )

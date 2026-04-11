@@ -16,12 +16,14 @@ class XAIClient(ChatClient):
             temperature: float,
             client: xai_sdk.AsyncClient,
             tools: list[chat_pb2.Tool],
+            response_format: chat_pb2.ResponseFormat | None,
     ):
         self.model = model
         self.messages = messages
         self.temperature = temperature
         self.client = client
         self.tools = tools
+        self.response_format = response_format
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError

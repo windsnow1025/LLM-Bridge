@@ -20,6 +20,7 @@ class StreamXAIClient(XAIClient):
                 temperature=self.temperature,
                 store_messages=False,
                 tools=self.tools,
+                response_format=self.response_format,
             )
         except Exception as e:
             logging.exception(e)
