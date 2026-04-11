@@ -5,16 +5,13 @@ from google.genai import types
 from google.genai.types import Part
 
 from llm_bridge.client.implementations.gemini.gemini_token_counter import count_gemini_tokens
-from llm_bridge.client.implementations.printing_status import PrintingStatus
 from llm_bridge.logic.chat_generate.media_processor import bytes_to_base64
 from llm_bridge.type.chat_response import ChatResponse, File
 
 
 class GeminiResponseHandler:
     def __init__(self):
-        self.printing_status: Optional[PrintingStatus] = None
-        self.prev_output_tokens: int = 0
-        self.prev_printing_status: Optional[PrintingStatus] = None
+        self.prev_cumulative_output_tokens: int = 0
 
     async def process_gemini_response(
             self,
@@ -26,7 +23,7 @@ class GeminiResponseHandler:
         code_output: str = ""
         files: list[File] = []
         display: Optional[str] = None
-        input_tokens, stage_output_tokens = await count_gemini_tokens(response)
+        input_tokens, cumulative_output_tokens = await count_gemini_tokens(response)
 
         parts: list[Part] = []
         if candidates := response.candidates:
@@ -34,16 +31,13 @@ class GeminiResponseHandler:
                 if content.parts:
                     parts = content.parts
 
-        printing_status: PrintingStatus | None = None
         for part in parts:
             if part.text is not None:
                 # Thought
                 if part.thought:
-                    printing_status = PrintingStatus.Thought
                     thought += part.text
                 # Text
                 elif not part.thought:
-                    printing_status = PrintingStatus.Response
                     text += part.text
             # Code
             if part.executable_code is not None:
@@ -73,13 +67,8 @@ class GeminiResponseHandler:
                         if chunk.web:
                             text += f"{i}. [{chunk.web.title}]({chunk.web.uri})\n"
 
-        if printing_status == self.prev_printing_status and printing_status == PrintingStatus.Response:
-            output_tokens = stage_output_tokens - self.prev_output_tokens
-        else:
-            output_tokens = stage_output_tokens
-
-        self.prev_output_tokens = stage_output_tokens
-        self.prev_printing_status = printing_status
+        output_tokens = cumulative_output_tokens - self.prev_cumulative_output_tokens
+        self.prev_cumulative_output_tokens = cumulative_output_tokens
 
         return ChatResponse(
             text=text,
