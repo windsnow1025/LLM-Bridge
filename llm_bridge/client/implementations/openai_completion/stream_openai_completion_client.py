@@ -6,10 +6,8 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError, AsyncStream
-from openai.types.chat import ChatCompletionChunk
+from openai.types.chat import ChatCompletionChunk, ChatCompletionStreamOptionsParam
 
-from llm_bridge.client.implementations.openai_completion.openai_completion_token_counter import \
-    count_openai_completion_input_tokens, count_openai_completion_output_tokens
 from llm_bridge.client.model_client.openai_completion_client import OpenAICompletionClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
@@ -29,13 +27,15 @@ def process_delta(completion_delta: ChatCompletionChunk) -> str:
 
 async def generate_chunk(
         completion: AsyncStream[ChatCompletionChunk],
-        input_tokens: int,
 ) -> AsyncGenerator[ChatResponse, None]:
     try:
         async for completion_delta in completion:
             content_delta = process_delta(completion_delta)
-            chat_response = ChatResponse(text=content_delta)
-            output_tokens = count_openai_completion_output_tokens(chat_response)
+            input_tokens = 0
+            output_tokens = 0
+            if completion_delta.usage is not None:
+                input_tokens = completion_delta.usage.prompt_tokens
+                output_tokens = completion_delta.usage.completion_tokens
             yield ChatResponse(
                 text=content_delta,
                 input_tokens=input_tokens,
@@ -51,13 +51,12 @@ class StreamOpenAICompletionClient(OpenAICompletionClient):
         try:
             logging.info(f"messages: {self.messages}")
 
-            input_tokens = count_openai_completion_input_tokens(self.messages)
-
             completion: AsyncStream[ChatCompletionChunk] = await self.client.chat.completions.create(
                 messages=serialize(self.messages),
                 model=self.model,
                 temperature=self.temperature,
                 stream=True,
+                stream_options=ChatCompletionStreamOptionsParam(include_usage=True),
                 reasoning_effort=self.reasoning_effort,
                 response_format=self.response_format,
             )
@@ -83,5 +82,5 @@ class StreamOpenAICompletionClient(OpenAICompletionClient):
 
             raise HTTPException(status_code=error_code, detail=str(e))
 
-        async for chunk in generate_chunk(completion, input_tokens):
+        async for chunk in generate_chunk(completion):
             yield chunk

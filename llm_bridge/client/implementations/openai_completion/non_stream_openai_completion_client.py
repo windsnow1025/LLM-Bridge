@@ -7,8 +7,6 @@ from fastapi import HTTPException
 from openai import APIStatusError
 from openai.types.chat import ChatCompletion
 
-from llm_bridge.client.implementations.openai_completion.openai_completion_token_counter import \
-    count_openai_completion_input_tokens, count_openai_completion_output_tokens
 from llm_bridge.client.model_client.openai_completion_client import OpenAICompletionClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
@@ -18,10 +16,6 @@ class NonStreamOpenAICompletionClient(OpenAICompletionClient):
     async def generate_non_stream_response(self) -> ChatResponse:
         try:
             logging.info(f"messages: {self.messages}")
-
-            input_tokens = count_openai_completion_input_tokens(
-                messages=self.messages
-            )
 
             completion: ChatCompletion = await self.client.chat.completions.create(
                 messages=serialize(self.messages),
@@ -33,8 +27,10 @@ class NonStreamOpenAICompletionClient(OpenAICompletionClient):
             )
 
             content = completion.choices[0].message.content
-            chat_response = ChatResponse(text=content)
-            output_tokens = count_openai_completion_output_tokens(chat_response)
+            usage = completion.usage
+            input_tokens = usage.prompt_tokens if usage else 0
+            output_tokens = usage.completion_tokens if usage else 0
+
             return ChatResponse(
                 text=content,
                 input_tokens=input_tokens,
