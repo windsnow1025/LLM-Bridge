@@ -4,17 +4,16 @@ build-backend = "hatchling.build"
 
 [project]
 name = "LLM-Bridge"
-version = "1.17.9"
+version = "2.0.0-alpha.0"
 dependencies = [
     "fastapi",
     "httpx",
     "tenacity",
-    "openai==2.30.0",
     "tiktoken==0.11.0",
+    "openai==2.30.0",
     "google-genai==1.46.0", # google.genai
     "anthropic==0.75.0",
-    "xai-sdk>=1.11.0",
-    "PyMuPDF", # fitz
+    "xai-sdk==1.11.0",
     "docxlatex>=1.1.1",
     "openpyxl",
     "python-pptx", # pptx

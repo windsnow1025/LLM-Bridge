@@ -1,7 +1,6 @@
 import logging
 from io import BytesIO
 
-import fitz
 import openpyxl
 from docxlatex import Document as DocxLatexDocument
 from fastapi import HTTPException
@@ -23,8 +22,6 @@ async def extract_text_from_file(file_url: str) -> str:
     try:
         if sub_type == "code":
             return extract_text_from_code(file_content)
-        if sub_type == "pdf":
-            return extract_text_from_pdf(file_content)
         if sub_type == "word":
             return extract_text_from_word(file_content)
         if sub_type == "excel":
@@ -48,14 +45,6 @@ async def extract_text_from_file(file_url: str) -> str:
 
 def extract_text_from_code(file_content: bytes) -> str:
     return file_content.decode('utf-8')
-
-
-def extract_text_from_pdf(file_content: bytes) -> str:
-    text = ""
-    with fitz.open(stream=file_content, filetype="pdf") as doc:
-        for page in doc:
-            text += page.get_text()
-    return text
 
 
 def extract_text_from_word(file_content: bytes) -> str:
