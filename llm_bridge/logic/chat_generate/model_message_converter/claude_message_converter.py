@@ -3,7 +3,7 @@ from anthropic.types import TextBlockParam, ImageBlockParam, DocumentBlockParam,
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_process.file_type_checker import get_file_type
-from llm_bridge.logic.message_process.message_preprocessor import extract_file_as_text
+from llm_bridge.logic.message_process.message_processor import extract_file_as_text
 from llm_bridge.type.message import Message, Role, ContentType
 from llm_bridge.type.model_message.claude_message import ClaudeMessage, ClaudeRole, ClaudeContent
 

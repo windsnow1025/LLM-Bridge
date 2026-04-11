@@ -10,7 +10,7 @@ from llm_bridge.client.implementations.claude.claude_token_counter import count_
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
 from llm_bridge.client.implementations.claude.stream_claude_client import StreamClaudeClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_claude
-from llm_bridge.logic.message_process.message_preprocessor import extract_system_messages
+from llm_bridge.logic.message_process.message_processor import extract_system_messages
 from llm_bridge.type.message import Message
 
 
