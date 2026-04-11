@@ -1,5 +1,6 @@
 import xai_sdk
-from xai_sdk.chat import ReasoningEffort
+from xai_sdk.proto import chat_pb2
+from xai_sdk.tools import web_search as web_search_tool
 
 from llm_bridge.client.implementations.xai.non_stream_xai_client import NonStreamXAIClient
 from llm_bridge.client.implementations.xai.stream_xai_client import StreamXAIClient
@@ -13,6 +14,7 @@ async def create_xai_client(
         model: str,
         temperature: float,
         stream: bool,
+        web_search: bool,
 ) -> StreamXAIClient | NonStreamXAIClient:
     client = xai_sdk.AsyncClient(
         api_key=api_key,
@@ -20,17 +22,23 @@ async def create_xai_client(
 
     xai_messages = await convert_messages_to_xai(messages)
 
+    tools: list[chat_pb2.Tool] = []
+    if web_search:
+        tools.append(web_search_tool(enable_image_understanding=True))
+
     if stream:
         return StreamXAIClient(
             model=model,
             messages=xai_messages,
             temperature=temperature,
-            client=client
+            client=client,
+            tools=tools,
         )
     else:
         return NonStreamXAIClient(
             model=model,
             messages=xai_messages,
             temperature=temperature,
-            client=client
+            client=client,
+            tools=tools,
         )

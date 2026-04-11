@@ -118,34 +118,34 @@ messages = [
     # ),
 
     # Capabilities
-    # Message(
-    #     role=Role.User,
-    #     contents=[
-    #         # Simple Question
-    #         # Content(type=ContentType.Text, data="Say this is a test."),
-    #
-    #         # Thinking
-    #         # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
-    #
-    #         # Web Search
-    #         # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
-    #
-    #         # URL Context
-    #         # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
-    #
-    #         # Code Execution
-    #         # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
-    #
-    #         # Structured Output
-    #         # Content(type=ContentType.Text, data="Please generate a product."),
-    #
-    #         # Image Output
-    #         # Content(type=ContentType.Text, data="Please generate an image of a cat."),
-    #
-    #         # File Output
-    #         # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
-    #     ]
-    # ),
+    Message(
+        role=Role.User,
+        contents=[
+            # Simple Question
+            # Content(type=ContentType.Text, data="Say this is a test."),
+
+            # Thinking
+            # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
+
+            # Web Search
+            Content(type=ContentType.Text, data="What's the weather in NYC today?"),
+
+            # URL Context
+            # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
+
+            # Code Execution
+            # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
+
+            # Structured Output
+            # Content(type=ContentType.Text, data="Please generate a product."),
+
+            # Image Output
+            # Content(type=ContentType.Text, data="Please generate an image of a cat."),
+
+            # File Output
+            # Content(type=ContentType.Text, data="Create a matplotlib visualization and save it as output.png"),
+        ]
+    ),
 
     # File Inputs
     # *LatencyMessages,
@@ -153,7 +153,7 @@ messages = [
     # *CodeFileMessages,
     # *PdfFileMessages,
     # *ImageFileMessages,
-    *AudioFileMessages,
+    # *AudioFileMessages,
     # *VideoFileMessages,
     # *DocxFileMessages,
     # *XlsxFileMessages,
@@ -174,6 +174,7 @@ messages = [
 # model = "gemini-3-flash-preview"
 # model = "claude-sonnet-4-6"
 model = "grok-4.20-reasoning"
+# model = "grok-4.20-non-reasoning"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
