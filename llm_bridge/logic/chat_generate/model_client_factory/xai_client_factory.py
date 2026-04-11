@@ -20,23 +20,17 @@ async def create_xai_client(
 
     xai_messages = await convert_messages_to_xai(messages)
 
-    reasoning_effort: ReasoningEffort | None = None
-    if thought:
-        reasoning_effort = "high"
-
     if stream:
         return StreamXAIClient(
             model=model,
             messages=xai_messages,
             temperature=temperature,
-            client=client,
-            reasoning_effort=reasoning_effort,
+            client=client
         )
     else:
         return NonStreamXAIClient(
             model=model,
             messages=xai_messages,
             temperature=temperature,
-            client=client,
-            reasoning_effort=reasoning_effort,
+            client=client
         )

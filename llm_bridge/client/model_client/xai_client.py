@@ -15,13 +15,11 @@ class XAIClient(ChatClient):
             messages: list[XAIMessage],
             temperature: float,
             client: xai_sdk.AsyncClient,
-            reasoning_effort: ReasoningEffort | None,
     ):
         self.model = model
         self.messages = messages
         self.temperature = temperature
         self.client = client
-        self.reasoning_effort = reasoning_effort
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
