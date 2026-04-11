@@ -1,11 +1,12 @@
 from anthropic import AsyncAnthropic
 from anthropic._response import AsyncBinaryAPIResponse
-from anthropic.types.beta import BetaRawMessageStreamEvent, BetaRawContentBlockDelta, BetaThinkingDelta, BetaTextDelta, \
+from anthropic.types.beta import BetaRawMessageStreamEvent, BetaThinkingDelta, BetaTextDelta, \
     BetaInputJSONDelta, BetaBashCodeExecutionToolResultBlock, \
     BetaTextEditorCodeExecutionToolResultBlock, BetaTextEditorCodeExecutionViewResultBlock, \
     BetaTextEditorCodeExecutionStrReplaceResultBlock, \
     BetaServerToolUseBlock, BetaBashCodeExecutionResultBlock, BetaTextBlock, BetaThinkingBlock, \
-    BetaBashCodeExecutionOutputBlock, BetaMessage, FileMetadata
+    BetaMessage, FileMetadata, BetaRawMessageStartEvent, BetaRawContentBlockStartEvent, \
+    BetaRawContentBlockDeltaEvent, BetaRawMessageDeltaEvent
 from anthropic.types.beta.beta_raw_content_block_start_event import ContentBlock
 
 from llm_bridge.logic.chat_generate.media_processor import bytes_to_base64
@@ -32,36 +33,29 @@ async def process_content_block(
     code_output: str = ""
     files: list[File] = []
 
-    if content_block.type == "text":
-        text_block: BetaTextBlock = content_block
-        text += text_block.text
+    if isinstance(content_block, BetaTextBlock):
+        text += content_block.text
 
-    elif content_block.type == "thinking":
-        thinking_block: BetaThinkingBlock = content_block
-        thought += thinking_block.thinking
+    elif isinstance(content_block, BetaThinkingBlock):
+        thought += content_block.thinking
 
-    elif content_block.type == "server_tool_use":
-        server_tool_use_block: BetaServerToolUseBlock = content_block
-        code += str(server_tool_use_block.input)
+    elif isinstance(content_block, BetaServerToolUseBlock):
+        code += str(content_block.input)
 
-    elif content_block.type == "bash_code_execution_tool_result":
-        bash_code_execution_tool_result_block: BetaBashCodeExecutionToolResultBlock = content_block
-        if bash_code_execution_tool_result_block.content.type == "bash_code_execution_result":
-            result: BetaBashCodeExecutionResultBlock = content_block.content
+    elif isinstance(content_block, BetaBashCodeExecutionToolResultBlock):
+        result = content_block.content
+        if isinstance(result, BetaBashCodeExecutionResultBlock):
             code_output += result.stdout
-            outputs: list[BetaBashCodeExecutionOutputBlock] = result.content
-            file_ids = [output.file_id for output in outputs]
+            file_ids = [output.file_id for output in result.content]
             for file_id in file_ids:
                 file = await download_claude_file(client, file_id)
                 files.append(file)
 
-    elif content_block.type == "text_editor_code_execution_tool_result":
-        text_editor_code_execution_tool_result: BetaTextEditorCodeExecutionToolResultBlock = content_block
-        if text_editor_code_execution_tool_result.content.type == "text_editor_code_execution_view_result":
-            result: BetaTextEditorCodeExecutionViewResultBlock = content_block.content
+    elif isinstance(content_block, BetaTextEditorCodeExecutionToolResultBlock):
+        result = content_block.content
+        if isinstance(result, BetaTextEditorCodeExecutionViewResultBlock):
             code_output += result.content
-        elif text_editor_code_execution_tool_result.content.type == "text_editor_code_execution_str_replace_result":
-            result: BetaTextEditorCodeExecutionStrReplaceResultBlock = content_block.content
+        elif isinstance(result, BetaTextEditorCodeExecutionStrReplaceResultBlock):
             code_output += result.lines
 
     return ChatResponse(
@@ -119,34 +113,30 @@ class ClaudeResponseHandler:
         input_tokens: int | None = None
         output_tokens: int = 0
 
-        if event.type == "message_start":
+        if isinstance(event, BetaRawMessageStartEvent):
             input_tokens = event.message.usage.input_tokens
 
-        elif event.type == "content_block_delta":
-            event_delta: BetaRawContentBlockDelta = event.delta
+        elif isinstance(event, BetaRawContentBlockDeltaEvent):
+            event_delta = event.delta
 
-            if event_delta.type == "text_delta":
-                text_delta: BetaTextDelta = event_delta
-                text += text_delta.text
+            if isinstance(event_delta, BetaTextDelta):
+                text += event_delta.text
 
-            elif event_delta.type == "thinking_delta":
-                thinking_delta: BetaThinkingDelta = event_delta
-                thought += thinking_delta.thinking
+            elif isinstance(event_delta, BetaThinkingDelta):
+                thought += event_delta.thinking
 
-            elif event_delta.type == "input_json_delta":
-                input_json_delta: BetaInputJSONDelta = event_delta
-                code += input_json_delta.partial_json
+            elif isinstance(event_delta, BetaInputJSONDelta):
+                code += event_delta.partial_json
 
-        elif event.type == "content_block_start":
-            content_block: ContentBlock = event.content_block
-            content_block_chat_response = await process_content_block(content_block, client)
+        elif isinstance(event, BetaRawContentBlockStartEvent):
+            content_block_chat_response = await process_content_block(event.content_block, client)
             text += content_block_chat_response.text
             thought += content_block_chat_response.thought
             code += content_block_chat_response.code
             code_output += content_block_chat_response.code_output
             files.extend(content_block_chat_response.files)
 
-        elif event.type == "message_delta":
+        elif isinstance(event, BetaRawMessageDeltaEvent):
             cumulative_output_tokens = event.usage.output_tokens
             output_tokens = cumulative_output_tokens - self.prev_cumulative_output_tokens
             self.prev_cumulative_output_tokens = cumulative_output_tokens

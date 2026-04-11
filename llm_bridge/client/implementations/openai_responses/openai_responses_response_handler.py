@@ -1,4 +1,4 @@
-from openai.types.responses import Response, ResponseOutputItem, ResponseOutputMessage, \
+from openai.types.responses import Response, ResponseOutputMessage, \
     ResponseOutputText, ResponseReasoningItem
 from openai.types.responses import ResponseStreamEvent, ResponseReasoningSummaryTextDeltaEvent, ResponseTextDeltaEvent, \
     ResponseCodeInterpreterCallCodeDeltaEvent, ResponseImageGenCallPartialImageEvent, ResponseOutputItemDoneEvent, \
@@ -15,12 +15,10 @@ async def process_code_interpreter_outputs(interpreter_outputs: list[Output]) ->
     files: list[File] = []
 
     for interpreter_output in interpreter_outputs:
-        if interpreter_output.type == "logs":
-            output_logs: OutputLogs = interpreter_output
-            code_output += output_logs.logs
-        if interpreter_output.type == "image":
-            output_image: OutputImage = interpreter_output
-            data, _ = await get_base64_content_from_url(output_image.url)
+        if isinstance(interpreter_output, OutputLogs):
+            code_output += interpreter_output.logs
+        if isinstance(interpreter_output, OutputImage):
+            data, _ = await get_base64_content_from_url(interpreter_output.url)
             file = File(
                 name="code_interpreter_call_output.png",
                 data=data,
@@ -34,42 +32,35 @@ async def process_code_interpreter_outputs(interpreter_outputs: list[Output]) ->
 async def process_openai_responses_non_stream_response(
         response: Response,
 ) -> ChatResponse:
-
-    output_list: list[ResponseOutputItem] = response.output
-
     text: str = ""
     thought: str = ""
     code: str = ""
     code_output: str = ""
     files: list[File] = []
 
-    for output in output_list:
-        if output.type == "message":
-            output_message: ResponseOutputMessage = output
-            for content in output_message.content:
-                if content.type == "output_text":
-                    output_text: ResponseOutputText = content
-                    text += output_text.text
-        elif output.type == "reasoning":
-            reasoning_item: ResponseReasoningItem = output
-            for summary_delta in reasoning_item.summary:
+    for output in response.output:
+        if isinstance(output, ResponseOutputMessage):
+            for content in output.content:
+                if isinstance(content, ResponseOutputText):
+                    text += content.text
+        elif isinstance(output, ResponseReasoningItem):
+            for summary_delta in output.summary:
                 thought += summary_delta.text
-        elif output.type == "code_interpreter_call":
-            code_interpreter_tool_call: ResponseCodeInterpreterToolCall = output
-            if interpreter_code := code_interpreter_tool_call.code:
+        elif isinstance(output, ResponseCodeInterpreterToolCall):
+            if interpreter_code := output.code:
                 code += interpreter_code
-            if interpreter_outputs := code_interpreter_tool_call.outputs:
+            if interpreter_outputs := output.outputs:
                 interpreter_code_output, interpreter_files = await process_code_interpreter_outputs(interpreter_outputs)
                 code_output += interpreter_code_output
                 files.extend(interpreter_files)
-        elif output.type == "image_generation_call":
-            image_generation_call: ImageGenerationCall = output
-            file = File(
-                name="image_generation_call_output.png",
-                data=image_generation_call.result,
-                type="image/png",
-            )
-            files.append(file)
+        elif isinstance(output, ImageGenerationCall):
+            if output.result is not None:
+                file = File(
+                    name="image_generation_call_output.png",
+                    data=output.result,
+                    type="image/png",
+                )
+                files.append(file)
 
     usage = response.usage
     input_tokens = usage.input_tokens if usage else 0
@@ -94,34 +85,27 @@ async def process_openai_responses_stream_response(event: ResponseStreamEvent) -
     input_tokens: int = 0
     output_tokens: int = 0
 
-    if event.type == "response.output_text.delta":
-        text_delta_event: ResponseTextDeltaEvent = event
-        text = text_delta_event.delta
-    elif event.type == "response.reasoning_summary_text.delta":
-        reasoning_summary_text_delta_event: ResponseReasoningSummaryTextDeltaEvent = event
-        thought = reasoning_summary_text_delta_event.delta
-    elif event.type == "response.code_interpreter_call_code.delta":
-        code_interpreter_call_code_delta_event: ResponseCodeInterpreterCallCodeDeltaEvent = event
-        code = code_interpreter_call_code_delta_event.delta
-    elif event.type == "response.output_item.done":
-        output_item_done_event: ResponseOutputItemDoneEvent = event
-        if output_item_done_event.item.type == "code_interpreter_call":
-            code_interpreter_tool_call: ResponseCodeInterpreterToolCall = output_item_done_event.item
-            if interpreter_outputs := code_interpreter_tool_call.outputs:
+    if isinstance(event, ResponseTextDeltaEvent):
+        text = event.delta
+    elif isinstance(event, ResponseReasoningSummaryTextDeltaEvent):
+        thought = event.delta
+    elif isinstance(event, ResponseCodeInterpreterCallCodeDeltaEvent):
+        code = event.delta
+    elif isinstance(event, ResponseOutputItemDoneEvent):
+        if isinstance(event.item, ResponseCodeInterpreterToolCall):
+            if interpreter_outputs := event.item.outputs:
                 interpreter_code_output, interpreter_files = await process_code_interpreter_outputs(interpreter_outputs)
                 code_output += interpreter_code_output
                 files.extend(interpreter_files)
-    elif event.type == "response.image_generation_call.partial_image":
-        image_gen_call_partial_image_event: ResponseImageGenCallPartialImageEvent = event
+    elif isinstance(event, ResponseImageGenCallPartialImageEvent):
         file = File(
-            name="generated_image.png",
-            data=image_gen_call_partial_image_event.partial_image_b64,
+            name="image_generation_call_output.png",
+            data=event.partial_image_b64,
             type="image/png",
         )
         files.append(file)
-    elif event.type == "response.completed":
-        completed_event: ResponseCompletedEvent = event
-        usage = completed_event.response.usage
+    elif isinstance(event, ResponseCompletedEvent):
+        usage = event.response.usage
         if usage:
             input_tokens = usage.input_tokens
             output_tokens = usage.output_tokens
