@@ -54,10 +54,10 @@ async def process_openai_responses_non_stream_response(
                 code_output += interpreter_code_output
                 files.extend(interpreter_files)
         elif isinstance(output, ImageGenerationCall):
-            if output.result is not None:
+            if output_result := output.result:
                 file = File(
                     name="image_generation_call_output.png",
-                    data=output.result,
+                    data=output_result,
                     type="image/png",
                 )
                 files.append(file)

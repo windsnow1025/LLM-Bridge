@@ -134,7 +134,8 @@ class ClaudeResponseHandler:
             thought += content_block_chat_response.thought
             code += content_block_chat_response.code
             code_output += content_block_chat_response.code_output
-            files.extend(content_block_chat_response.files)
+            if file := content_block_chat_response.files:
+                files.extend(file)
 
         elif isinstance(event, BetaRawMessageDeltaEvent):
             cumulative_output_tokens = event.usage.output_tokens
