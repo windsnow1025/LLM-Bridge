@@ -5,7 +5,7 @@ from typing import AsyncGenerator
 import httpx
 from fastapi import HTTPException
 
-from llm_bridge.client.implementations.claude.claude_response_handler import process_claude_stream_response
+from llm_bridge.client.implementations.claude.claude_response_handler import ClaudeResponseHandler
 from llm_bridge.client.model_client.claude_client import ClaudeClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
@@ -16,6 +16,7 @@ class StreamClaudeClient(ClaudeClient):
             logging.info(f"messages: {self.messages}")
 
             try:
+                response_handler = ClaudeResponseHandler()
                 async with self.client.beta.messages.stream(
                     model=self.model,
                     max_tokens=self.max_tokens,
@@ -28,11 +29,9 @@ class StreamClaudeClient(ClaudeClient):
                     extra_body=self.extra_body,
                 ) as stream:
                     async for event in stream:
-                        yield await process_claude_stream_response(
+                        yield await response_handler.process_claude_stream_response(
                             event=event,
-                            input_tokens=self.input_tokens,
                             client=self.client,
-                            model=self.model,
                         )
 
             except Exception as e:

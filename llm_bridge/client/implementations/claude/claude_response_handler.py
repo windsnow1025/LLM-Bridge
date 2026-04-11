@@ -1,14 +1,13 @@
-from anthropic import BetaMessageStreamEvent, AsyncAnthropic
+from anthropic import AsyncAnthropic
 from anthropic._response import AsyncBinaryAPIResponse
-from anthropic.types.beta import BetaRawContentBlockDelta, BetaThinkingDelta, BetaTextDelta, BetaInputJSONDelta, \
-    BetaBashCodeExecutionToolResultBlock, \
+from anthropic.types.beta import BetaRawMessageStreamEvent, BetaRawContentBlockDelta, BetaThinkingDelta, BetaTextDelta, \
+    BetaInputJSONDelta, BetaBashCodeExecutionToolResultBlock, \
     BetaTextEditorCodeExecutionToolResultBlock, BetaTextEditorCodeExecutionViewResultBlock, \
     BetaTextEditorCodeExecutionStrReplaceResultBlock, \
     BetaServerToolUseBlock, BetaBashCodeExecutionResultBlock, BetaTextBlock, BetaThinkingBlock, \
     BetaBashCodeExecutionOutputBlock, BetaMessage, FileMetadata
 from anthropic.types.beta.beta_raw_content_block_start_event import ContentBlock
 
-from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_output_tokens
 from llm_bridge.logic.chat_generate.media_processor import bytes_to_base64
 from llm_bridge.type.chat_response import ChatResponse, File
 
@@ -22,6 +21,7 @@ async def download_claude_file(client: AsyncAnthropic, file_id: str) -> File:
         data=bytes_to_base64(data),
         type=file_metadata.mime_type,
     )
+
 
 async def process_content_block(
         content_block: ContentBlock, client: AsyncAnthropic
@@ -73,44 +73,9 @@ async def process_content_block(
     )
 
 
-async def build_chat_response_with_tokens(
-        text: str,
-        thought: str,
-        code: str,
-        code_output: str,
-        files: list[File],
-        input_tokens: int,
-        client: AsyncAnthropic,
-        model: str,
-) -> ChatResponse:
-    chat_response = ChatResponse(
-        text=text,
-        thought=thought,
-        code=code,
-        code_output=code_output,
-        files=files,
-    )
-    output_tokens = await count_claude_output_tokens(
-        client=client,
-        model=model,
-        chat_response=chat_response,
-    )
-    return ChatResponse(
-        text=text,
-        thought=thought,
-        code=code,
-        code_output=code_output,
-        files=files,
-        input_tokens=input_tokens,
-        output_tokens=output_tokens,
-    )
-
-
 async def process_claude_non_stream_response(
         message: BetaMessage,
-        input_tokens: int,
         client: AsyncAnthropic,
-        model: str,
 ) -> ChatResponse:
     text = ""
     thought = ""
@@ -126,61 +91,72 @@ async def process_claude_non_stream_response(
         code_output += content_block_chat_response.code_output
         files.extend(content_block_chat_response.files)
 
-    return await build_chat_response_with_tokens(
+    return ChatResponse(
         text=text,
         thought=thought,
         code=code,
         code_output=code_output,
         files=files,
-        input_tokens=input_tokens,
-        client=client,
-        model=model,
+        input_tokens=message.usage.input_tokens,
+        output_tokens=message.usage.output_tokens,
     )
 
 
-async def process_claude_stream_response(
-        event: BetaMessageStreamEvent,
-        input_tokens: int,
-        client: AsyncAnthropic,
-        model: str,
-) -> ChatResponse:
-    text = ""
-    thought = ""
-    code = ""
-    code_output = ""
-    files: list[File] = []
+class ClaudeResponseHandler:
+    def __init__(self):
+        self.prev_cumulative_output_tokens: int = 0
 
-    if event.type == "content_block_delta":
-        event_delta: BetaRawContentBlockDelta = event.delta
+    async def process_claude_stream_response(
+            self,
+            event: BetaRawMessageStreamEvent,
+            client: AsyncAnthropic,
+    ) -> ChatResponse:
+        text = ""
+        thought = ""
+        code = ""
+        code_output = ""
+        files: list[File] = []
+        input_tokens: int | None = None
+        output_tokens: int = 0
 
-        if event_delta.type == "text_delta":
-            text_delta: BetaTextDelta = event_delta
-            text += text_delta.text
+        if event.type == "message_start":
+            input_tokens = event.message.usage.input_tokens
 
-        elif event_delta.type == "thinking_delta":
-            thinking_delta: BetaThinkingDelta = event_delta
-            thought += thinking_delta.thinking
+        elif event.type == "content_block_delta":
+            event_delta: BetaRawContentBlockDelta = event.delta
 
-        elif event_delta.type == "input_json_delta":
-            input_json_delta: BetaInputJSONDelta = event_delta
-            code += input_json_delta.partial_json
+            if event_delta.type == "text_delta":
+                text_delta: BetaTextDelta = event_delta
+                text += text_delta.text
 
-    if event.type == "content_block_start":
-        content_block: ContentBlock = event.content_block
-        content_block_chat_response = await process_content_block(content_block, client)
-        text += content_block_chat_response.text
-        thought += content_block_chat_response.thought
-        code += content_block_chat_response.code
-        code_output += content_block_chat_response.code_output
-        files.extend(content_block_chat_response.files)
+            elif event_delta.type == "thinking_delta":
+                thinking_delta: BetaThinkingDelta = event_delta
+                thought += thinking_delta.thinking
 
-    return await build_chat_response_with_tokens(
-        text=text,
-        thought=thought,
-        code=code,
-        code_output=code_output,
-        files=files,
-        input_tokens=input_tokens,
-        client=client,
-        model=model,
-    )
+            elif event_delta.type == "input_json_delta":
+                input_json_delta: BetaInputJSONDelta = event_delta
+                code += input_json_delta.partial_json
+
+        elif event.type == "content_block_start":
+            content_block: ContentBlock = event.content_block
+            content_block_chat_response = await process_content_block(content_block, client)
+            text += content_block_chat_response.text
+            thought += content_block_chat_response.thought
+            code += content_block_chat_response.code
+            code_output += content_block_chat_response.code_output
+            files.extend(content_block_chat_response.files)
+
+        elif event.type == "message_delta":
+            cumulative_output_tokens = event.usage.output_tokens
+            output_tokens = cumulative_output_tokens - self.prev_cumulative_output_tokens
+            self.prev_cumulative_output_tokens = cumulative_output_tokens
+
+        return ChatResponse(
+            text=text,
+            thought=thought,
+            code=code,
+            code_output=code_output,
+            files=files,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+        )

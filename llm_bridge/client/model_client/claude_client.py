@@ -20,7 +20,6 @@ class ClaudeClient(ChatClient):
             client: anthropic.AsyncAnthropic,
             max_tokens: int,
             betas: list[AnthropicBetaParam],
-            input_tokens: int,
             tools: list[BetaToolUnionParam],
             thinking: ThinkingConfigEnabledParam | Omit,
             extra_body: dict[str, Any] | None,
@@ -32,7 +31,6 @@ class ClaudeClient(ChatClient):
         self.client = client
         self.max_tokens = max_tokens
         self.betas = betas
-        self.input_tokens = input_tokens
         self.tools = tools
         self.thinking = thinking
         self.extra_body = extra_body

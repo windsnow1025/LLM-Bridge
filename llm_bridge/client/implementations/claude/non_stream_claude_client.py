@@ -29,9 +29,7 @@ class NonStreamClaudeClient(ClaudeClient):
 
             return await process_claude_non_stream_response(
                 message=message,
-                input_tokens=self.input_tokens,
                 client=self.client,
-                model=self.model,
             )
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code
