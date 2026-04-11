@@ -1,6 +1,7 @@
 import xai_sdk
 from xai_sdk.proto import chat_pb2
-from xai_sdk.tools import web_search as web_search_tool, x_search as x_search_tool
+from xai_sdk.tools import web_search as web_search_tool, x_search as x_search_tool, \
+    code_execution as code_execution_tool
 
 from llm_bridge.client.implementations.xai.non_stream_xai_client import NonStreamXAIClient
 from llm_bridge.client.implementations.xai.stream_xai_client import StreamXAIClient
@@ -15,6 +16,7 @@ async def create_xai_client(
         temperature: float,
         stream: bool,
         web_search: bool,
+        code_execution: bool,
 ) -> StreamXAIClient | NonStreamXAIClient:
     client = xai_sdk.AsyncClient(
         api_key=api_key,
@@ -31,6 +33,8 @@ async def create_xai_client(
             enable_image_understanding=True,
             enable_video_understanding=True,
         ))
+    if code_execution:
+        tools.append(code_execution_tool())
 
     if stream:
         return StreamXAIClient(
