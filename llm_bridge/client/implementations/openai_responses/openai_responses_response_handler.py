@@ -2,12 +2,10 @@ from openai.types.responses import Response, ResponseOutputItem, ResponseOutputM
     ResponseOutputText, ResponseReasoningItem
 from openai.types.responses import ResponseStreamEvent, ResponseReasoningSummaryTextDeltaEvent, ResponseTextDeltaEvent, \
     ResponseCodeInterpreterCallCodeDeltaEvent, ResponseImageGenCallPartialImageEvent, ResponseOutputItemDoneEvent, \
-    ResponseCodeInterpreterToolCall
+    ResponseCodeInterpreterToolCall, ResponseCompletedEvent
 from openai.types.responses.response_code_interpreter_tool_call import Output, OutputLogs, OutputImage
 from openai.types.responses.response_output_item import ImageGenerationCall
 
-from llm_bridge.client.implementations.openai_responses.openai_responses_token_counter import \
-    count_openai_responses_output_tokens
 from llm_bridge.logic.chat_generate.media_processor import get_base64_content_from_url
 from llm_bridge.type.chat_response import ChatResponse, File
 
@@ -35,7 +33,6 @@ async def process_code_interpreter_outputs(interpreter_outputs: list[Output]) ->
 
 async def process_openai_responses_non_stream_response(
         response: Response,
-        input_tokens: int,
 ) -> ChatResponse:
 
     output_list: list[ResponseOutputItem] = response.output
@@ -74,8 +71,9 @@ async def process_openai_responses_non_stream_response(
             )
             files.append(file)
 
-    chat_response = ChatResponse(text=text, files=files)
-    output_tokens = count_openai_responses_output_tokens(chat_response)
+    usage = response.usage
+    input_tokens = usage.input_tokens if usage else 0
+    output_tokens = usage.output_tokens if usage else 0
     return ChatResponse(
         text=text,
         thought=thought,
@@ -93,6 +91,8 @@ async def process_openai_responses_stream_response(event: ResponseStreamEvent) -
     code: str = ""
     code_output: str = ""
     files: list[File] = []
+    input_tokens: int = 0
+    output_tokens: int = 0
 
     if event.type == "response.output_text.delta":
         text_delta_event: ResponseTextDeltaEvent = event
@@ -119,6 +119,12 @@ async def process_openai_responses_stream_response(event: ResponseStreamEvent) -
             type="image/png",
         )
         files.append(file)
+    elif event.type == "response.completed":
+        completed_event: ResponseCompletedEvent = event
+        usage = completed_event.response.usage
+        if usage:
+            input_tokens = usage.input_tokens
+            output_tokens = usage.output_tokens
 
     chat_response = ChatResponse(
         text=text,
@@ -126,5 +132,7 @@ async def process_openai_responses_stream_response(event: ResponseStreamEvent) -
         code=code,
         code_output=code_output,
         files=files,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
     )
     return chat_response

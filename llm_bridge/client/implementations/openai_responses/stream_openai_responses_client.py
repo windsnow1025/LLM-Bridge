@@ -10,8 +10,6 @@ from openai.types.responses import ResponseStreamEvent
 
 from llm_bridge.client.implementations.openai_responses.openai_responses_response_handler import \
     process_openai_responses_stream_response
-from llm_bridge.client.implementations.openai_responses.openai_responses_token_counter import \
-    count_openai_responses_input_tokens, count_openai_responses_output_tokens
 from llm_bridge.client.model_client.openai_responses_client import OpenAIResponsesClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
@@ -19,21 +17,10 @@ from llm_bridge.type.serializer import serialize
 
 async def generate_chunk(
         stream: AsyncStream[ResponseStreamEvent],
-        input_tokens: int,
 ) -> AsyncGenerator[ChatResponse, None]:
     try:
         async for event in stream:
-            chat_response = await process_openai_responses_stream_response(event)
-            output_tokens = count_openai_responses_output_tokens(chat_response)
-            yield ChatResponse(
-                text=chat_response.text,
-                thought=chat_response.thought,
-                code=chat_response.code,
-                code_output=chat_response.code_output,
-                files=chat_response.files,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-            )
+            yield await process_openai_responses_stream_response(event)
     except Exception as e:
         logging.exception(e)
         yield ChatResponse(error=repr(e))
@@ -43,10 +30,6 @@ class StreamOpenAIResponsesClient(OpenAIResponsesClient):
     async def generate_stream_response(self) -> AsyncGenerator[ChatResponse, None]:
         try:
             logging.info(f"messages: {self.messages}")
-
-            input_tokens = count_openai_responses_input_tokens(
-                messages=self.messages
-            )
 
             stream: AsyncStream[ResponseStreamEvent] = await self.client.responses.create(
                 model=self.model,
@@ -81,5 +64,5 @@ class StreamOpenAIResponsesClient(OpenAIResponsesClient):
 
             raise HTTPException(status_code=error_code, detail=str(e))
 
-        async for chunk in generate_chunk(stream, input_tokens):
+        async for chunk in generate_chunk(stream):
             yield chunk

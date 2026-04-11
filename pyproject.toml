@@ -9,7 +9,6 @@ dependencies = [
     "fastapi",
     "httpx",
     "tenacity",
-    "tiktoken==0.11.0",
     "openai==2.30.0",
     "google-genai==1.46.0", # google.genai
     "anthropic==0.75.0",

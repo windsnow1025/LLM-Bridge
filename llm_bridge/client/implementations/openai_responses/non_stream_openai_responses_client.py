@@ -9,8 +9,6 @@ from openai.types.responses import Response
 
 from llm_bridge.client.implementations.openai_responses.openai_responses_response_handler import \
     process_openai_responses_non_stream_response
-from llm_bridge.client.implementations.openai_responses.openai_responses_token_counter import \
-    count_openai_responses_input_tokens
 from llm_bridge.client.model_client.openai_responses_client import OpenAIResponsesClient
 from llm_bridge.type.chat_response import ChatResponse
 from llm_bridge.type.serializer import serialize
@@ -20,10 +18,6 @@ class NonStreamOpenAIResponsesClient(OpenAIResponsesClient):
     async def generate_non_stream_response(self) -> ChatResponse:
         try:
             logging.info(f"messages: {self.messages}")
-
-            input_tokens = count_openai_responses_input_tokens(
-                messages=self.messages
-            )
 
             response: Response = await self.client.responses.create(
                 model=self.model,
@@ -38,7 +32,6 @@ class NonStreamOpenAIResponsesClient(OpenAIResponsesClient):
 
             return await process_openai_responses_non_stream_response(
                 response=response,
-                input_tokens=input_tokens,
             )
         except httpx.HTTPStatusError as e:
             status_code = e.response.status_code
