@@ -33,12 +33,17 @@ class StreamXAIClient(XAIClient):
             raise HTTPException(status_code=error_code, detail=str(e))
 
         try:
+            prev_cumulative_output_tokens: int = 0
             async for response, chunk in chat.stream():
+                cumulative_output_tokens = chunk.proto.usage.completion_tokens
+                output_tokens = cumulative_output_tokens - prev_cumulative_output_tokens
+                prev_cumulative_output_tokens = cumulative_output_tokens
+
                 yield ChatResponse(
                     text=chunk.content,
                     thought=chunk.reasoning_content,
                     input_tokens=chunk.proto.usage.prompt_tokens,
-                    output_tokens=chunk.proto.usage.completion_tokens,
+                    output_tokens=output_tokens,
                 )
         except Exception as e:
             logging.exception(e)
