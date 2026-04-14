@@ -8,15 +8,10 @@ PyPI: [https://pypi.org/project/LLM-Bridge/](https://pypi.org/project/LLM-Bridge
 
 ## Workflow and Features
 
-1. **Message Preprocessor**: extracts text content from documents (Word, Excel, PPT, Code files, PDFs) which are not natively supported by the target model.
-2. **Chat Client Factory**: creates a client for the specific LLM API with model parameters
+1. **Chat Client Factory**: creates a client for the specific LLM API with model parameters
     1. **Model Message Converter**: converts general messages to model messages
-        1. **Media Processor**: converts general media (Image, Audio, Video, PDF) to model compatible formats.
-3. **Chat Client**: generate stream or non-stream responses
-    - **Model Thoughts**: captures the model's thinking process
-    - **Code Execution**: generates and executes Python code
-    - **Web Search**: generates response from search results
-    - **Token Counter**: tracks and reports input and output token usage
+        1. **Media Processor**: converts general media to model compatible formats.
+2. **Chat Client**: generate stream or non-stream responses
 
 ### Supported Features for API Types
 
@@ -29,11 +24,6 @@ The features listed represent the maximum capabilities of each API type supporte
 | Google GenAI          | Text, Image, PDF, Audio, Video                   | Thinking, Web Search, Code Execution, Structured Output | Text, Image, File |
 | Anthropic             | Text, Image, PDF                                 | Thinking, Web Search, Code Execution, Structured Output | Text, File        |
 | xAI                   | Text, Image, PDF, Audio, Video, docx, xlsx, pptx | Thinking, Web Search, Code Execution, Structured Output | Text              |
-
-#### Planned Features
-
-- More features for API Types
-- Native support for Grok
 
 ## Development
 
