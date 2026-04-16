@@ -2,9 +2,10 @@ from typing import Any
 
 import anthropic
 from anthropic import Omit, transform_schema
-from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
+from anthropic.types import AnthropicBetaParam
 from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param, \
-    BetaJSONOutputFormatParam
+    BetaJSONOutputFormatParam, BetaOutputConfigParam, BetaThinkingConfigParam, BetaThinkingConfigEnabledParam, \
+    BetaThinkingConfigAdaptiveParam
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
@@ -45,7 +46,7 @@ async def create_claude_client(
     )
 
     context_window = 200_000
-    if model in ["claude-opus-4-6", "claude-sonnet-4-6", "claude-sonnet-4-5"]:
+    if model in ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6", "claude-sonnet-4-5"]:
         context_window = 1_000_000
     max_output = 64_000
     max_tokens = min(
@@ -53,12 +54,15 @@ async def create_claude_client(
         context_window - input_tokens,
     )
 
-    thinking: ThinkingConfigEnabledParam | Omit = omit
+    thinking: BetaThinkingConfigParam | Omit = omit
     if thought:
-        thinking = ThinkingConfigEnabledParam(
-            type="enabled",
-            budget_tokens=max(1024, max_tokens // 2),  # Minimum budget tokens: 1024
-        )
+        if model in ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]:
+            thinking = BetaThinkingConfigAdaptiveParam(type="adaptive", display="summarized")
+        else:
+            thinking = BetaThinkingConfigEnabledParam(
+                type="enabled",
+                budget_tokens=max(1024, max_tokens // 2),  # Minimum budget tokens: 1024
+            )
         temperature = 1
 
     betas: list[AnthropicBetaParam] = [
@@ -85,14 +89,14 @@ async def create_claude_client(
             )
         )
 
-    extra_body = None
+    output_config: BetaOutputConfigParam | Omit = omit
     if structured_output_schema:
-        extra_body = {
-            "output_format": BetaJSONOutputFormatParam(
+        output_config = BetaOutputConfigParam(
+            format=BetaJSONOutputFormatParam(
                 type="json_schema",
                 schema=transform_schema(structured_output_schema),
             )
-        }
+        )
 
     if stream:
         return StreamClaudeClient(
@@ -105,7 +109,7 @@ async def create_claude_client(
             betas=betas,
             tools=tools,
             thinking=thinking,
-            extra_body=extra_body,
+            output_config=output_config,
         )
     else:
         return NonStreamClaudeClient(
@@ -118,5 +122,5 @@ async def create_claude_client(
             betas=betas,
             tools=tools,
             thinking=thinking,
-            extra_body=extra_body,
+            output_config=output_config,
         )

@@ -1,9 +1,9 @@
-from typing import Any, AsyncGenerator
+from typing import AsyncGenerator
 
 import anthropic
 from anthropic import Omit
-from anthropic.types import ThinkingConfigEnabledParam, AnthropicBetaParam
-from anthropic.types.beta import BetaToolUnionParam
+from anthropic.types import AnthropicBetaParam
+from anthropic.types.beta import BetaToolUnionParam, BetaOutputConfigParam, BetaThinkingConfigParam
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -21,8 +21,8 @@ class ClaudeClient(ChatClient):
             max_tokens: int,
             betas: list[AnthropicBetaParam],
             tools: list[BetaToolUnionParam],
-            thinking: ThinkingConfigEnabledParam | Omit,
-            extra_body: dict[str, Any] | None,
+            thinking: BetaThinkingConfigParam | Omit,
+            output_config: BetaOutputConfigParam | Omit,
     ):
         self.model = model
         self.messages = messages
@@ -33,7 +33,7 @@ class ClaudeClient(ChatClient):
         self.betas = betas
         self.tools = tools
         self.thinking = thinking
-        self.extra_body = extra_body
+        self.output_config = output_config
 
     async def generate_non_stream_response(self) -> ChatResponse:
         raise NotImplementedError
