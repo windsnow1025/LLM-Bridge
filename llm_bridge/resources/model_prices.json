@@ -11,7 +11,49 @@
     "input": 0.4,
     "output": 25
   },
-    {
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.5",
+    "input": 10,
+    "output": 45
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.4",
+    "input": 5,
+    "output": 22.5
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.4-mini",
+    "input": 0.75,
+    "output": 4.5
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.3-codex",
+    "input": 1.75,
+    "output": 14
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.5-pro",
+    "input": 60,
+    "output": 270
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-5.4-pro",
+    "input": 60,
+    "output": 270
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-4.1",
+    "input": 2,
+    "output": 8
+  },
+  {
     "apiType": "Claude",
     "model": "claude-opus-4-7",
     "input": 5,
@@ -106,84 +148,6 @@
     "model": "gemini-3-flash-preview",
     "input": 0,
     "output": 0
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.4",
-    "input": 5,
-    "output": 22.5
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.4-mini",
-    "input": 0.75,
-    "output": 4.5
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.2",
-    "input": 1.75,
-    "output": 14
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.1",
-    "input": 1.25,
-    "output": 10
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.1-codex-max",
-    "input": 1.25,
-    "output": 10
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.1-codex",
-    "input": 1.25,
-    "output": 10
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5",
-    "input": 1.25,
-    "output": 10
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5-codex",
-    "input": 1.25,
-    "output": 10
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5-mini",
-    "input": 0.25,
-    "output": 2
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.4-pro",
-    "input": 60,
-    "output": 270
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5.2-pro",
-    "input": 21,
-    "output": 168
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-5-pro",
-    "input": 15,
-    "output": 120
-  },
-  {
-    "apiType": "OpenAI",
-    "model": "gpt-4.1",
-    "input": 2,
-    "output": 8
   },
   {
     "apiType": "OpenAI-Azure",

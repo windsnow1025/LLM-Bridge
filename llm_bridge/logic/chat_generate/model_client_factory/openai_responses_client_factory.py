@@ -51,7 +51,7 @@ async def create_openai_responses_client(
     reasoning: Reasoning | Omit = omit
     include: list[ResponseIncludable] = ["code_interpreter_call.outputs"]
 
-    if model not in ["gpt-5-pro", "gpt-5.2-pro"] and "codex" not in model:
+    if "codex" not in model:
         if code_execution:
             tools.append(
                 CodeInterpreter(
