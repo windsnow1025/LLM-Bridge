@@ -5,7 +5,8 @@ from anthropic import Omit, transform_schema
 from anthropic.types import AnthropicBetaParam
 from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param, \
     BetaJSONOutputFormatParam, BetaOutputConfigParam, BetaThinkingConfigParam, BetaThinkingConfigEnabledParam, \
-    BetaThinkingConfigAdaptiveParam, BetaWebFetchTool20260209Param, BetaCitationsConfigParam
+    BetaThinkingConfigAdaptiveParam, BetaWebFetchTool20260209Param, BetaCitationsConfigParam, \
+    BetaCacheControlEphemeralParam
 
 from llm_bridge.client.implementations.claude.claude_token_counter import count_claude_input_tokens
 from llm_bridge.client.implementations.claude.non_stream_claude_client import NonStreamClaudeClient
@@ -53,6 +54,8 @@ async def create_claude_client(
         max_output,
         context_window - input_tokens,
     )
+
+    cache_control = BetaCacheControlEphemeralParam(type="ephemeral")
 
     thinking: BetaThinkingConfigParam | Omit = omit
     if thought:
@@ -115,6 +118,7 @@ async def create_claude_client(
             max_tokens=max_tokens,
             betas=betas,
             tools=tools,
+            cache_control=cache_control,
             thinking=thinking,
             output_config=output_config,
         )
@@ -128,6 +132,7 @@ async def create_claude_client(
             max_tokens=max_tokens,
             betas=betas,
             tools=tools,
+            cache_control=cache_control,
             thinking=thinking,
             output_config=output_config,
         )

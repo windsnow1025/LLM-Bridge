@@ -3,7 +3,8 @@ from typing import AsyncGenerator
 import anthropic
 from anthropic import Omit
 from anthropic.types import AnthropicBetaParam
-from anthropic.types.beta import BetaToolUnionParam, BetaOutputConfigParam, BetaThinkingConfigParam
+from anthropic.types.beta import BetaToolUnionParam, BetaOutputConfigParam, BetaThinkingConfigParam, \
+    BetaCacheControlEphemeralParam
 
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -21,6 +22,7 @@ class ClaudeClient(ChatClient):
             max_tokens: int,
             betas: list[AnthropicBetaParam],
             tools: list[BetaToolUnionParam],
+            cache_control: BetaCacheControlEphemeralParam,
             thinking: BetaThinkingConfigParam | Omit,
             output_config: BetaOutputConfigParam | Omit,
     ):
@@ -32,6 +34,7 @@ class ClaudeClient(ChatClient):
         self.max_tokens = max_tokens
         self.betas = betas
         self.tools = tools
+        self.cache_control = cache_control
         self.thinking = thinking
         self.output_config = output_config
 

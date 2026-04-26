@@ -25,6 +25,7 @@ class StreamClaudeClient(ClaudeClient):
                     messages=serialize(self.messages),
                     betas=self.betas,
                     tools=self.tools,
+                    cache_control=self.cache_control,
                     thinking=self.thinking,
                     output_config=self.output_config,
                 ) as stream:
