@@ -3,7 +3,7 @@ from typing import Any
 import anthropic
 from anthropic import Omit, transform_schema
 from anthropic.types import AnthropicBetaParam
-from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, BetaCodeExecutionTool20250825Param, \
+from anthropic.types.beta import BetaWebSearchTool20250305Param, BetaToolUnionParam, \
     BetaJSONOutputFormatParam, BetaOutputConfigParam, BetaThinkingConfigParam, BetaThinkingConfigEnabledParam, \
     BetaThinkingConfigAdaptiveParam, BetaWebFetchTool20260209Param, BetaCitationsConfigParam, \
     BetaCacheControlEphemeralParam
@@ -84,18 +84,13 @@ async def create_claude_client(
                 name="web_search",
             )
         )
-    tools.append(
-        BetaWebFetchTool20260209Param(
-            type="web_fetch_20260209",
-            name="web_fetch",
-            citations=BetaCitationsConfigParam(enabled=True)
-        )
-    )
     if code_execution:
         tools.append(
-            BetaCodeExecutionTool20250825Param(
-                type="code_execution_20250825",
-                name="code_execution",
+            # Code Execution auto-injected
+            BetaWebFetchTool20260209Param(
+                type="web_fetch_20260209",
+                name="web_fetch",
+                citations=BetaCitationsConfigParam(enabled=True)
             )
         )
 

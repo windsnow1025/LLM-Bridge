@@ -131,10 +131,10 @@ messages = [
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # URL Context
-            # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
+            Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
 
             # Code Execution
-            Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
+            # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
 
             # Structured Output
             # Content(type=ContentType.Text, data="Please generate a product."),
@@ -162,28 +162,24 @@ messages = [
 
 # See /llm_bridge/resources/model_prices.json for available models
 # model = "gpt-5.4-mini"
-# model = "gpt-5.2"
-# model = "gpt-5.1"
 # model = "gpt-5.4"
-model = "gpt-5.4-pro"
-# model = "gpt-5"
+# model = "gpt-5.4-pro"
 # model = "gpt-4.1"
-# model = "gpt-5-codex"
-# model = "gemini-3-pro-preview"
+# model = "gemini-3.1-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
-# model = "claude-sonnet-4-6"
+model = "claude-sonnet-4-6"
 # model = "grok-4.20-reasoning"
 # model = "grok-4.20-non-reasoning"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
 # api_type = "Google AI Studio"
-api_type = "OpenAI"
+# api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-# api_type = "Claude"
+api_type = "Claude"
 # api_type = "Grok"
 
 temperature = 0
