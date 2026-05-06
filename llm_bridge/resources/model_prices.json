@@ -1,15 +1,9 @@
 [
   {
     "apiType": "Grok",
-    "model": "grok-4.20-reasoning",
-    "input": 0.4,
-    "output": 25
-  },
-  {
-    "apiType": "Grok",
-    "model": "grok-4.20-non-reasoning",
-    "input": 0.4,
-    "output": 25
+    "model": "grok-4.3",
+    "input": 1.25,
+    "output": 2.5
   },
   {
     "apiType": "OpenAI",
