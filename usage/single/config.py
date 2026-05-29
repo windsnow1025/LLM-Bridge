@@ -169,8 +169,8 @@ messages = [
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
-# model = "claude-sonnet-4-6"
-model = "grok-4.3"
+model = "claude-opus-4-8"
+# model = "grok-4.3"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
@@ -178,8 +178,8 @@ model = "grok-4.3"
 # api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
-# api_type = "Claude"
-api_type = "Grok"
+api_type = "Claude"
+# api_type = "Grok"
 
 temperature = 0
 stream = True

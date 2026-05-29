@@ -47,7 +47,7 @@ async def create_claude_client(
     )
 
     context_window = 200_000
-    if model in ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6", "claude-sonnet-4-5"]:
+    if model in ["claude-opus-4-8", "claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6", "claude-sonnet-4-5"]:
         context_window = 1_000_000
     max_output = 64_000
     max_tokens = min(
@@ -59,7 +59,7 @@ async def create_claude_client(
 
     thinking: BetaThinkingConfigParam | Omit = omit
     if thought:
-        if model in ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]:
+        if model in ["claude-opus-4-8", "claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]:
             thinking = BetaThinkingConfigAdaptiveParam(type="adaptive", display="summarized")
         else:
             thinking = BetaThinkingConfigEnabledParam(
