@@ -169,7 +169,7 @@ messages = [
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3.1-flash-image-preview"
 # model = "gemini-3-flash-preview"
-model = "claude-opus-4-8"
+model = "claude-fable-5"
 # model = "grok-4.3"
 
 # api_type = "Vertex AI"

@@ -16,7 +16,6 @@ class ClaudeClient(ChatClient):
             self,
             model: str,
             messages: list[ClaudeMessage],
-            temperature: float,
             system: str,
             client: anthropic.AsyncAnthropic,
             max_tokens: int,
@@ -28,7 +27,6 @@ class ClaudeClient(ChatClient):
     ):
         self.model = model
         self.messages = messages
-        self.temperature = temperature
         self.system = system
         self.client = client
         self.max_tokens = max_tokens

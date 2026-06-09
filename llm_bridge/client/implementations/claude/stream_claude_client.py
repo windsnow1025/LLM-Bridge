@@ -20,7 +20,6 @@ class StreamClaudeClient(ClaudeClient):
                 async with self.client.beta.messages.stream(
                     model=self.model,
                     max_tokens=self.max_tokens,
-                    temperature=self.temperature,
                     system=self.system,
                     messages=serialize(self.messages),
                     betas=self.betas,

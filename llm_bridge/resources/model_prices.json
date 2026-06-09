@@ -49,6 +49,12 @@
   },
   {
     "apiType": "Claude",
+    "model": "claude-fable-5",
+    "input": 10,
+    "output": 50
+  },
+  {
+    "apiType": "Claude",
     "model": "claude-opus-4-8",
     "input": 5,
     "output": 25
@@ -59,7 +65,7 @@
     "input": 5,
     "output": 25
   },
-    {
+  {
     "apiType": "Claude",
     "model": "claude-opus-4-6",
     "input": 5,
@@ -70,24 +76,6 @@
     "model": "claude-sonnet-4-6",
     "input": 3,
     "output": 15
-  },
-  {
-    "apiType": "Claude",
-    "model": "claude-opus-4-5",
-    "input": 5,
-    "output": 25
-  },
-  {
-    "apiType": "Claude",
-    "model": "claude-sonnet-4-5",
-    "input": 6,
-    "output": 22.5
-  },
-  {
-    "apiType": "Claude",
-    "model": "claude-haiku-4-5",
-    "input": 1,
-    "output": 5
   },
   {
     "apiType": "Vertex AI",

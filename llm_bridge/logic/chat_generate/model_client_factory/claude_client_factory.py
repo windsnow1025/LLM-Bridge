@@ -46,9 +46,7 @@ async def create_claude_client(
         messages=claude_messages,
     )
 
-    context_window = 200_000
-    if model in ["claude-opus-4-8", "claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6", "claude-sonnet-4-5"]:
-        context_window = 1_000_000
+    context_window = 1_000_000
     max_output = 64_000
     max_tokens = min(
         max_output,
@@ -59,14 +57,7 @@ async def create_claude_client(
 
     thinking: BetaThinkingConfigParam | Omit = omit
     if thought:
-        if model in ["claude-opus-4-8", "claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]:
-            thinking = BetaThinkingConfigAdaptiveParam(type="adaptive", display="summarized")
-        else:
-            thinking = BetaThinkingConfigEnabledParam(
-                type="enabled",
-                budget_tokens=max(1024, max_tokens // 2),  # Minimum budget tokens: 1024
-            )
-        temperature = 1
+        thinking = BetaThinkingConfigAdaptiveParam(type="adaptive", display="summarized")
 
     betas: list[AnthropicBetaParam] = [
         "context-1m-2025-08-07",
@@ -107,7 +98,6 @@ async def create_claude_client(
         return StreamClaudeClient(
             model=model,
             messages=claude_messages,
-            temperature=temperature,
             system=system,
             client=client,
             max_tokens=max_tokens,
@@ -121,7 +111,6 @@ async def create_claude_client(
         return NonStreamClaudeClient(
             model=model,
             messages=claude_messages,
-            temperature=temperature,
             system=system,
             client=client,
             max_tokens=max_tokens,
