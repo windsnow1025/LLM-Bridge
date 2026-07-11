@@ -86,13 +86,15 @@ async def create_claude_client(
         )
 
     output_config: BetaOutputConfigParam | Omit = omit
-    if structured_output_schema:
-        output_config = BetaOutputConfigParam(
-            format=BetaJSONOutputFormatParam(
+    if thought or structured_output_schema:
+        output_config: BetaOutputConfigParam = BetaOutputConfigParam()
+        if thought:
+            output_config["effort"] = "high"
+        if structured_output_schema:
+            output_config["format"] = BetaJSONOutputFormatParam(
                 type="json_schema",
                 schema=transform_schema(structured_output_schema),
             )
-        )
 
     if stream:
         return StreamClaudeClient(
