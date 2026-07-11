@@ -68,13 +68,11 @@ async def create_openai_responses_client(
         )
     if re.match(r"gpt-5.*", model):
         temperature = 1
-    if re.match(r"gpt-5.*", model):
         if thought:
             reasoning = Reasoning(
                 effort="high",
                 summary="auto",
             )
-    if re.match(r"gpt-5.*", model) and "codex" not in model:
         tools.append(
             ImageGeneration(
                 type="image_generation",
