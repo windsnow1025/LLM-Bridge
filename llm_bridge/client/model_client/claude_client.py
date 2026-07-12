@@ -19,7 +19,7 @@ class ClaudeClient(ChatClient):
             system: str,
             max_tokens: int,
             client: anthropic.AsyncAnthropic,
-            betas: list[AnthropicBetaParam],
+            betas: list[AnthropicBetaParam] | Omit,
             tools: list[BetaToolUnionParam],
             cache_control: BetaCacheControlEphemeralParam,
             thinking: BetaThinkingConfigParam | Omit,

@@ -59,13 +59,7 @@ async def create_claude_client(
     if thought:
         thinking = BetaThinkingConfigAdaptiveParam(type="adaptive", display="summarized")
 
-    betas: list[AnthropicBetaParam] = [
-        "context-1m-2025-08-07",
-        "output-128k-2025-02-19",
-        "code-execution-2025-08-25",
-        "files-api-2025-04-14",
-        "structured-outputs-2025-11-13",
-    ]
+    betas: list[AnthropicBetaParam] | Omit = omit
 
     tools: list[BetaToolUnionParam] = []
     if web_search:
