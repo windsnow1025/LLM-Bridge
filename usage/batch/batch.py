@@ -55,13 +55,11 @@ async def test_model(
 
     for attempt in range(1, MaxRetries + 1):
         try:
-            latency = await asyncio.wait_for(
-                measure_first_chunk_latency(api_type, model, config),
-                timeout=TimeoutSeconds,
-            )
+            async with asyncio.timeout(TimeoutSeconds):
+                latency = await measure_first_chunk_latency(api_type, model, config)
             print(f"  [{attempt}/{MaxRetries}] OK      {api_type:28s} {model:35s} [{config.name:10s}] {latency:8.3f}s")
             break
-        except asyncio.TimeoutError:
+        except TimeoutError:
             error = f"TIMEOUT ({TimeoutSeconds}s)"
             print(f"  [{attempt}/{MaxRetries}] TIMEOUT {api_type:28s} {model:35s} [{config.name:10s}]")
         except Exception as e:
