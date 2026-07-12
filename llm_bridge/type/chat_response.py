@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -11,13 +10,13 @@ class File:
 
 @dataclass
 class ChatResponse:
-    text: Optional[str] = None
-    audio: Optional[str] = None
-    thought: Optional[str] = None
-    code: Optional[str] = None
-    code_output: Optional[str] = None
-    files: Optional[list[File]] = None
-    display: Optional[str] = None
-    error: Optional[str] = None
-    input_tokens: Optional[int] = 0
-    output_tokens: Optional[int] = 0
+    text: str | None = None
+    audio: str | None = None
+    thought: str | None = None
+    code: str | None = None
+    code_output: str | None = None
+    files: list[File] | None = None
+    display: str | None = None
+    error: str | None = None
+    input_tokens: int | None = 0
+    output_tokens: int | None = 0

@@ -1,5 +1,4 @@
 import mimetypes
-from typing import Optional
 
 from google.genai import types
 from google.genai.types import Part
@@ -22,7 +21,7 @@ class GeminiResponseHandler:
         code: str = ""
         code_output: str = ""
         files: list[File] = []
-        display: Optional[str] = None
+        display: str | None = None
         input_tokens, cumulative_output_tokens = await count_gemini_tokens(response)
 
         parts: list[Part] = []
