@@ -5,7 +5,7 @@ import httpx
 import openai
 from fastapi import HTTPException
 from openai import APIStatusError
-from openai.types.chat import ChatCompletion
+from openai.types.chat import ChatCompletion, ChatCompletionMessage, ChatCompletionAudio
 
 from llm_bridge.client.model_client.openai_completion_client import OpenAICompletionClient
 from llm_bridge.type.chat_response import ChatResponse
@@ -23,16 +23,25 @@ class NonStreamOpenAICompletionClient(OpenAICompletionClient):
                 temperature=self.temperature,
                 stream=False,
                 reasoning_effort=self.reasoning_effort,
+                modalities=self.modalities,
+                audio=self.audio,
                 response_format=self.response_format,
             )
 
-            content = completion.choices[0].message.content
+            message: ChatCompletionMessage = completion.choices[0].message
+            content: str | None = message.content
+            audio_data: str | None = None
+            if message.audio is not None:
+                audio: ChatCompletionAudio = message.audio
+                content = audio.transcript
+                audio_data = audio.data
             usage = completion.usage
             input_tokens = usage.prompt_tokens if usage else 0
             output_tokens = usage.completion_tokens if usage else 0
 
             return ChatResponse(
                 text=content,
+                audio=audio_data,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
             )

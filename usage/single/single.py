@@ -1,6 +1,9 @@
 import asyncio
+import base64
+import io
 import logging
 import sys
+import wave
 from collections.abc import AsyncGenerator
 from pathlib import Path
 from pprint import pprint
@@ -11,17 +14,27 @@ from usage.workflow import workflow
 
 script_dir = Path(__file__).parent.resolve()
 
-# Logging Output File
-output_path = script_dir / "output.log"
-output_path.parent.mkdir(parents=True, exist_ok=True)
-output_file = output_path.open("w", encoding="utf-8")
-sys.stdout = output_file
+log_path = script_dir / "output.log"
+log_file = log_path.open("w", encoding="utf-8")
+sys.stdout = log_file
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    stream=output_file
+    stream=log_file
 )
+
+audio_path = script_dir / "output.wav"
+audio_path.unlink(missing_ok=True)
+
+
+def write_wav(audio_segments: list[str], audio_path: Path) -> None:
+    audio_bytes = b"".join(base64.b64decode(segment) for segment in audio_segments)
+    with wave.open(str(audio_path), "wb") as wav_file:
+        wav_file.setnchannels(1)
+        wav_file.setsampwidth(2)
+        wav_file.setframerate(24000)
+        wav_file.writeframes(audio_bytes)
 
 
 async def main():
@@ -44,12 +57,15 @@ async def main():
     code_text = ""
     code_output_text = ""
     files = []
+    audio_segments = []
 
     if stream and isinstance(response, AsyncGenerator):
         async for chunk in response:
             pprint(chunk)
             if chunk.text:
                 text += chunk.text
+            if chunk.audio:
+                audio_segments.append(chunk.audio)
             if chunk.thought:
                 thought_text += chunk.thought
             if chunk.input_tokens:
@@ -71,15 +87,22 @@ async def main():
         input_tokens = response.input_tokens or 0
         output_tokens = response.output_tokens or 0
         files = response.files
+        if response.audio:
+            audio_segments.append(response.audio)
+    
+    if audio_segments:
+        write_wav(audio_segments, audio_path)
+
     total_cost = calculate_chat_cost(api_type, model, input_tokens, output_tokens)
     print(f"Thought:\n{thought_text}\n")
     print(f"Code:\n{code_text}\n")
     print(f"Code Output:\n{code_output_text}\n")
     print(f"Text:\n{text}\n")
     print(f"Files:\n{files}\n")
+    print(f"Audio:\n{audio_path if audio_segments else None}\n")
     print(f'Input tokens: {input_tokens}, Output tokens: {output_tokens}, Total cost: ${total_cost}')
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-    output_file.close()
+    log_file.close()

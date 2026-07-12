@@ -5,13 +5,14 @@ from typing import Optional
 @dataclass
 class File:
     name: str
-    data: str # Base64
+    data: str
     type: str
 
 
 @dataclass
 class ChatResponse:
     text: Optional[str] = None
+    audio: Optional[str] = None
     thought: Optional[str] = None
     code: Optional[str] = None
     code_output: Optional[str] = None

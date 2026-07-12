@@ -19,7 +19,7 @@ The features listed represent the maximum capabilities of each API type supporte
 
 | API Type              | Input Format                                     | Capabilities                                                       | Output Format     |
 |-----------------------|--------------------------------------------------|--------------------------------------------------------------------|-------------------|
-| OpenAI Completion API | Text, Image, PDF                                 | Thinking, Structured Output                                        | Text              |
+| OpenAI Completion API | Text, Image, PDF, Audio                          | Thinking, Structured Output                                        | Text, Audio       |
 | OpenAI Responses API  | Text, Image, PDF                                 | Thinking, Web Search, Code Execution, Structured Output            | Text, Image       |
 | Google GenAI          | Text, Image, PDF, Audio, Video                   | Thinking, Web Search, Web Fetch, Code Execution, Structured Output | Text, Image, File |
 | Anthropic             | Text, Image, PDF                                 | Thinking, Web Search, Web Fetch, Code Execution, Structured Output | Text, File        |

@@ -1,9 +1,10 @@
 import re
-from typing import Any
+from typing import Any, Literal
 
 import openai
 from fastapi import HTTPException
 from openai import Omit
+from openai.types.chat import ChatCompletionAudioParam
 from openai.types.shared import ReasoningEffort
 from openai.types.shared_params import ResponseFormatJSONSchema
 from openai.types.shared_params.response_format_json_schema import JSONSchema
@@ -26,7 +27,13 @@ async def create_openai_completion_client(
         thought: bool,
         structured_output_schema: dict[str, Any] | None,
 ) -> StreamOpenAICompletionClient | NonStreamOpenAICompletionClient:
-    if api_type == "OpenAI-GitHub":
+    omit = Omit()
+
+    if api_type == "OpenAI":
+        client = openai.AsyncOpenAI(
+            api_key=api_keys["OPENAI_API_KEY"],
+        )
+    elif api_type == "OpenAI-GitHub":
         client = openai.AsyncOpenAI(
             base_url="https://models.inference.ai.azure.com",
             api_key=api_keys["GITHUB_API_KEY"],
@@ -36,11 +43,21 @@ async def create_openai_completion_client(
 
     openai_messages = await convert_messages_to_openai(messages)
 
-    omit = Omit()
     reasoning_effort: ReasoningEffort | Omit = omit
     if re.match(r"gpt-5.*", model):
         if thought:
             reasoning_effort = "high"
+
+    modalities: list[Literal["text", "audio"]] | Omit = omit
+    audio: ChatCompletionAudioParam | Omit = omit
+    temperature_param: float | Omit = temperature
+    if re.match(r"gpt-audio.*", model):
+        modalities = ["text", "audio"]
+        audio = ChatCompletionAudioParam(
+            voice="marin",
+            format="pcm16" if stream else "wav", # streaming requires a raw format
+        )
+        temperature_param = omit # temperature 0 degenerates audio generation into an endless stream
 
     response_format: ResponseFormatJSONSchema | Omit = omit
     if structured_output_schema:
@@ -57,19 +74,23 @@ async def create_openai_completion_client(
         return StreamOpenAICompletionClient(
             model=model,
             messages=openai_messages,
-            temperature=temperature,
+            temperature=temperature_param,
             api_type=api_type,
             client=client,
             reasoning_effort=reasoning_effort,
+            modalities=modalities,
+            audio=audio,
             response_format=response_format,
         )
     else:
         return NonStreamOpenAICompletionClient(
             model=model,
             messages=openai_messages,
-            temperature=temperature,
+            temperature=temperature_param,
             api_type=api_type,
             client=client,
             reasoning_effort=reasoning_effort,
+            modalities=modalities,
+            audio=audio,
             response_format=response_format,
         )

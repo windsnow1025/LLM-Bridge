@@ -1,3 +1,4 @@
+import re
 from typing import Any
 
 from fastapi import HTTPException
@@ -26,6 +27,18 @@ async def create_chat_client(
         structured_output_schema: dict[str, Any] | None,
 ) -> ChatClient:
     if api_type == 'OpenAI':
+        # Audio output is only supported by the Completion API
+        if re.match(r"gpt-audio.*", model):
+            return await create_openai_completion_client(
+                api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]},
+                messages=messages,
+                model=model,
+                api_type=api_type,
+                temperature=temperature,
+                stream=stream,
+                thought=thought,
+                structured_output_schema=structured_output_schema,
+            )
         return await create_openai_responses_client(
             api_keys={"OPENAI_API_KEY": api_keys["OPENAI_API_KEY"]},
             messages=messages,

@@ -122,7 +122,7 @@ messages = [
         role=Role.User,
         contents=[
             # Simple Question
-            # Content(type=ContentType.Text, data="Say this is a test."),
+            Content(type=ContentType.Text, data="Say this is a test."),
 
             # Thinking
             # Content(type=ContentType.Text, data="Explain the concept of Occam's Razor and provide a simple, everyday example."),
@@ -131,7 +131,7 @@ messages = [
             # Content(type=ContentType.Text, data="What's the weather in NYC today?"),
 
             # URL Context
-            Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
+            # Content(type=ContentType.Text, data="What is in https://www.windsnow1025.com/"),
 
             # Code Execution
             # Content(type=ContentType.Text, data="What is the sum of the first 50 prime numbers? Generate and run code for the calculation, and make sure you get all 50."),
@@ -161,7 +161,9 @@ messages = [
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
-model = "gpt-5.6-luna"
+# model = "gpt-5.6-luna"
+# model = "gpt-4.1"
+model = "gpt-audio-1.5"
 # model = "gemini-3.1-pro-preview"
 # model = "gemini-3-pro-image-preview"
 # model = "gemini-3.1-flash-image-preview"
