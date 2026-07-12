@@ -17,8 +17,8 @@ class ClaudeClient(ChatClient):
             model: str,
             messages: list[ClaudeMessage],
             system: str,
-            client: anthropic.AsyncAnthropic,
             max_tokens: int,
+            client: anthropic.AsyncAnthropic,
             betas: list[AnthropicBetaParam],
             tools: list[BetaToolUnionParam],
             cache_control: BetaCacheControlEphemeralParam,
@@ -28,8 +28,8 @@ class ClaudeClient(ChatClient):
         self.model = model
         self.messages = messages
         self.system = system
-        self.client = client
         self.max_tokens = max_tokens
+        self.client = client
         self.betas = betas
         self.tools = tools
         self.cache_control = cache_control
