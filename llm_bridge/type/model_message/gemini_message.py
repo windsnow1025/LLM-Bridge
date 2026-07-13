@@ -1,5 +1,4 @@
 from enum import StrEnum
-from typing import TypeAlias
 
 from google.genai import types
 
@@ -9,6 +8,6 @@ class GeminiRole(StrEnum):
     Model = "model"
 
 
-GeminiContent: TypeAlias = types.Part
+type GeminiContent = types.Part
 
-GeminiMessage: TypeAlias = types.Content
+type GeminiMessage = types.Content

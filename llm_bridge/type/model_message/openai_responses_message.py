@@ -1,12 +1,10 @@
-from typing import TypeAlias
-
 from openai.types.responses import EasyInputMessageParam, ResponseOutputMessageParam, ResponseInputContentParam, \
     ResponseOutputTextParam
 
 from llm_bridge.type.message import Role
 
-OpenAIResponsesRole: TypeAlias = Role
+type OpenAIResponsesRole = Role
 
-OpenAIResponsesContent: TypeAlias = ResponseInputContentParam | ResponseOutputTextParam
+type OpenAIResponsesContent = ResponseInputContentParam | ResponseOutputTextParam
 
-OpenAIResponsesMessage: TypeAlias = EasyInputMessageParam | ResponseOutputMessageParam
+type OpenAIResponsesMessage = EasyInputMessageParam | ResponseOutputMessageParam

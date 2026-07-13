@@ -1,5 +1,4 @@
 from enum import StrEnum
-from typing import TypeAlias
 
 from anthropic.types import MessageParam, TextBlockParam, ImageBlockParam, DocumentBlockParam
 
@@ -9,9 +8,9 @@ class ClaudeRole(StrEnum):
     Assistant = "assistant"
 
 
-ClaudeContent: TypeAlias = TextBlockParam | ImageBlockParam | DocumentBlockParam
+type ClaudeContent = TextBlockParam | ImageBlockParam | DocumentBlockParam
 
-ClaudeMessage: TypeAlias = MessageParam
+type ClaudeMessage = MessageParam
 
 # class MessageParam(TypedDict, total=False):
 #     content: Required[

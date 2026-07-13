@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from fastapi import HTTPException
 from xai_sdk.aio.chat import Chat

@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, Iterable
+from collections.abc import AsyncGenerator, Iterable
 
 import openai.lib.azure
 import openai

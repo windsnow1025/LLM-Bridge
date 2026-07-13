@@ -1,4 +1,5 @@
-from typing import AsyncGenerator, Literal
+from collections.abc import AsyncGenerator
+from typing import Literal
 
 import openai.lib.azure
 import openai

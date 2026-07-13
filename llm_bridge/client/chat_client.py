@@ -1,4 +1,4 @@
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from llm_bridge.type.chat_response import ChatResponse
 

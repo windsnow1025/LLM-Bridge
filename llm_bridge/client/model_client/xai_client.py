@@ -1,4 +1,4 @@
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 import xai_sdk
 from xai_sdk.proto import chat_pb2

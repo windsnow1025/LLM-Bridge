@@ -1,4 +1,5 @@
-from typing import AsyncGenerator, Any
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from llm_bridge import *
 

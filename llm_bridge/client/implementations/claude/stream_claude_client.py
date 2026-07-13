@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 import httpx
 from fastapi import HTTPException
