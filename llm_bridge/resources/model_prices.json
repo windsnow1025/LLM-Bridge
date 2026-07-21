@@ -85,6 +85,12 @@
   },
   {
     "apiType": "Vertex AI",
+    "model": "gemini-3.6-flash",
+    "input": 1.5,
+    "output": 7.5
+  },
+  {
+    "apiType": "Vertex AI",
     "model": "gemini-3.5-flash",
     "input": 1,
     "output": 9
