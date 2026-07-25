@@ -1,5 +1,5 @@
-from anthropic.types import TextBlockParam, ImageBlockParam, DocumentBlockParam, Base64ImageSourceParam, \
-    Base64PDFSourceParam
+from anthropic.types import MessageParam, TextBlockParam, ImageBlockParam, DocumentBlockParam, \
+    Base64ImageSourceParam, Base64PDFSourceParam
 
 from llm_bridge.logic.chat_generate import media_processor
 from llm_bridge.logic.message_process.file_type_checker import get_file_type
@@ -68,4 +68,4 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
             else:
                 claude_content.append(create_unsupported_content(file_url, file_type, sub_type))
 
-    return ClaudeMessage(role=role, content=claude_content)
+    return MessageParam(role=role, content=claude_content)

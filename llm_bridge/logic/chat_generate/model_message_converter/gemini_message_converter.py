@@ -76,4 +76,4 @@ async def convert_message_to_gemini(message: Message) -> GeminiMessage:
                     )
                     contents.append(text_content)
 
-    return GeminiMessage(parts=contents, role=role)
+    return types.Content(parts=contents, role=role)
