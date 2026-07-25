@@ -1,7 +1,8 @@
 import pytest
 
 from llm_bridge.logic.chat_generate.model_message_converter.claude_message_converter import convert_message_to_claude
-from llm_bridge.type.message import Content, ContentType, Message, Role
+from llm_bridge.type.message import Role
+from tests.logic.chat_generate.model_message_converter.message_factory import create_text_message
 
 
 @pytest.mark.parametrize("role, claude_role", [
@@ -11,6 +12,6 @@ from llm_bridge.type.message import Content, ContentType, Message, Role
 ])
 @pytest.mark.asyncio
 async def test_convert_message_to_claude(role: Role, claude_role: str):
-    message = Message(role=role, contents=[Content(type=ContentType.Text, data="hello")])
+    message = create_text_message(role, "hello")
     claude_message = await convert_message_to_claude(message)
     assert claude_message == {"role": claude_role, "content": [{"type": "text", "text": "hello"}]}
