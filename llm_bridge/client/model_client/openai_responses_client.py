@@ -3,7 +3,7 @@ from collections.abc import AsyncGenerator, Iterable
 import openai.lib.azure
 import openai
 from openai import Omit
-from openai.types import Reasoning
+from openai.types.shared_params import Reasoning
 from openai.types.responses import ToolParam, ResponseIncludable, ResponseTextConfigParam
 
 from llm_bridge.client.chat_client import ChatClient

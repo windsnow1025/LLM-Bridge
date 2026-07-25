@@ -4,7 +4,7 @@ from typing import Any
 import openai
 from fastapi import HTTPException
 from openai import Omit
-from openai.types import Reasoning
+from openai.types.shared_params import Reasoning
 from openai.types.responses import WebSearchToolParam, ResponseIncludable, ResponseTextConfigParam, \
     ResponseFormatTextJSONSchemaConfigParam
 from openai.types.responses.tool_param import CodeInterpreter, CodeInterpreterContainerCodeInterpreterToolAuto, \
