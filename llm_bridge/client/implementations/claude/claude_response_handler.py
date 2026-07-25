@@ -56,7 +56,7 @@ async def process_content_block(
         if isinstance(result, BetaTextEditorCodeExecutionViewResultBlock):
             code_output += result.content
         elif isinstance(result, BetaTextEditorCodeExecutionStrReplaceResultBlock):
-            code_output += result.lines
+            code_output += "\n".join(result.lines or [])
 
     return ChatResponse(
         text=text,
