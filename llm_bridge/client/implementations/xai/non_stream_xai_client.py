@@ -1,10 +1,9 @@
 import logging
-import re
 
-from fastapi import HTTPException
 from xai_sdk.aio.chat import Chat
 from xai_sdk.chat import Response
 
+from llm_bridge.client.implementations.http_error import raise_http_exception
 from llm_bridge.client.model_client.xai_client import XAIClient
 from llm_bridge.type.chat_response import ChatResponse
 
@@ -38,11 +37,4 @@ class NonStreamXAIClient(XAIClient):
                 output_tokens=output_tokens,
             )
         except Exception as e:
-            logging.exception(e)
-            match = re.search(r'\d{3}', str(e))
-            if match:
-                error_code = int(match.group(0))
-            else:
-                error_code = 500
-
-            raise HTTPException(status_code=error_code, detail=str(e))
+            raise_http_exception(e)

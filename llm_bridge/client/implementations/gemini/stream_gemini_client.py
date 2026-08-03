@@ -1,12 +1,10 @@
 import logging
-import re
 from collections.abc import AsyncGenerator, AsyncIterator
 
-import httpx
-from fastapi import HTTPException
 from google.genai.types import GenerateContentResponse
 
 from llm_bridge.client.implementations.gemini.gemini_response_handler import GeminiResponseHandler
+from llm_bridge.client.implementations.http_error import raise_http_exception
 from llm_bridge.client.model_client.gemini_client import GeminiClient
 from llm_bridge.type.chat_response import ChatResponse
 
@@ -21,19 +19,8 @@ class StreamGeminiClient(GeminiClient):
                 contents=self.messages,
                 config=self.config,
             )
-        except httpx.HTTPStatusError as e:
-            status_code = e.response.status_code
-            text = e.response.text
-            raise HTTPException(status_code=status_code, detail=text)
         except Exception as e:
-            logging.exception(e)
-            match = re.search(r'\d{3}', str(e))
-            if match:
-                error_code = int(match.group(0))
-            else:
-                error_code = 500
-
-            raise HTTPException(status_code=error_code, detail=str(e))
+            raise_http_exception(e)
 
         try:
             response_handler = GeminiResponseHandler()
