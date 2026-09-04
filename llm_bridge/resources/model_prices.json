@@ -7,6 +7,12 @@
   },
   {
     "apiType": "OpenAI",
+    "model": "gpt-6-astra",
+    "input": 20,
+    "output": 75
+  },
+  {
+    "apiType": "OpenAI",
     "model": "gpt-5.6-sol",
     "input": 10,
     "output": 45
@@ -67,21 +73,9 @@
   },
   {
     "apiType": "Claude",
-    "model": "claude-opus-4-7",
-    "input": 5,
-    "output": 25
-  },
-  {
-    "apiType": "Claude",
     "model": "claude-opus-4-6",
     "input": 5,
     "output": 25
-  },
-  {
-    "apiType": "Claude",
-    "model": "claude-sonnet-5",
-    "input": 3,
-    "output": 15
   },
   {
     "apiType": "Claude",
@@ -104,12 +98,6 @@
   {
     "apiType": "Vertex AI",
     "model": "gemini-3.7-flash",
-    "input": 1.5,
-    "output": 7.5
-  },
-  {
-    "apiType": "Vertex AI",
-    "model": "gemini-3.6-flash",
     "input": 1.5,
     "output": 7.5
   },
@@ -152,12 +140,6 @@
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3.7-flash",
-    "input": 1.5,
-    "output": 7.5
-  },
-  {
-    "apiType": "Google AI Studio",
-    "model": "gemini-3.6-flash",
     "input": 1.5,
     "output": 7.5
   },
@@ -194,12 +176,6 @@
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3.7-flash",
-    "input": 0,
-    "output": 0
-  },
-  {
-    "apiType": "Google AI Studio",
-    "model": "gemini-3.6-flash",
     "input": 0,
     "output": 0
   },

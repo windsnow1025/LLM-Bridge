@@ -66,7 +66,7 @@ async def create_openai_responses_client(
                 search_context_size="high",
             )
         )
-    if re.match(r"gpt-5.*", model):
+    if not re.match(r"gpt-4.*", model):
         temperature = 1
         if thought:
             reasoning = Reasoning(

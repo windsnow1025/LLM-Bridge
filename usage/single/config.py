@@ -161,6 +161,7 @@ messages = [
 ]
 
 # See /llm_bridge/resources/model_prices.json for available models
+model = "gpt-6-astra"
 # model = "gpt-5.6-luna"
 # model = "gpt-4.1"
 # model = "gpt-audio-1.5"
@@ -170,16 +171,16 @@ messages = [
 # model = "gemini-3.5-flash"
 # model = "claude-fable-5"
 # model = "claude-opus-4-6"
-model = "grok-4.6"
+# model = "grok-4.6"
 
 # api_type = "Vertex AI"
 # api_type = "Google AI Studio Free Tier"
 # api_type = "Google AI Studio"
-# api_type = "OpenAI"
+api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
 # api_type = "OpenAI-GitHub"
 # api_type = "Claude"
-api_type = "Grok"
+# api_type = "Grok"
 
 temperature = 0
 stream = True
