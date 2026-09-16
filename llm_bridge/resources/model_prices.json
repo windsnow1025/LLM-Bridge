@@ -174,7 +174,7 @@
     "output": 2.5
   },
   {
-    "apiType": "Google AI Studio",
+    "apiType": "Google AI Studio Free Tier",
     "model": "gemini-3.7-flash",
     "input": 0,
     "output": 0
