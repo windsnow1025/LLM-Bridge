@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "LLM-Bridge"
-version = "2.1.13"
+version = "2.1.14"
 dependencies = [
     "fastapi",
     "httpx",
