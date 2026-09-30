@@ -13,7 +13,7 @@
   },
   {
     "apiType": "OpenAI",
-    "model": "gpt-6-sol",
+    "model": "gpt-6.1-sol",
     "input": 4,
     "output": 15
   },
