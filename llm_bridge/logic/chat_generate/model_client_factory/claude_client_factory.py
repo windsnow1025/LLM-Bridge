@@ -83,7 +83,7 @@ async def create_claude_client(
     if thought or structured_output_schema:
         output_config: BetaOutputConfigParam = BetaOutputConfigParam()
         if thought:
-            output_config["effort"] = "high"
+            output_config["effort"] = "max"
         if structured_output_schema:
             output_config["format"] = BetaJSONOutputFormatParam(
                 type="json_schema",
