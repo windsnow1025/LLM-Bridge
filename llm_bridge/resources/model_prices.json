@@ -134,8 +134,8 @@
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3.1-pro-preview",
-    "input": 4,
-    "output": 18
+    "input": 7.2,
+    "output": 32.4
   },
   {
     "apiType": "Google AI Studio",
@@ -146,26 +146,26 @@
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3.8-flash",
-    "input": 1.5,
-    "output": 7.5
+    "input": 2.7,
+    "output": 13.5
   },
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3.6-flash",
-    "input": 1.5,
-    "output": 7.5
+    "input": 2.7,
+    "output": 13.5
   },
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3-flash-preview",
-    "input": 1,
-    "output": 3
+    "input": 1.8,
+    "output": 5.4
   },
   {
     "apiType": "Google AI Studio",
     "model": "gemini-3-pro-image-preview",
-    "input": 2,
-    "output": 120
+    "input": 3.6,
+    "output": 216
   },
   {
     "apiType": "Google AI Studio",
