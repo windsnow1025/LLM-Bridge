@@ -47,7 +47,9 @@ async def create_claude_client(
     )
 
     context_window = 1_000_000
-    max_output = 64_000
+    max_output = 128_000
+    if not stream:
+        max_output = 21_333  # SDK non-streaming limit
     max_tokens = min(
         max_output,
         context_window - input_tokens,
