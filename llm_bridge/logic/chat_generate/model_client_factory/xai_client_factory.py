@@ -31,7 +31,7 @@ async def create_xai_client(
     xai_messages = await convert_messages_to_xai(messages)
 
     # Reasoning cannot be disabled in xAI
-    reasoning_effort: ReasoningEffort = "high"
+    reasoning_effort: ReasoningEffort = "xhigh"
 
     service_tier: ServiceTier = "priority"
 
