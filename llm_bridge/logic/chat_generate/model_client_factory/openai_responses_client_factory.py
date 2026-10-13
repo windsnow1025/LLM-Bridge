@@ -70,7 +70,7 @@ async def create_openai_responses_client(
         temperature = 1
         if thought:
             reasoning = Reasoning(
-                effort="high",
+                effort="xhigh" if model in ["gpt-5.5"] else "max",
                 summary="auto",
             )
         tools.append(
