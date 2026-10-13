@@ -103,8 +103,8 @@ async def create_gemini_client(
         response_modalities=response_modalities,
     )
 
-    if vertexai:
-        config.media_resolution=MediaResolution.MEDIA_RESOLUTION_HIGH
+    if "pro-image" not in model:
+        config.media_resolution = MediaResolution.MEDIA_RESOLUTION_HIGH
 
     if not vertexai and not free_tier:
         if model in ["gemini-3.1-pro-preview", "gemini-3.8-flash", "gemini-3.6-flash", "gemini-3-flash-preview", "gemini-3-pro-image-preview"]:
