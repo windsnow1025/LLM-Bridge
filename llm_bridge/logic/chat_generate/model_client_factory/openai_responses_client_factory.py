@@ -1,5 +1,5 @@
 import re
-from typing import Any
+from typing import Any, Literal
 
 import openai
 from fastapi import HTTPException
@@ -90,6 +90,13 @@ async def create_openai_responses_client(
             )
         )
 
+    service_tier: Literal["fast", "ultrafast"] | Omit = omit
+    if api_type == "OpenAI":
+        if model in ["gpt-6-astra", "gpt-6.1-sol"]:
+            service_tier = "ultrafast"
+        elif model in ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.5", "gpt-4.1"]:
+            service_tier = "fast"
+
     if stream:
         return StreamOpenAIResponsesClient(
             model=model,
@@ -99,6 +106,7 @@ async def create_openai_responses_client(
             client=client,
             tools=tools,
             reasoning=reasoning,
+            service_tier=service_tier,
             include=include,
             text=text,
         )
@@ -111,6 +119,7 @@ async def create_openai_responses_client(
             client=client,
             tools=tools,
             reasoning=reasoning,
+            service_tier=service_tier,
             include=include,
             text=text,
         )

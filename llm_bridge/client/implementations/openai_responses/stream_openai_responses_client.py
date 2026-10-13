@@ -35,6 +35,7 @@ class StreamOpenAIResponsesClient(OpenAIResponsesClient):
                 stream=True,
                 tools=self.tools,
                 reasoning=self.reasoning,
+                service_tier=self.service_tier,
                 include=self.include,
                 text=self.text,
             )

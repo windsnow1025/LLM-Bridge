@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator, Iterable
+from typing import Literal
 
 import openai.lib.azure
 import openai
@@ -21,6 +22,7 @@ class OpenAIResponsesClient(ChatClient):
             client: openai.AsyncOpenAI | openai.lib.azure.AsyncAzureOpenAI,
             tools: Iterable[ToolParam] | Omit,
             reasoning: Reasoning | Omit,
+            service_tier: Literal["fast", "ultrafast"] | Omit,
             include: list[ResponseIncludable] | Omit,
             text: ResponseTextConfigParam | Omit,
     ):
@@ -31,6 +33,7 @@ class OpenAIResponsesClient(ChatClient):
         self.client = client
         self.tools = tools
         self.reasoning = reasoning
+        self.service_tier = service_tier
         self.include = include
         self.text = text
 

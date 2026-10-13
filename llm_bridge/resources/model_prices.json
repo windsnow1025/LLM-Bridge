@@ -8,38 +8,38 @@
   {
     "apiType": "OpenAI",
     "model": "gpt-6-astra",
-    "input": 20,
-    "output": 75
+    "input": 120,
+    "output": 450
   },
   {
     "apiType": "OpenAI",
     "model": "gpt-6.1-sol",
-    "input": 4,
-    "output": 15
+    "input": 24,
+    "output": 90
   },
   {
     "apiType": "OpenAI",
     "model": "gpt-5.6-sol",
-    "input": 10,
-    "output": 45
+    "input": 20,
+    "output": 90
   },
   {
     "apiType": "OpenAI",
     "model": "gpt-5.6-terra",
-    "input": 4,
-    "output": 18
+    "input": 8,
+    "output": 36
   },
   {
     "apiType": "OpenAI",
     "model": "gpt-5.6-luna",
-    "input": 0.4,
-    "output": 1.8
+    "input": 0.8,
+    "output": 3.6
   },
   {
     "apiType": "OpenAI",
     "model": "gpt-5.5",
-    "input": 10,
-    "output": 45
+    "input": 12.5,
+    "output": 75
   },
   {
     "apiType": "OpenAI",
@@ -50,8 +50,8 @@
   {
     "apiType": "OpenAI",
     "model": "gpt-4.1",
-    "input": 2,
-    "output": 8
+    "input": 3.5,
+    "output": 14
   },
   {
     "apiType": "Claude",
