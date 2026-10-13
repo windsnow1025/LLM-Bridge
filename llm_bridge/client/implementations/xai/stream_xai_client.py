@@ -28,7 +28,7 @@ class StreamXAIClient(XAIClient):
         try:
             prev_cumulative_output_tokens: int = 0
             async for response, chunk in chat.stream():
-                cumulative_output_tokens = chunk.proto.usage.completion_tokens
+                cumulative_output_tokens = chunk.proto.usage.reasoning_tokens + chunk.proto.usage.completion_tokens
                 output_tokens = cumulative_output_tokens - prev_cumulative_output_tokens
                 prev_cumulative_output_tokens = cumulative_output_tokens
 

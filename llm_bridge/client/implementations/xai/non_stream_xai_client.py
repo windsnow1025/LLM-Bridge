@@ -28,7 +28,7 @@ class NonStreamXAIClient(XAIClient):
             text = response.content
             thought = response.reasoning_content
             input_tokens = response.usage.prompt_tokens
-            output_tokens = response.usage.completion_tokens
+            output_tokens = response.usage.reasoning_tokens + response.usage.completion_tokens
 
             return ChatResponse(
                 text=text,
