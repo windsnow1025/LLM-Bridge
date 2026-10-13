@@ -121,13 +121,13 @@
   },
   {
     "apiType": "Vertex AI",
-    "model": "gemini-3-pro-image-preview",
+    "model": "gemini-3-pro-image",
     "input": 2,
     "output": 120
   },
   {
     "apiType": "Vertex AI",
-    "model": "gemini-3.1-flash-image-preview",
+    "model": "gemini-3.1-flash-image",
     "input": 0.5,
     "output": 60
   },
@@ -163,13 +163,13 @@
   },
   {
     "apiType": "Google AI Studio",
-    "model": "gemini-3-pro-image-preview",
+    "model": "gemini-3-pro-image",
     "input": 3.6,
     "output": 216
   },
   {
     "apiType": "Google AI Studio",
-    "model": "gemini-3.1-flash-image-preview",
+    "model": "gemini-3.1-flash-image",
     "input": 0.5,
     "output": 60
   },
