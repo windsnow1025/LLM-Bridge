@@ -5,7 +5,7 @@ import xai_sdk
 from xai_sdk.proto import chat_pb2
 from xai_sdk.tools import web_search as web_search_tool, x_search as x_search_tool, \
     code_execution as code_execution_tool
-from xai_sdk.types import ReasoningEffort
+from xai_sdk.types import ReasoningEffort, ServiceTier
 
 from llm_bridge.client.implementations.xai.non_stream_xai_client import NonStreamXAIClient
 from llm_bridge.client.implementations.xai.stream_xai_client import StreamXAIClient
@@ -32,6 +32,8 @@ async def create_xai_client(
 
     # Reasoning cannot be disabled in xAI
     reasoning_effort: ReasoningEffort = "high"
+
+    service_tier: ServiceTier = "priority"
 
     tools: list[chat_pb2.Tool] = []
     if web_search:
@@ -60,6 +62,7 @@ async def create_xai_client(
             client=client,
             tools=tools,
             reasoning_effort=reasoning_effort,
+            service_tier=service_tier,
             response_format=response_format,
         )
     else:
@@ -70,5 +73,6 @@ async def create_xai_client(
             client=client,
             tools=tools,
             reasoning_effort=reasoning_effort,
+            service_tier=service_tier,
             response_format=response_format,
         )

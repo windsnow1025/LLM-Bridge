@@ -2,8 +2,8 @@
   {
     "apiType": "Grok",
     "model": "grok-4.7",
-    "input": 4,
-    "output": 12
+    "input": 8,
+    "output": 24
   },
   {
     "apiType": "OpenAI",

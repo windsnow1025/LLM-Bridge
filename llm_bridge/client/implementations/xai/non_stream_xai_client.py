@@ -20,6 +20,7 @@ class NonStreamXAIClient(XAIClient):
                 store_messages=False,
                 tools=self.tools,
                 reasoning_effort=self.reasoning_effort,
+                service_tier=self.service_tier,
                 response_format=self.response_format,
             )
 

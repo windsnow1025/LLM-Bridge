@@ -12,7 +12,7 @@ dependencies = [
     "openai==2.30.0",
     "google-genai==1.70.0", # google.genai
     "anthropic==0.96.0",
-    "xai-sdk==1.11.0",
+    "xai-sdk==1.17.0",
     "docxlatex>=1.1.1",
     "openpyxl",
     "python-pptx", # pptx
