@@ -178,7 +178,6 @@ model = "gpt-6-astra"
 # api_type = "Google AI Studio"
 api_type = "OpenAI"
 # api_type = "OpenAI-Azure"
-# api_type = "OpenAI-GitHub"
 # api_type = "Claude"
 # api_type = "Grok"
 

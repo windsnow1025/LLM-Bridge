@@ -67,17 +67,6 @@ async def create_chat_client(
             code_execution=code_execution,
             structured_output_schema=structured_output_schema,
         )
-    elif api_type == 'OpenAI-GitHub':
-        return await create_openai_completion_client(
-            api_keys={"GITHUB_API_KEY": api_keys["GITHUB_API_KEY"]},
-            messages=messages,
-            model=model,
-            api_type=api_type,
-            temperature=temperature,
-            stream=stream,
-            thought=thought,
-            structured_output_schema=structured_output_schema,
-        )
     elif api_type == 'Grok':
         return await create_xai_client(
             api_key=api_keys["XAI_API_KEY"],
