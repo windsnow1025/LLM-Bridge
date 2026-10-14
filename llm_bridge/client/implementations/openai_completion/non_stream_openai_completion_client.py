@@ -14,8 +14,8 @@ class NonStreamOpenAICompletionClient(OpenAICompletionClient):
             logging.info(f"messages: {self.messages}")
 
             completion: ChatCompletion = await self.client.chat.completions.create(
-                messages=serialize(self.messages),
                 model=self.model,
+                messages=serialize(self.messages),
                 temperature=self.temperature,
                 stream=False,
                 reasoning_effort=self.reasoning_effort,

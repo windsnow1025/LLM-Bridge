@@ -34,16 +34,16 @@ class StreamClaudeClient(ClaudeClient):
 
             stream: AsyncStream[BetaRawMessageStreamEvent] = await self.client.beta.messages.create(
                 model=self.model,
-                max_tokens=self.max_tokens,
-                system=self.system,
                 messages=serialize(self.messages),
+                system=self.system,
+                max_tokens=self.max_tokens,
+                stream=True,
                 betas=self.betas,
                 tools=self.tools,
                 cache_control=self.cache_control,
                 thinking=self.thinking,
                 speed=self.speed,
                 output_config=self.output_config,
-                stream=True,
             )
         except Exception as e:
             raise_http_exception(e)

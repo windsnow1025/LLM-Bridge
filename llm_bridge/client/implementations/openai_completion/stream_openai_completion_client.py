@@ -61,8 +61,8 @@ class StreamOpenAICompletionClient(OpenAICompletionClient):
             logging.info(f"messages: {self.messages}")
 
             completion: AsyncStream[ChatCompletionChunk] = await self.client.chat.completions.create(
-                messages=serialize(self.messages),
                 model=self.model,
+                messages=serialize(self.messages),
                 temperature=self.temperature,
                 stream=True,
                 stream_options=ChatCompletionStreamOptionsParam(include_usage=True),

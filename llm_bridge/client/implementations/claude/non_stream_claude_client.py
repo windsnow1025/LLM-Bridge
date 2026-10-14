@@ -14,9 +14,9 @@ class NonStreamClaudeClient(ClaudeClient):
 
             message = await self.client.beta.messages.create(
                 model=self.model,
-                max_tokens=self.max_tokens,
-                system=self.system,
                 messages=serialize(self.messages),
+                system=self.system,
+                max_tokens=self.max_tokens,
                 betas=self.betas,
                 tools=self.tools,
                 cache_control=self.cache_control,
