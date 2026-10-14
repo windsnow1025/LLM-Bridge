@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 import anthropic
 from anthropic import Omit, transform_schema
@@ -62,6 +62,10 @@ async def create_claude_client(
         thinking = BetaThinkingConfigAdaptiveParam(type="adaptive", display="summarized")
 
     betas: list[AnthropicBetaParam] | Omit = omit
+    speed: Literal["standard", "fast"] | Omit = omit
+    if model in ["claude-opus-5-5"]:
+        betas = ["fast-mode-2026-02-01"]
+        speed = "fast"
 
     tools: list[BetaToolUnionParam] = []
     if web_search:
@@ -103,6 +107,7 @@ async def create_claude_client(
             tools=tools,
             cache_control=cache_control,
             thinking=thinking,
+            speed=speed,
             output_config=output_config,
         )
     else:
@@ -116,5 +121,6 @@ async def create_claude_client(
             tools=tools,
             cache_control=cache_control,
             thinking=thinking,
+            speed=speed,
             output_config=output_config,
         )

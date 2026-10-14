@@ -41,6 +41,7 @@ class StreamClaudeClient(ClaudeClient):
                 tools=self.tools,
                 cache_control=self.cache_control,
                 thinking=self.thinking,
+                speed=self.speed,
                 output_config=self.output_config,
                 stream=True,
             )

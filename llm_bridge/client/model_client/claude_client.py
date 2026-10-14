@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from typing import Literal
 
 import anthropic
 from anthropic import Omit
@@ -23,6 +24,7 @@ class ClaudeClient(ChatClient):
             tools: list[BetaToolUnionParam],
             cache_control: BetaCacheControlEphemeralParam,
             thinking: BetaThinkingConfigParam | Omit,
+            speed: Literal["standard", "fast"] | Omit,
             output_config: BetaOutputConfigParam | Omit,
     ):
         self.model = model
@@ -34,6 +36,7 @@ class ClaudeClient(ChatClient):
         self.tools = tools
         self.cache_control = cache_control
         self.thinking = thinking
+        self.speed = speed
         self.output_config = output_config
 
     async def generate_non_stream_response(self) -> ChatResponse:
