@@ -63,9 +63,10 @@ async def create_claude_client(
 
     betas: list[AnthropicBetaParam] | Omit = omit
     speed: Literal["standard", "fast"] | Omit = omit
-    if model in ["claude-opus-5-5"]:
-        betas = ["fast-mode-2026-02-01"]
-        speed = "fast"
+    # Fast mode is a research preview with a separate rate limit; re-enable when it reaches GA
+    # if model in ["claude-opus-5-5"]:
+    #     betas = ["fast-mode-2026-02-01"]
+    #     speed = "fast"
 
     tools: list[BetaToolUnionParam] = []
     if web_search:
