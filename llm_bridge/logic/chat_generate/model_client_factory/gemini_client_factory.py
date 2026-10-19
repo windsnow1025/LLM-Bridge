@@ -64,7 +64,7 @@ async def create_gemini_client(
     if thought:
         thinking_config = types.ThinkingConfig(
             include_thoughts=True,
-            thinking_budget=-1,
+            thinking_level=types.ThinkingLevel.HIGH,
         )
     if "image" not in model:
         tools.append(
