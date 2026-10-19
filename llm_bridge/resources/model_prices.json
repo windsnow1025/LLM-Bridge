@@ -13,7 +13,7 @@
   },
   {
     "apiType": "Google AI Studio",
-    "model": "gemini-omni-flash-preview",
+    "model": "gemini-omni-1.1-flash",
     "input": 1.5,
     "output": 17.5
   },
@@ -157,7 +157,7 @@
   },
   {
     "apiType": "Vertex AI",
-    "model": "gemini-omni-flash-preview",
+    "model": "gemini-omni-1.1-flash-preview",
     "input": 1.5,
     "output": 17.5
   },
