@@ -83,6 +83,7 @@ async def create_chat_client(
         return await create_gemini_client(
             api_key=api_keys["GOOGLE_AI_STUDIO_FREE_TIER_API_KEY"],
             vertexai=False,
+            project=None,
             free_tier=True,
             messages=messages,
             model=model,
@@ -97,6 +98,7 @@ async def create_chat_client(
         return await create_gemini_client(
             api_key=api_keys["GOOGLE_AI_STUDIO_API_KEY"],
             vertexai=False,
+            project=None,
             free_tier=False,
             messages=messages,
             model=model,
@@ -111,6 +113,7 @@ async def create_chat_client(
         return await create_gemini_client(
             api_key=api_keys["VERTEX_AI_API_KEY"],
             vertexai=True,
+            project=api_keys["VERTEX_AI_PROJECT"],
             free_tier=False,
             messages=messages,
             model=model,

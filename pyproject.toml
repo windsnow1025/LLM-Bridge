@@ -10,7 +10,7 @@ dependencies = [
     "httpx",
     "tenacity",
     "openai==3.1.0",
-    "google-genai==1.70.0", # google.genai
+    "google-genai==2.31.0", # google.genai
     "anthropic==0.96.0",
     "xai-sdk==1.18.0",
     "docxlatex>=1.1.1",

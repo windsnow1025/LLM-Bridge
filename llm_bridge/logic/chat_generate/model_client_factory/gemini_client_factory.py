@@ -26,6 +26,7 @@ async def contains_audio_or_video(messages: list[Message]) -> bool:
 async def create_gemini_client(
         api_key: str,
         vertexai: bool,
+        project: str | None,
         free_tier: bool,
         messages: list[Message],
         model: str,
@@ -36,10 +37,18 @@ async def create_gemini_client(
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ) -> StreamGeminiClient | NonStreamGeminiClient:
-    client = genai.Client(
-        vertexai=vertexai,
-        api_key=api_key,
-    )
+    if vertexai:
+        client = genai.Client(
+            vertexai=True,
+            api_key=api_key,
+            project=project,
+            location="global",
+        )
+    else:
+        client = genai.Client(
+            vertexai=False,
+            api_key=api_key,
+        )
 
     system_instruction = await extract_system_messages(messages) or " "
     tools = []
