@@ -73,6 +73,12 @@
   },
   {
     "apiType": "OpenAI",
+    "model": "gpt-6.1-terra",
+    "input": 4,
+    "output": 15
+  },
+  {
+    "apiType": "OpenAI",
     "model": "gpt-5.6-sol",
     "input": 20,
     "output": 90

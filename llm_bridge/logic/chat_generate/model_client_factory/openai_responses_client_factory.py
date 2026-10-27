@@ -94,7 +94,7 @@ async def create_openai_responses_client(
     if api_type == "OpenAI":
         if model in ["gpt-6-astra", "gpt-6.1-sol"]:
             service_tier = "ultrafast"
-        elif model in ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.5", "gpt-4.1"]:
+        elif model in ["gpt-6.1-terra", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.5", "gpt-4.1"]:
             service_tier = "fast"
 
     if stream:
