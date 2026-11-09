@@ -115,9 +115,15 @@
   },
   {
     "apiType": "Claude",
+    "model": "claude-fable-5-2",
+    "input": 16,
+    "output": 80
+  },
+  {
+    "apiType": "Claude",
     "model": "claude-fable-5-1",
-    "input": 10,
-    "output": 50
+    "input": 8,
+    "output": 40
   },
   {
     "apiType": "Claude",

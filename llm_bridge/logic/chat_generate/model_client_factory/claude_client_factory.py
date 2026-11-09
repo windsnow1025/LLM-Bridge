@@ -63,7 +63,7 @@ async def create_claude_client(
 
     betas: list[AnthropicBetaParam] | Omit = omit
     speed: Literal["standard", "fast"] | Omit = omit
-    if model in ["claude-opus-5-5"]:
+    if model in ["claude-opus-5-5", "claude-fable-5-2"]:
         betas = ["fast-mode-2026-02-01"]
         speed = "fast"
 
