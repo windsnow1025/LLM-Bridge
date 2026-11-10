@@ -1,48 +1,11 @@
 from google.genai import types
 
 from llm_bridge.logic.chat_generate import media_processor
+from llm_bridge.logic.chat_generate.model_message_converter.gemini_mime_types import GeminiSupportedMimeTypes
 from llm_bridge.logic.message_process.file_type_checker import get_file_type
 from llm_bridge.logic.message_process.message_processor import extract_file_as_text
 from llm_bridge.type.message import Message, Role, ContentType
 from llm_bridge.type.model_message.gemini_message import GeminiMessage, GeminiRole, GeminiContent
-
-# https://ai.google.dev/gemini-api/docs/file-input-methods
-GeminiSupportedMimeTypes = {
-    "text/html",
-    "text/css",
-    "text/plain",
-    "text/xml",
-    "text/csv",
-    "text/rtf",
-    "text/javascript",
-
-    "application/json",
-    "application/pdf",
-
-    "image/bmp",
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-
-    # https://ai.google.dev/gemini-api/docs/audio#supported-formats
-    "audio/wav",
-    "audio/mp3",
-    "audio/aiff",
-    "audio/aac",
-    "audio/ogg",
-    "audio/flac",
-
-    # https://ai.google.dev/gemini-api/docs/video-understanding#supported-formats
-    "video/mp4",
-    "video/mpeg",
-    "video/mov",
-    "video/avi",
-    "video/x-flv",
-    "video/mpg",
-    "video/webm",
-    "video/wmv",
-    "video/3gpp",
-}
 
 
 async def convert_message_to_gemini(message: Message) -> GeminiMessage:
