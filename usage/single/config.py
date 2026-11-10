@@ -1,4 +1,15 @@
 from llm_bridge import *
+from usage.example_file_urls import (
+    TextFileUrl,
+    CodeFileUrl,
+    PdfFileUrl,
+    ImageFileUrl,
+    AudioFileUrl,
+    VideoFileUrl,
+    DocxFileUrl,
+    XlsxFileUrl,
+    PptxFileUrl,
+)
 from usage.messages import (
     AudioFileMessages,
     CodeFileMessages,
@@ -99,7 +110,7 @@ messages = [
             Content(type=ContentType.Text, data="You are a helpful assistant."),
 
             # PDF Input in System Message
-            # Content(type=ContentType.File, data="https://pdfobject.com/pdf/sample.pdf")
+            # Content(type=ContentType.File, data=PdfFileUrl)
         ]
     ),
     # Message History
