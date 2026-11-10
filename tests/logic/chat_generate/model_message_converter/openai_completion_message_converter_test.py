@@ -3,7 +3,7 @@ import pytest
 from llm_bridge.logic.chat_generate.model_message_converter.openai_completion_message_converter import \
     convert_message_to_openai_completion
 from llm_bridge.type.message import Role
-from tests.logic.chat_generate.model_message_converter.message_factory import create_text_message
+from tests.logic.message_factory import create_text_message
 
 
 @pytest.mark.parametrize("role, openai_role", [

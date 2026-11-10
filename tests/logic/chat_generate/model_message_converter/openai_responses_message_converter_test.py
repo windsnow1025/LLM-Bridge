@@ -4,7 +4,7 @@ from llm_bridge.logic.chat_generate.model_message_converter.openai_responses_mes
     convert_message_to_openai_responses
 from llm_bridge.type.message import Role
 from llm_bridge.type.model_message.openai_responses_message import OpenAIResponsesMessage
-from tests.logic.chat_generate.model_message_converter.message_factory import create_text_message
+from tests.logic.message_factory import create_text_message
 
 
 @pytest.mark.parametrize("role, expected", [
