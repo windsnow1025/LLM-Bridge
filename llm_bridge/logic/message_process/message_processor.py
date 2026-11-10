@@ -9,22 +9,20 @@ async def extract_file_as_text(file_url: str) -> str:
     return f"<file name=\"{filename}\">\n{file_text}\n</file>"
 
 
-def extract_system_messages(messages: list[Message]) -> str:
+def extract_system_message(messages: list[Message]) -> str:
+    if not messages:
+        return ""
+
+    message = messages[0]
+    if message.role != Role.System:
+        return ""
+    if any(content_item.type == ContentType.File for content_item in message.contents):
+        return ""
+
     system_message = ""
-    indices_to_delete = []
-    
-    for i, message in enumerate(messages):
-        if message.role != Role.System:
-            continue
-        if any(content_item.type == ContentType.File for content_item in message.contents):
-            continue
+    for content_item in message.contents:
+        system_message += f"{content_item.data}\n"
 
-        for content_item in message.contents:
-            system_message += f"{content_item.data}\n"
-
-        indices_to_delete.append(i)
-
-    for index in sorted(indices_to_delete, reverse=True):
-        del messages[index]
+    del messages[0]
 
     return system_message
