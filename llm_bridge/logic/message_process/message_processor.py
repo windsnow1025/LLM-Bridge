@@ -1,5 +1,5 @@
 from llm_bridge.logic.message_process import document_processor
-from llm_bridge.logic.message_process.file_type_checker import get_file_type, get_filename_without_timestamp
+from llm_bridge.logic.message_process.file_type_checker import get_filename_without_timestamp
 from llm_bridge.type.message import Message, Role, ContentType
 
 
@@ -9,22 +9,19 @@ async def extract_file_as_text(file_url: str) -> str:
     return f"<file name=\"{filename}\">\n{file_text}\n</file>"
 
 
-async def extract_system_messages(messages: list[Message]) -> str:
+def extract_system_messages(messages: list[Message]) -> str:
     system_message = ""
     indices_to_delete = []
     
     for i, message in enumerate(messages):
         if message.role != Role.System:
             continue
+        if any(content_item.type == ContentType.File for content_item in message.contents):
+            continue
 
         for content_item in message.contents:
-            if content_item.type == ContentType.Text:
-                system_message += f"{content_item.data}\n"
-            elif content_item.type == ContentType.File:
-                file_url = content_item.data
-                file_type, sub_type = await get_file_type(file_url)
-                system_message += f"\n{file_url}: {file_type}/{sub_type} in system message not supported by the current model.\n"
-                
+            system_message += f"{content_item.data}\n"
+
         indices_to_delete.append(i)
 
     for index in sorted(indices_to_delete, reverse=True):
