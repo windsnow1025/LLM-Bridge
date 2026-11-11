@@ -113,16 +113,15 @@ async def create_gemini_client(
     if "pro-image" not in model:
         config.media_resolution = MediaResolution.MEDIA_RESOLUTION_HIGH
 
-    if model in ["gemini-3.8-flash", "gemini-3.6-flash"]:
-        if vertexai:
-            config.http_options = types.HttpOptions(
-                headers={
-                    "X-Vertex-AI-LLM-Request-Type": "shared",
-                    "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
-                }
-            )
-        elif not free_tier:
-            config.service_tier = types.ServiceTier.PRIORITY
+    if vertexai:
+        config.http_options = types.HttpOptions(
+            headers={
+                "X-Vertex-AI-LLM-Request-Type": "shared",
+                "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
+            }
+        )
+    elif not free_tier:
+        config.service_tier = types.ServiceTier.PRIORITY
 
     if structured_output_schema:
         config.response_mime_type = "application/json"
