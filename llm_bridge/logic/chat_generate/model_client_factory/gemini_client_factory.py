@@ -30,7 +30,6 @@ async def create_gemini_client(
         free_tier: bool,
         messages: list[Message],
         model: str,
-        temperature: float,
         stream: bool,
         thought: bool,
         web_search: bool,
@@ -84,7 +83,6 @@ async def create_gemini_client(
 
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
-        temperature=temperature,
         safety_settings=[
             types.SafetySetting(
                 category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
@@ -136,7 +134,6 @@ async def create_gemini_client(
         return StreamGeminiClient(
             model=model,
             messages=gemini_messages,
-            temperature=temperature,
             client=client,
             config=config,
         )
@@ -144,7 +141,6 @@ async def create_gemini_client(
         return NonStreamGeminiClient(
             model=model,
             messages=gemini_messages,
-            temperature=temperature,
             client=client,
             config=config,
         )

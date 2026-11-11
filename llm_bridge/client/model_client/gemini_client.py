@@ -13,13 +13,11 @@ class GeminiClient(ChatClient):
             self,
             model: str,
             messages: list[GeminiMessage],
-            temperature: float,
             client: genai.Client,
             config: types.GenerateContentConfig,
     ):
         self.model = model
         self.messages = messages
-        self.temperature = temperature
         self.client = client
         self.config = config
 
