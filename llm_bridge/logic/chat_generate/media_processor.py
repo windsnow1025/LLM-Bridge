@@ -13,6 +13,6 @@ async def get_bytes_content_from_url(req_url: str) -> tuple[bytes, str]:
 
 
 async def get_base64_content_from_url(req_url: str) -> tuple[str, str]:
-    media_data, media_type = await get_bytes_content_from_url(req_url)
-    base64_media = bytes_to_base64(media_data)
-    return base64_media, media_type
+    file_data, media_type = await get_bytes_content_from_url(req_url)
+    base64_data = bytes_to_base64(file_data)
+    return base64_data, media_type

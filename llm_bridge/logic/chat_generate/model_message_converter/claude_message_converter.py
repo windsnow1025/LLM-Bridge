@@ -35,28 +35,28 @@ async def convert_message_to_claude(message: Message) -> ClaudeMessage:
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                base64_image, media_type = await media_processor.get_base64_content_from_url(file_url)
+                base64_data, media_type = await media_processor.get_base64_content_from_url(file_url)
                 if media_type in ("image/jpeg", "image/png", "image/gif", "image/webp"):
                     image_content = ImageBlockParam(
                         type="image",
                         source=Base64ImageSourceParam(
                             type="base64",
                             media_type=media_type,
-                            data=base64_image
+                            data=base64_data
                         )
                     )
                     claude_content.append(image_content)
                 else:
                     claude_content.append(create_unsupported_content(file_url, file_type, sub_type))
             elif sub_type == "pdf":
-                file_data, media_type = await media_processor.get_base64_content_from_url(file_url)
+                base64_data, media_type = await media_processor.get_base64_content_from_url(file_url)
                 if media_type == "application/pdf":
                     pdf_content = DocumentBlockParam(
                         type="document",
                         source=Base64PDFSourceParam(
                             type="base64",
                             media_type=media_type,
-                            data=file_data
+                            data=base64_data
                         ),
                     )
                     claude_content.append(pdf_content)

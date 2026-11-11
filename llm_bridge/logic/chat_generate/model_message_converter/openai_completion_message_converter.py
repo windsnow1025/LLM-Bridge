@@ -33,8 +33,8 @@ async def convert_message_to_openai_completion(message: Message) -> OpenAIComple
             file_url = content_item.data
             file_type, sub_type = await get_file_type(file_url)
             if file_type == "image":
-                base64_image, media_type = await media_processor.get_base64_content_from_url(file_url)
-                image_url = f"data:{media_type};base64,{base64_image}"
+                base64_data, media_type = await media_processor.get_base64_content_from_url(file_url)
+                image_url = f"data:{media_type};base64,{base64_data}"
                 image_content = ChatCompletionContentPartImageParam(
                     type="image_url",
                     image_url=ImageURL(url=image_url)
@@ -43,10 +43,10 @@ async def convert_message_to_openai_completion(message: Message) -> OpenAIComple
             elif file_type == "audio":
                 audio_format = get_file_extension(file_url)
                 if audio_format in ("wav", "mp3"):
-                    encoded_string, _ = await media_processor.get_base64_content_from_url(file_url)
+                    base64_data, _ = await media_processor.get_base64_content_from_url(file_url)
                     audio_content = ChatCompletionContentPartInputAudioParam(
                         type="input_audio",
-                        input_audio=InputAudio(data=encoded_string, format=audio_format)
+                        input_audio=InputAudio(data=base64_data, format=audio_format)
                     )
                     content.append(audio_content)
                 else:

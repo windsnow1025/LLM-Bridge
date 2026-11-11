@@ -18,10 +18,10 @@ async def process_code_interpreter_outputs(interpreter_outputs: list[Output]) ->
         if isinstance(interpreter_output, OutputLogs):
             code_output += interpreter_output.logs
         if isinstance(interpreter_output, OutputImage):
-            data, _ = await get_base64_content_from_url(interpreter_output.url)
+            base64_data, _ = await get_base64_content_from_url(interpreter_output.url)
             file = File(
                 name="code_interpreter_call_output.png",
-                data=data,
+                data=base64_data,
                 type="image/png",
             )
             files.append(file)
