@@ -16,9 +16,9 @@ class ClaudeClient(ChatClient):
     def __init__(
             self,
             model: str,
-            messages: list[ClaudeMessage],
-            system: str,
             max_tokens: int,
+            system: str,
+            messages: list[ClaudeMessage],
             client: anthropic.AsyncAnthropic,
             betas: list[AnthropicBetaParam] | Omit,
             tools: list[BetaToolUnionParam],
@@ -28,9 +28,9 @@ class ClaudeClient(ChatClient):
             output_config: BetaOutputConfigParam | Omit,
     ):
         self.model = model
-        self.messages = messages
-        self.system = system
         self.max_tokens = max_tokens
+        self.system = system
+        self.messages = messages
         self.client = client
         self.betas = betas
         self.tools = tools

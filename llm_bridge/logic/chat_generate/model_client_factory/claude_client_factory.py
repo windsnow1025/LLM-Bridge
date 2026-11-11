@@ -99,9 +99,9 @@ async def create_claude_client(
     if stream:
         return StreamClaudeClient(
             model=model,
-            messages=claude_messages,
-            system=system,
             max_tokens=max_tokens,
+            system=system,
+            messages=claude_messages,
             client=client,
             betas=betas,
             tools=tools,
@@ -113,9 +113,9 @@ async def create_claude_client(
     else:
         return NonStreamClaudeClient(
             model=model,
-            messages=claude_messages,
-            system=system,
             max_tokens=max_tokens,
+            system=system,
+            messages=claude_messages,
             client=client,
             betas=betas,
             tools=tools,
