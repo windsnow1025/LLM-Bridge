@@ -176,6 +176,7 @@ messages = [
 # model = "gpt-5.6-luna"
 # model = "gpt-4.1"
 # model = "gpt-audio-1.5"
+# model = "gemini-4-carbon"
 # model = "gemini-4-argon"
 # model = "gemini-3.1-pro-preview"
 # model = "gemini-3-pro-image"

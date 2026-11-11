@@ -1,6 +1,12 @@
 [
   {
     "apiType": "Google AI Studio",
+    "model": "gemini-4-carbon",
+    "input": 7.2,
+    "output": 36
+  },
+  {
+    "apiType": "Google AI Studio",
     "model": "gemini-4-argon",
     "input": 7.2,
     "output": 36
@@ -154,6 +160,12 @@
     "model": "claude-haiku-5-5",
     "input": 0.5,
     "output": 2.5
+  },
+  {
+    "apiType": "Vertex AI",
+    "model": "gemini-4-carbon",
+    "input": 7.2,
+    "output": 36
   },
   {
     "apiType": "Vertex AI",
