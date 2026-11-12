@@ -30,6 +30,7 @@ async def create_gemini_client(
         free_tier: bool,
         messages: list[Message],
         model: str,
+        temperature: float,
         stream: bool,
         thought: bool,
         web_search: bool,
@@ -109,6 +110,9 @@ async def create_gemini_client(
         thinking_config=thinking_config,
         response_modalities=response_modalities,
     )
+
+    if "image" in model:
+        config.temperature = temperature
 
     if "pro-image" not in model:
         config.media_resolution = MediaResolution.MEDIA_RESOLUTION_HIGH
