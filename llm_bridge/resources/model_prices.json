@@ -13,6 +13,12 @@
   },
   {
     "apiType": "Google AI Studio",
+    "model": "gemini-4-hydrogen",
+    "input": 2.7,
+    "output": 13.5
+  },
+  {
+    "apiType": "Google AI Studio",
     "model": "gemini-omni-1.1-flash",
     "input": 1.5,
     "output": 17.5
@@ -163,6 +169,12 @@
   },
   {
     "apiType": "Vertex AI",
+    "model": "gemini-4-hydrogen",
+    "input": 2.7,
+    "output": 13.5
+  },
+  {
+    "apiType": "Vertex AI",
     "model": "gemini-omni-1.1-flash-preview",
     "input": 1.5,
     "output": 17.5
@@ -190,6 +202,12 @@
     "model": "gemini-3.1-flash-image",
     "input": 0.9,
     "output": 108
+  },
+  {
+    "apiType": "Google AI Studio Free Tier",
+    "model": "gemini-4-hydrogen",
+    "input": 0,
+    "output": 0
   },
   {
     "apiType": "Google AI Studio Free Tier",

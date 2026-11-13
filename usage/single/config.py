@@ -178,6 +178,7 @@ messages = [
 # model = "gpt-audio-1.5"
 # model = "gemini-4-carbon"
 # model = "gemini-4-argon"
+# model = "gemini-4-hydrogen"
 # model = "gemini-3-pro-image"
 # model = "gemini-3.1-flash-image"
 # model = "gemini-3.5-flash"
