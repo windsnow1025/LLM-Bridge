@@ -45,7 +45,7 @@ class GeminiResponseHandler:
             if part.code_execution_result is not None:
                 code_output += part.code_execution_result.output
             # File
-            if part.inline_data is not None:
+            if part.inline_data is not None and not part.thought:
                 mime_type = part.inline_data.mime_type
                 extension = mimetypes.guess_extension(mime_type) or ""
                 file = File(
