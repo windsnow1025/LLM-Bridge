@@ -1,5 +1,5 @@
 from llm_bridge.logic.message_process import document_processor
-from llm_bridge.logic.message_process.file_type_checker import get_filename_without_timestamp
+from llm_bridge.logic.message_process.file_type_checker import get_file_type, get_filename_without_timestamp
 from llm_bridge.type.message import Message, Role, ContentType
 
 
@@ -26,3 +26,14 @@ def extract_system_message(messages: list[Message]) -> str:
     del messages[0]
 
     return system_message
+
+
+async def contains_audio_or_video(messages: list[Message]) -> bool:
+    for message in messages:
+        for content_item in message.contents:
+            if content_item.type != ContentType.File:
+                continue
+            file_type, _ = await get_file_type(content_item.data)
+            if file_type in ("audio", "video"):
+                return True
+    return False

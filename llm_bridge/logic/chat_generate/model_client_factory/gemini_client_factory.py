@@ -7,20 +7,8 @@ from google.genai.types import Modality, MediaResolution
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_gemini
-from llm_bridge.logic.message_process.file_type_checker import get_file_type
-from llm_bridge.logic.message_process.message_processor import extract_system_message
-from llm_bridge.type.message import Message, ContentType
-
-
-async def contains_audio_or_video(messages: list[Message]) -> bool:
-    for message in messages:
-        for content_item in message.contents:
-            if content_item.type != ContentType.File:
-                continue
-            file_type, _ = await get_file_type(content_item.data)
-            if file_type in ("audio", "video"):
-                return True
-    return False
+from llm_bridge.logic.message_process.message_processor import extract_system_message, contains_audio_or_video
+from llm_bridge.type.message import Message
 
 
 async def create_gemini_client(
