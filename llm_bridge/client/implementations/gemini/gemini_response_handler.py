@@ -11,6 +11,7 @@ from llm_bridge.type.chat_response import ChatResponse, File
 class GeminiResponseHandler:
     def __init__(self):
         self.prev_cumulative_output_tokens: int = 0
+        self.grounding_sources: dict[str, str] = {}
 
     async def process_gemini_response(
             self,
@@ -63,10 +64,14 @@ class GeminiResponseHandler:
                 if search_entry_point := grounding_metadata.search_entry_point:
                     display = search_entry_point.rendered_content
                 if grounding_metadata.grounding_chunks:
-                    text += "\n\n# Grounding Sources:\n"
-                    for i, chunk in enumerate(grounding_metadata.grounding_chunks, start=1):
+                    for chunk in grounding_metadata.grounding_chunks:
                         if chunk.web:
-                            text += f"{i}. [{chunk.web.title}]({chunk.web.uri})\n"
+                            self.grounding_sources[chunk.web.uri] = chunk.web.title
+            if candidates[0].finish_reason:
+                if self.grounding_sources:
+                    text += "\n\n# Grounding Sources:\n"
+                    for i, (uri, title) in enumerate(self.grounding_sources.items(), start=1):
+                        text += f"{i}. [{title}]({uri})\n"
 
         output_tokens = cumulative_output_tokens - self.prev_cumulative_output_tokens
         self.prev_cumulative_output_tokens = cumulative_output_tokens
