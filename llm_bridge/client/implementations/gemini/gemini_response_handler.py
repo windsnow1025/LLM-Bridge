@@ -40,10 +40,12 @@ class GeminiResponseHandler:
                     text += part.text
             # Code
             if part.executable_code is not None:
-                code += part.executable_code.code
+                if part.executable_code.code:
+                    code += part.executable_code.code
             # Code Output
             if part.code_execution_result is not None:
-                code_output += part.code_execution_result.output
+                if part.code_execution_result.output:
+                    code_output += part.code_execution_result.output
             # File
             if part.inline_data is not None and not part.thought:
                 mime_type = part.inline_data.mime_type
