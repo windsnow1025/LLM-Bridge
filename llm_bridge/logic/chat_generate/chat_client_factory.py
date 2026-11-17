@@ -6,6 +6,8 @@ from fastapi import HTTPException
 from llm_bridge.client.chat_client import ChatClient
 from llm_bridge.logic.chat_generate.model_client_factory.claude_client_factory import create_claude_client
 from llm_bridge.logic.chat_generate.model_client_factory.gemini_client_factory import create_gemini_client
+from llm_bridge.logic.chat_generate.model_client_factory.gemini_interactions_client_factory import \
+    create_gemini_interactions_client
 from llm_bridge.logic.chat_generate.model_client_factory.openai_completion_client_factory import \
     create_openai_completion_client
 from llm_bridge.logic.chat_generate.model_client_factory.openai_responses_client_factory import \
@@ -80,10 +82,8 @@ async def create_chat_client(
             structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Google AI Studio Free Tier':
-        return await create_gemini_client(
+        return await create_gemini_interactions_client(
             api_key=api_keys["GOOGLE_AI_STUDIO_FREE_TIER_API_KEY"],
-            vertexai=False,
-            project=None,
             free_tier=True,
             messages=messages,
             model=model,
@@ -95,10 +95,8 @@ async def create_chat_client(
             structured_output_schema=structured_output_schema,
         )
     elif api_type == 'Google AI Studio':
-        return await create_gemini_client(
+        return await create_gemini_interactions_client(
             api_key=api_keys["GOOGLE_AI_STUDIO_API_KEY"],
-            vertexai=False,
-            project=None,
             free_tier=False,
             messages=messages,
             model=model,
@@ -112,9 +110,7 @@ async def create_chat_client(
     elif api_type == 'Vertex AI':
         return await create_gemini_client(
             api_key=api_keys["VERTEX_AI_API_KEY"],
-            vertexai=True,
             project=api_keys["VERTEX_AI_PROJECT"],
-            free_tier=False,
             messages=messages,
             model=model,
             temperature=temperature,

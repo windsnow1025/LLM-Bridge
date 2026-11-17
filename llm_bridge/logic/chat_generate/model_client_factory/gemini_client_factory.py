@@ -7,15 +7,13 @@ from google.genai.types import Modality, MediaResolution
 from llm_bridge.client.implementations.gemini.non_stream_gemini_client import NonStreamGeminiClient
 from llm_bridge.client.implementations.gemini.stream_gemini_client import StreamGeminiClient
 from llm_bridge.logic.chat_generate.chat_message_converter import convert_messages_to_gemini
-from llm_bridge.logic.message_process.message_processor import extract_system_message, contains_audio_or_video
+from llm_bridge.logic.message_process.message_processor import extract_system_message
 from llm_bridge.type.message import Message
 
 
 async def create_gemini_client(
         api_key: str,
-        vertexai: bool,
-        project: str | None,
-        free_tier: bool,
+        project: str,
         messages: list[Message],
         model: str,
         temperature: float,
@@ -25,25 +23,19 @@ async def create_gemini_client(
         code_execution: bool,
         structured_output_schema: dict[str, Any] | None,
 ) -> StreamGeminiClient | NonStreamGeminiClient:
-    if vertexai:
-        client = genai.Client(
-            vertexai=True,
-            api_key=api_key,
-            project=project,
-            location="global",
-        )
-    else:
-        client = genai.Client(
-            vertexai=False,
-            api_key=api_key,
-        )
+    client = genai.Client(
+        vertexai=True,
+        api_key=api_key,
+        project=project,
+        location="global",
+    )
 
     system_instruction = extract_system_message(messages) or " "
     tools = []
     thinking_config = None
     response_modalities = [Modality.TEXT]
 
-    if web_search and not free_tier:
+    if web_search:
         tools.append(
             types.Tool(
                 google_search=types.GoogleSearch()
@@ -60,13 +52,12 @@ async def create_gemini_client(
                 url_context=types.UrlContext()
             )
         )
-        if not vertexai:
-            if code_execution and not await contains_audio_or_video(messages):
-                tools.append(
-                    types.Tool(
-                        code_execution=types.ToolCodeExecution()
-                    )
+        if code_execution:
+            tools.append(
+                types.Tool(
+                    code_execution=types.ToolCodeExecution()
                 )
+            )
     if "image" in model:
         response_modalities = [Modality.TEXT, Modality.IMAGE]
 
@@ -105,15 +96,12 @@ async def create_gemini_client(
     if "pro-image" not in model:
         config.media_resolution = MediaResolution.MEDIA_RESOLUTION_HIGH
 
-    if vertexai:
-        config.http_options = types.HttpOptions(
-            headers={
-                "X-Vertex-AI-LLM-Request-Type": "shared",
-                "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
-            }
-        )
-    elif not free_tier:
-        config.service_tier = types.ServiceTier.PRIORITY
+    config.http_options = types.HttpOptions(
+        headers={
+            "X-Vertex-AI-LLM-Request-Type": "shared",
+            "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
+        }
+    )
 
     if structured_output_schema:
         config.response_mime_type = "application/json"
