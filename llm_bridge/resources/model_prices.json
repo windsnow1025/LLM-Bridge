@@ -13,6 +13,12 @@
   },
   {
     "apiType": "Google AI Studio",
+    "model": "gemini-4-neon",
+    "input": 5.4,
+    "output": 27
+  },
+  {
+    "apiType": "Google AI Studio",
     "model": "gemini-4-hydrogen",
     "input": 2.7,
     "output": 13.5
@@ -55,6 +61,18 @@
   },
   {
     "apiType": "OpenAI",
+    "model": "gpt-6.2-astra",
+    "input": 96,
+    "output": 360
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-6.2-sol",
+    "input": 24,
+    "output": 90
+  },
+  {
+    "apiType": "OpenAI",
     "model": "gpt-6-astra",
     "input": 120,
     "output": 450
@@ -70,6 +88,12 @@
     "model": "gpt-6.1-terra",
     "input": 4,
     "output": 15
+  },
+  {
+    "apiType": "OpenAI",
+    "model": "gpt-6-luna",
+    "input": 0.4,
+    "output": 1.5
   },
   {
     "apiType": "OpenAI",
@@ -160,6 +184,12 @@
     "model": "gemini-4-argon",
     "input": 7.2,
     "output": 36
+  },
+  {
+    "apiType": "Vertex AI",
+    "model": "gemini-4-neon",
+    "input": 5.4,
+    "output": 27
   },
   {
     "apiType": "Vertex AI",
