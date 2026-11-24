@@ -52,7 +52,7 @@ async def create_gemini_interactions_client(
     if "image" in model:
         generation_config["temperature"] = temperature
     if thought:
-        generation_config["thinking_level"] = "high"
+        generation_config["thinking_level"] = "xhigh" if model in ["gemini-4-neon", "gemini-4-hydrogen"] else "high"
         generation_config["thinking_summaries"] = "auto"
     if not free_tier:
         service_tier = "priority"
